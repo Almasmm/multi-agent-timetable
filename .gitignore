@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.env.*
+!.env.example
+runs/
+runs_*.log
+data/uploads/
+dataset-archive/

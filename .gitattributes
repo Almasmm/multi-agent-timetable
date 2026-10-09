@@ -1,0 +1,2 @@
+# Preserve evidence bytes so SHA-256 hashes survive clone on any platform.
+docs/evidence/** -text whitespace=cr-at-eol

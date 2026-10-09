@@ -1,0 +1,69 @@
+{
+  "source_run": "runs/scenarios-20261009-191916",
+  "timezone": "Asia/Qyzylorda (UTC+05:00)",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "packages": {
+    "ortools": "9.15.6755",
+    "openpyxl": "3.1.5",
+    "pydantic": "2.14.0",
+    "anthropic": "1.12.1",
+    "pytest": "9.1.1",
+    "fastapi": "0.143.0"
+  },
+  "input": {
+    "path": "data/input.xlsx",
+    "sha256": "96df08cb2ff2e50d7800a46d112b279a0568c5c6c0216c3c6a97aa901d7b8ffc"
+  },
+  "scenarios": {
+    "S12": {
+      "started_at": "2026-10-09T19:20:17.948000+05:00",
+      "settings": {
+        "data_path": "C:\\dev\\multi-agent-timetable\\data\\input.xlsx",
+        "term": 1,
+        "programs": [
+          "IT"
+        ],
+        "allow_saturday": false,
+        "solver_time_limit": 10.0,
+        "llm_provider": "offline",
+        "chunk_target_groups": 60
+      },
+      "gym_capacity": 8,
+      "solver_workers": 8,
+      "seed": 7,
+      "requirements": [],
+      "sha256": {
+        "events.jsonl": "413e95b23c8be374f12dfbe235078fa4ee5484ba1b7408ceb714ffb18cd13554",
+        "result.json": "0123a5c2eec8ea1c81a224190827c1d5928d871634f87c9e17cc2d2503471c1b",
+        "load.json": "b494fc58ef7406c99ddc75b03e4e41ac73677ecb206d0c5dbadfb57993a060e6"
+      }
+    },
+    "S07": {
+      "started_at": "2026-10-09T19:19:53.051000+05:00",
+      "settings": {
+        "data_path": "C:\\dev\\multi-agent-timetable\\data\\input.xlsx",
+        "term": 1,
+        "programs": [
+          "MT",
+          "ITM"
+        ],
+        "allow_saturday": false,
+        "solver_time_limit": 10.0,
+        "llm_provider": "offline",
+        "chunk_target_groups": 60
+      },
+      "gym_capacity": 1,
+      "solver_workers": 8,
+      "seed": 7,
+      "requirements": [
+        "Physical Education только утром"
+      ],
+      "sha256": {
+        "events.jsonl": "e0e0cc988a6574818607c2476070f76aedfe11b77733dcf64901dc0af874efe7",
+        "result.json": "ad1e1ad85072aaefa9dd631df4cc2596a05f708d83cefad3a25e6aaa5e245239",
+        "load.json": "c45486bbc6878abe2680edc0051c8e22a11df346955c9f41f4747a125aaa6b80"
+      }
+    }
+  }
+}

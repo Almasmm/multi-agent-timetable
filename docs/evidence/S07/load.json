@@ -1,0 +1,57 @@
+{
+  "total_calls": 25,
+  "agents": {
+    "orchestrator": {
+      "tool_calls": 0,
+      "llm_calls": 0,
+      "calls": 0,
+      "share": 0.0
+    },
+    "data": {
+      "tool_calls": 3,
+      "llm_calls": 1,
+      "calls": 4,
+      "share": 0.16
+    },
+    "constraints": {
+      "tool_calls": 2,
+      "llm_calls": 1,
+      "calls": 3,
+      "share": 0.12
+    },
+    "scheduler": {
+      "tool_calls": 3,
+      "llm_calls": 0,
+      "calls": 3,
+      "share": 0.12
+    },
+    "rooms": {
+      "tool_calls": 4,
+      "llm_calls": 0,
+      "calls": 4,
+      "share": 0.16
+    },
+    "validator": {
+      "tool_calls": 3,
+      "llm_calls": 1,
+      "calls": 4,
+      "share": 0.16
+    },
+    "negotiator": {
+      "tool_calls": 2,
+      "llm_calls": 1,
+      "calls": 3,
+      "share": 0.12
+    },
+    "reporter": {
+      "tool_calls": 3,
+      "llm_calls": 1,
+      "calls": 4,
+      "share": 0.16
+    }
+  },
+  "max_share": 0.16,
+  "counting_rule": "kind in {tool_call,llm_call} and attempt defaults to 1 and equals 1",
+  "threshold": 0.4,
+  "passed": true
+}
