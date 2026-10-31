@@ -188,7 +188,6 @@ class State:
 def greedy(p: _Problem, rng: random.Random) -> list[int]:
     """Place sessions one by one (most constrained first, random tie-break) into the slot
     with the smallest incremental cost - an admissible individual in most cases."""
-    H = p.H
     order = sorted(range(len(p.sessions)), key=lambda i: (len(p.allowed[i]), rng.random()))
     genes = [p.allowed[i][0] for i in range(len(p.sessions))]
     st = State(p, [])  # empty state; we add sessions as we go

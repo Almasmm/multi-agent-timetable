@@ -4,6 +4,7 @@ Start with ``python -m timetable web`` (defaults to http://127.0.0.1:8000). The 
 the 24/7 autopilot (``timetable.service``) unless TT_AUTOPILOT=off."""
 from __future__ import annotations
 
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Literal
@@ -107,6 +108,12 @@ def create_app(autopilot: bool | None = None) -> FastAPI:
     @app.exception_handler(RuntimeError)
     async def _conflict(_, exc):
         return JSONResponse({"error": str(exc)}, status_code=409)
+
+    # --- health (Docker HEALTHCHECK, CI smoke test, Kubernetes probes) ---
+    @app.get("/api/health")
+    def health():
+        return {"status": "ok", "version": os.environ.get("APP_VERSION", "dev"),
+                "data": Settings().data_path.is_file(), "autopilot": pilot.running}
 
     # --- datasets ---
     @app.get("/api/datasets")

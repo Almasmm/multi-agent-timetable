@@ -16,7 +16,7 @@ from timetable.domain.constraints import ConstraintIndex
 from timetable.domain.models import Session
 from timetable.service.agents import config_hash, live_term
 from timetable.service.autopilot import Autopilot
-from timetable.service.versions import diff_rows, quality_score, read_rows, to_ics
+from timetable.service.versions import diff_rows, quality_score, to_ics
 from timetable.solver.evolve import evolve
 
 FIELDS = ["group", "program", "year", "day", "day_index", "hour_index", "time", "discipline", "type", "classroom", "stream_size"]
