@@ -176,6 +176,14 @@ state.sqlite, result.json.
   среду» → перегенерация с тёплым стартом → v2: перенесено 117 ч (1,6 %), смена ауд. 11 ч, 60 групп из 270; заявка с
   SE-9999 отклонена. Автопилот оставлен включённым (возобновится при `python -m timetable web`).
 - Bash-обёртка ломает heredoc с одиночными кавычками внутри: фрагменты писать через Write во временный файл.
+- **DevOps / CI/CD (2026-10-31, Ассайнмент 5 курса Applied Software Development Project).** `Dockerfile` (deps / test /
+  runtime, non-root, HEALTHCHECK `/api/health`), Jenkins как код в `ci/jenkins/` (LTS 2.580.1, JCasC, multibranch-скан
+  GitHub раз в минуту, `127.0.0.1:8080`, пароль в `ci/jenkins/.env`), `Jenkinsfile`: lint → 3 набора тестов параллельно
+  (22 + 7 + 19 = 48) → образ → smoke-тест → (main) push в Docker Hub `almasmm/multi-agent-timetable` → deploy в Minikube
+  (`k8s/`, namespace timetable, NodePort 30080). main #2 и #3 зелёные (6–7,5 мин), покрытие 84,98 %; main #1 потерян
+  при пересоздании контейнера Jenkins. Подъём: `scripts/devops/up.ps1`; minikube — `%LOCALAPPDATA%\Programs\minikube`,
+  kubectl из Windows — `--context minikube`. Описание: `docs/DEVOPS.md`. Отчёты и скриншоты сданы в папку курса
+  `AITU\08_Applied Software Development Project…\assignment 5\project`.
 
 ## Бэклог (по приоритету)
 
