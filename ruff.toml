@@ -1,0 +1,7 @@
+# CI lint gate: errors that break code (syntax errors, undefined names, unused imports, invalid comparisons).
+# Style is left to the authors; the gate stays strict on correctness.
+target-version = "py312"
+line-length = 120
+
+[lint]
+select = ["E9", "F63", "F7", "F82", "F401", "F811", "F841"]

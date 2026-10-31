@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timetable
+  labels:
+    app.kubernetes.io/name: timetable
+spec:
+  # One replica on purpose: the 24/7 service keeps its state in SQLite on a ReadWriteOnce volume.
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: timetable
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: timetable
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: web
+          image: multi-agent-timetable:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: timetable-config
+            - secretRef:
+                name: timetable-llm
+                optional: true
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: "4"
+              memory: 4Gi
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 2
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: data
+              mountPath: /app/runs
+              subPath: runs
+            - name: data
+              mountPath: /app/data/uploads
+              subPath: uploads
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: timetable-data
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi

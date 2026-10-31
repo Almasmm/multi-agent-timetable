@@ -1,0 +1,34 @@
+# Local Jenkins server.  Start:  docker compose -f ci/jenkins/docker-compose.yml up -d --build
+# UI: http://localhost:8080 (user/password from ci/jenkins/.env).  Run scripts/devops/minikube-setup.ps1 first:
+# it creates the "minikube" Docker network and ci/jenkins/secrets/kubeconfig used for the CD stage.
+name: timetable-ci
+
+services:
+  jenkins:
+    build: .
+    image: timetable-jenkins:2.580.1
+    container_name: jenkins
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    env_file:
+      - .env
+    # Docker Desktop mounts docker.sock as root:root 0660; group 0 lets the jenkins user use it.
+    # Access to the Docker socket equals root on the Docker host: keep this Jenkins local (127.0.0.1 only).
+    group_add:
+      - "0"
+    volumes:
+      - jenkins-home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./casc.yaml:/var/jenkins_home/casc.yaml:ro
+      - ./secrets:/run/secrets:ro
+    networks:
+      - default
+      - minikube
+
+networks:
+  minikube:
+    external: true
+
+volumes:
+  jenkins-home:

@@ -1,0 +1,10 @@
+# Applied once by an administrator (scripts/devops/minikube-setup.ps1), not by Jenkins.
+# Pod Security "restricted": pods must run as non-root, without privilege escalation, with seccomp.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: timetable
+  labels:
+    app.kubernetes.io/part-of: multi-agent-timetable
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest

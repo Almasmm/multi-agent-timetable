@@ -1,0 +1,6 @@
+[run]
+relative_files = True
+source = timetable
+
+[report]
+skip_empty = True

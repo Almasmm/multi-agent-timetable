@@ -1,0 +1,12 @@
+# Non-secret settings (TT_* variables, see timetable/config.py). LLM API keys are optional and go into the
+# Secret "timetable-llm" created by hand:  kubectl -n timetable create secret generic timetable-llm --from-env-file=.env
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: timetable-config
+data:
+  TT_LLM: "auto"
+  TT_AUTOPILOT: "auto"
+  TT_SOLVER_SECONDS: "25"
+  TT_SOLVER_WORKERS: "4"
+  TT_TERM_START: "2026-09-07"
