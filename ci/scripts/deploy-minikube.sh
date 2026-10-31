@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # CD: deploy an image built by this pipeline to the local Minikube cluster and verify the rollout.
 # Usage: deploy-minikube.sh <image:tag>      (KUBECONFIG = jenkins-deployer ServiceAccount, namespace timetable)
-# 1. copy the image into the Minikube node (no registry needed for the local cluster)
+# 1. copy the image into the Minikube node (no registry needed for the local cluster; Minikube's
+#    container runtime is containerd, so the image is imported with ctr into the k8s.io namespace)
 # 2. kubectl apply -k with an overlay that pins the image tag of this build
 # 3. wait for the rollout, then call /api/health through the NodePort service
 set -euo pipefail
@@ -11,8 +12,8 @@ tag="${image##*:}"
 node="${MINIKUBE_NODE:-minikube}"
 : "${KUBECONFIG:?KUBECONFIG is not set}"
 
-echo "Loading ${image} into the Minikube node '${node}'"
-docker save "$image" | docker exec -i "$node" docker load
+echo "Importing ${image} into containerd of the Minikube node '${node}'"
+docker save "$image" | docker exec -i "$node" ctr --namespace k8s.io images import --platform linux/amd64 -
 
 mkdir -p build/k8s
 cat > build/k8s/kustomization.yaml <<YAML

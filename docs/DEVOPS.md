@@ -76,7 +76,7 @@ docker run --rm multi-agent-timetable:test                  # full pytest suite 
 | 5 | Build image | all | `docker build --target runtime` with OCI labels (version, git revision, build date) | build error |
 | 6 | Smoke test | all | starts the image, waits for Docker health = healthy, checks non-root user, `/api/health`, `/api/agents` (9 agents, ≤ 5 tools each), dataset (270 groups), UI, and generates a real timetable for the IT programme (0 hard violations required) | any check fails |
 | 7 | Push to Docker Hub | main | `docker login --password-stdin` with a Jenkins credential in a temporary `DOCKER_CONFIG`, pushes `<tag>` and `latest` | registry error |
-| 8 | Deploy to Minikube | main | copies the image into the Minikube node, `kubectl apply -k` with the build's tag, `rollout status`, checks `/api/health` through the NodePort | rollout does not complete in 240 s, health check fails |
+| 8 | Deploy to Minikube | main | imports the image into the Minikube node (containerd, `ctr images import`), `kubectl apply -k` with the build's tag, `rollout status`, checks `/api/health` through the NodePort | rollout does not complete in 240 s, health check fails |
 
 Post actions: test reports and the generated Kubernetes overlay are archived; the test image is removed;
 the workspace is cleaned. The pipeline has a 40-minute timeout and never runs two builds of one branch at once.
@@ -124,5 +124,7 @@ pod can be traced back to its commit; `kubectl rollout history` records the Jenk
 |---|---|
 | Jenkins does not start, log mentions `readFileBase64` | `ci/jenkins/secrets/kubeconfig` is missing: run `scripts/devops/minikube-setup.ps1` before Jenkins |
 | `network minikube declared as external, but could not be found` | Minikube is not running: `minikube start` or `scripts/devops/up.ps1` |
-| Deploy stage: connection refused to 192.168.49.2:8443 | Minikube was restarted with a new IP: re-run `minikube-setup.ps1`, then `docker compose -f ci/jenkins/docker-compose.yml up -d` |
+| Deploy stage: connection refused to `<minikube ip>:8443` | Minikube was recreated with a new IP: re-run `minikube-setup.ps1`, then `docker compose -f ci/jenkins/docker-compose.yml up -d` |
+| `kubectl` on Windows cannot reach the node IP | expected: the Docker Desktop networks are not routed to Windows. Use `kubectl --context minikube` (admin) or `minikube service timetable -n timetable` |
+| `ctr: image import` fails in the deploy stage | the Minikube runtime is not containerd: check `minikube profile list`; the stage expects the default containerd runtime |
 | `permission denied ... docker.sock` | the container lost `group_add: ["0"]`; recreate it with the compose file |

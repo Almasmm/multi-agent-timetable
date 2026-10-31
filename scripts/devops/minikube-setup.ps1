@@ -57,7 +57,7 @@ if ($LASTEXITCODE -ne 0) {
     Write-Host 'Minikube is already running'
 }
 
-kubectl --context minikube apply -f (Join-Path $Root 'k8s\cluster')
+kubectl --context minikube apply -f (Join-Path $Root 'k8s\cluster')  # 00-namespace first, then RBAC
 if ($LASTEXITCODE -ne 0) { throw 'kubectl apply k8s/cluster failed' }
 
 $token = ''
@@ -96,8 +96,11 @@ $target = Join-Path $secrets 'kubeconfig'
 [IO.File]::WriteAllText($target, ($kubeconfig -replace "`r`n", "`n"), (New-Object Text.UTF8Encoding($false)))
 Write-Host "Wrote $target (server https://${ip}:8443)"
 
-# least privilege check: the Jenkins identity may deploy the app but cannot read Secrets
-$canDeploy = kubectl --kubeconfig $target auth can-i patch deployments -n timetable
-$canSecrets = kubectl --kubeconfig $target auth can-i get secrets -n timetable 2>$null
+# Least privilege check: the Jenkins identity may deploy the app but cannot read Secrets.
+# (The node IP is reachable only from containers on the "minikube" Docker network, not from Windows,
+#  so the check impersonates the ServiceAccount through the admin context.)
+$sa = 'system:serviceaccount:timetable:jenkins-deployer'
+$canDeploy = kubectl --context minikube auth can-i patch deployments -n timetable --as $sa
+$canSecrets = kubectl --context minikube auth can-i get secrets -n timetable --as $sa 2>$null
 Write-Host "jenkins-deployer: patch deployments=$canDeploy, get secrets=$canSecrets"
 if ($canDeploy -ne 'yes') { throw 'jenkins-deployer cannot deploy: check k8s/cluster/jenkins-deployer.yaml' }

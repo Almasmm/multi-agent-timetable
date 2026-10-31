@@ -1,13 +1,14 @@
-# Jenkins plugins (resolved with their dependencies by jenkins-plugin-cli at image build time)
-configuration-as-code
-job-dsl
-workflow-aggregator
-workflow-multibranch
-git
-pipeline-stage-view
-pipeline-graph-view
-junit
-coverage
-credentials-binding
-timestamper
-ws-cleanup
+# Jenkins plugins, pinned to the versions verified with Jenkins 2.580.1 LTS
+# (dependencies are resolved by jenkins-plugin-cli at image build time).
+configuration-as-code:2144.ve8c697101488
+job-dsl:3732.v9a_c49a_61a_313
+workflow-aggregator:608.v67378e9d3db_1
+workflow-multibranch:842.v3a_b_59b_57b_e6e
+git:5.11.0
+pipeline-stage-view:2.41
+pipeline-graph-view:1053.v9df19e6ceed2
+junit:1455.v5c1b_eed56292
+coverage:3.3499.v910e11c96847
+credentials-binding:728.v902a_273b_8947
+timestamper:1.30
+ws-cleanup:0.49
