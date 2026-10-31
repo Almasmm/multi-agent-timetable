@@ -17,12 +17,12 @@ from pathlib import Path
 from typing import Any
 
 from ..app import run as run_pipeline
-from ..config import DAYS, ROOT, Settings
+from ..config import DATASET_DIRS, DAYS, ROOT, Settings
 from ..core.errors import DataError
-from ..domain.constraints import parse_offline
 from ..domain.loader import normalize, read_workbook
+from ..domain.preview import preview_texts
+from ..service.versions import read_rows
 
-DATASET_DIRS = [ROOT / "data", ROOT / "dataset-archive", ROOT / "data" / "uploads"]
 UPLOAD_DIR = ROOT / "data" / "uploads"
 SAFE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.\- ]{0,80}$")
 DOWNLOADABLE = {"timetable.xlsx", "timetable.csv", "timetable.html", "report.md", "events.jsonl",
@@ -64,34 +64,9 @@ def _dataset_summary(path: Path) -> dict:
     return info
 
 
-_entity_cache: dict[str, tuple[float, dict]] = {}
-
-
-def dataset_entities(path: Path) -> dict:
-    """Programme / room / course / group names of a workbook (for constraint preview)."""
-    mtime = path.stat().st_mtime
-    hit = _entity_cache.get(str(path))
-    if hit and hit[0] == mtime:
-        return hit[1]
-    ds = normalize(read_workbook(path), Settings().weeks_per_term)
-    ent = {"programs": sorted({g.program for g in ds.groups}), "rooms": [r.code for r in ds.rooms],
-           "courses": sorted({c.name for c in ds.courses}), "groups": [g.code for g in ds.groups]}
-    _entity_cache[str(path)] = (mtime, ent)
-    return ent
-
-
 def preview_constraints(dataset_id: str, texts: list[str]) -> dict:
-    """What the offline parser makes of the requirements (the run itself may use Claude)."""
-    ent = dataset_entities(resolve_dataset(dataset_id))
-    cset = parse_offline([t for t in texts if t.strip()], ent["programs"], ent["courses"], ent["rooms"])
-    programs, rooms, groups = set(ent["programs"]), set(ent["rooms"]), set(ent["groups"])
-    parsed = []
-    for spec in cset.constraints:
-        sc = spec.scope
-        unknown = ([p for p in sc.programs if p not in programs] + [r for r in sc.rooms if r not in rooms]
-                   + [g for g in sc.groups if g not in groups])
-        parsed.append({**spec.model_dump(), "unknown": unknown})
-    return {"parsed": parsed, "unparsed": cset.unparsed}
+    """What the offline parser makes of the requirements (the run itself may use an LLM)."""
+    return preview_texts(resolve_dataset(dataset_id), texts)
 
 
 def list_datasets() -> list[dict]:
@@ -218,22 +193,20 @@ def read_messages(d: Path) -> list[dict]:
              "payload": json.loads(r[6] or "{}"), "correlation_id": r[7]} for r in rows]
 
 
-def read_timetable(d: Path) -> dict:
-    p = d / "timetable.csv"
-    if not p.exists():
-        return {"rows": [], "groups": [], "rooms": [], "programs": [], "times": [], "days": DAYS}
-    with p.open(encoding="utf-8-sig", newline="") as fh:
-        rows = [{"group": r["group"], "program": r["program"], "year": int(r["year"]), "day": int(r["day_index"]),
-                 "hour": int(r["hour_index"]), "time": r["time"], "course": r["discipline"], "kind": r["type"],
-                 "room": r["classroom"], "stream": int(r["stream_size"])} for r in csv.DictReader(fh)]
-    labels = (read_kv(d, ["dataset"]).get("dataset") or {}).get("slot_labels") or {}
-    times = {int(k): v for k, v in labels.items()}
+def timetable_payload(rows: list[dict], labels: dict | None = None) -> dict:
+    """Rows + the lists the timetable views need (groups, rooms, programmes, slot labels)."""
+    times = {int(k): v for k, v in (labels or {}).items()}
     for r in rows:
         times.setdefault(r["hour"], r["time"])
     return {"rows": rows, "groups": sorted({r["group"] for r in rows}),
             "rooms": sorted({r["room"] for r in rows if r["room"] not in ("online", "UNASSIGNED")}),
             "programs": sorted({r["program"] for r in rows}),
-            "times": [times.get(h, f"{8 + h:02d}:00") for h in range(12)], "days": DAYS}
+            "times": [times.get(h, f"{8 + h:02d}:00-{8 + h:02d}:50") for h in range(12)], "days": DAYS}
+
+
+def read_timetable(d: Path) -> dict:
+    labels = (read_kv(d, ["dataset"]).get("dataset") or {}).get("slot_labels") if (d / "timetable.csv").exists() else None
+    return timetable_payload(read_rows(d / "timetable.csv"), labels)
 
 
 def read_details(d: Path) -> dict:
@@ -250,7 +223,7 @@ def read_details(d: Path) -> dict:
         if m["intent"] == "task":
             continue
         task_msg = by_id.get(m["correlation_id"] or "")
-        if m["task"] in ("resolve", "repair", "validate_chunk", "solve_chunk", "validate_all", "allocate_quota"):
+        if m["task"] in ("resolve", "repair", "validate_chunk", "solve_chunk", "validate_all", "allocate_quota", "evolve"):
             conversation.append({"ts": m["ts"], "agent": m["sender"], "task": m["task"], "intent": m["intent"],
                                  "request": (task_msg or {}).get("payload", {}), "reply": m["payload"]})
     return {**kv, "data_issues": dataset.get("issues", []), "conversation": conversation,
@@ -303,6 +276,10 @@ class RunManager:
                 kw["chunk_target_groups"] = int(params["chunk_groups"])
             if params.get("stream"):
                 kw["lecture_stream_size"] = int(params["stream"])
+            if params.get("seed") is not None:
+                kw["seed"] = int(params["seed"])
+            if params.get("warm_start_path"):  # set by the server / autopilot, never taken from a request body
+                kw["warm_start"] = Path(params["warm_start_path"])
             settings = Settings().with_(**kw)
             reqs = [ln.strip() for ln in params.get("requirements") or [] if ln.strip()]
             h = RunHandle(run_id=run_id, params={**params, "dataset_path": str(data_path), "requirements": reqs})
@@ -343,6 +320,8 @@ class RunManager:
         return {"id": run_id, "status": status, "started": started,
                 "elapsed_s": round((time.time() - started) if status in ("running", "cancelling")
                                    else float((result or {}).get("wall_s") or 0), 1),
+                "cancelled": _cancelled(status, result),
+                "files": sorted(n for n in DOWNLOADABLE if (d / n).exists()),
                 "params": h.params if h else _params_from_result(result), "result": result}
 
     def list(self) -> list[dict]:
@@ -361,6 +340,7 @@ class RunManager:
                 continue
             res = st["result"] or {}
             out.append({"id": d.name, "status": st["status"], "started": st["started"], "elapsed_s": st["elapsed_s"],
+                        "cancelled": st["cancelled"], "files": st["files"],
                         "hard_violations": sum((res.get("hard_violations") or {}).values()) if res else None,
                         "soft": res.get("soft"), "programs": (st["params"] or {}).get("programs") or [],
                         "term": (st["params"] or {}).get("term"), "llm": res.get("llm"),
@@ -376,6 +356,11 @@ class RunManager:
             raise RuntimeError("cannot delete a running run")
         self._handles.pop(run_id, None)
         shutil.rmtree(d)
+
+
+def _cancelled(status: str, result: dict | None) -> bool:
+    """'stopped' covers both a user cancel (calm state) and a hit step/time limit (a warning)."""
+    return status == "stopped" and "cancelled by the user" in str((result or {}).get("reason") or "")
 
 
 def _params_from_result(result: dict | None) -> dict:

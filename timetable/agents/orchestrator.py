@@ -43,8 +43,8 @@ class Orchestrator:
 
     def plan(self) -> list[str]:
         return ["data.load_data", "constraints.parse_constraints", "scheduler.plan_chunks", "rooms.init_capacity",
-                "for each chunk: rooms.allocate_quota -> scheduler.solve_chunk -> validator.validate_chunk "
-                "(negotiator.resolve on failure, max N rounds)", "rooms.assign_rooms",
+                "for each chunk: rooms.allocate_quota -> genetic.evolve (first attempt) -> scheduler.solve_chunk -> "
+                "validator.validate_chunk (negotiator.resolve on failure, max N rounds)", "rooms.assign_rooms",
                 "validator.validate_all <-> negotiator.repair (max N rounds)", "reporter.export"]
 
     # --- the run -----------------------------------------------------------------------
@@ -71,6 +71,8 @@ class Orchestrator:
         for i in range(n_chunks):
             for attempt in range(st.max_negotiation_rounds + 1):
                 self.send("rooms", "allocate_quota", chunk=i)
+                if attempt == 0 and st.ga_enabled:
+                    self.send("genetic", "evolve", chunk=i)  # first generation; CP-SAT refines it
                 res = self.send("scheduler", "solve_chunk", chunk=i)
                 if res.ok and res.payload["ok"]:
                     val = self.send("validator", "validate_chunk", chunk=i)
@@ -119,7 +121,7 @@ def _brief(payload: dict) -> str:
     if "error" in payload:
         return f"ERROR: {str(payload['error'])[:120]}"
     keys = ["status", "action", "hard_violations", "chunks", "sessions", "constraints", "mode", "moved",
-            "assigned", "wall_s"]
+            "assigned", "wall_s", "generations", "hard"]
     return ", ".join(f"{k}={payload[k]}" for k in keys if k in payload)[:160]
 
 

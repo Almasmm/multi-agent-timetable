@@ -31,6 +31,14 @@ def constraint_index(ctx: RunContext) -> ConstraintIndex:
     return ConstraintIndex(specs, H, ctx.settings.first_hour, ctx.settings.max_hours_per_day)
 
 
+def warm_starts(ctx: RunContext, sessions) -> dict[str, int] | None:
+    """Starts of the published version for these sessions (None without a warm start)."""
+    prev = ctx.board.get("warm_start")
+    if not prev:
+        return None
+    return {s.id: prev[s.id] for s in sessions if s.id in prev}
+
+
 def chunk_sessions(ctx: RunContext, i: int):
     units = set(ctx.board.require("chunks")[i])
     return [s for s in ctx.board.require("sessions") if s.unit in units]

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from collections import Counter
+from pathlib import Path
 
 from ..core.agent import BaseAgent
 from ..domain.demand import build_sessions
@@ -18,6 +19,7 @@ class DataAgent(BaseAgent):
         self.add_tool("normalize", lambda sheets, weeks: normalize(sheets, weeks),
                       "validate + repair rows, return Dataset and issues", retryable=False)
         self.add_tool("build_demand", self._build_demand, "curricula x groups -> weekly sessions", retryable=False)
+        self.add_tool("load_previous", _load_previous, "starts + rooms of the published version (warm start, JSON)")
 
     def _build_demand(self, ds):
         st = self.ctx.settings
@@ -48,7 +50,20 @@ class DataAgent(BaseAgent):
             offline=lambda: _offline_issue_summary(ds.issues),
         )
         self.put("data_issues_text", explanation)
+        if st.warm_start:  # stable re-generation: keep the published timetable where nothing forces a move
+            starts, rooms = self.call_tool("load_previous", path=st.warm_start)
+            ids = {s.id for s in sessions}
+            self.put("warm_start", {k: v for k, v in starts.items() if k in ids})
+            self.put("warm_rooms", {k: v for k, v in rooms.items() if k in ids})
+            stats["warm_start"] = sum(1 for k in starts if k in ids)
         return stats
+
+
+def _load_previous(path: Path) -> tuple[dict, dict]:
+    """starts.json of a published version and, next to it, rooms.json (if present)."""
+    rooms = path.with_name("rooms.json")
+    return (json.loads(path.read_text(encoding="utf-8")),
+            json.loads(rooms.read_text(encoding="utf-8")) if rooms.exists() else {})
 
 
 def _offline_issue_summary(issues: list[dict]) -> str:

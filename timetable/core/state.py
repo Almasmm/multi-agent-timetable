@@ -68,5 +68,10 @@ class Blackboard:
                  json.dumps(msg.payload, ensure_ascii=False, default=_to_jsonable), msg.correlation_id),
             )
 
+    def prune_messages(self, older_than: float) -> None:
+        """Drop messages older than ``older_than`` (unix time); used by the long-running service."""
+        with self._lock, self._db:
+            self._db.execute("DELETE FROM messages WHERE ts < ?", (older_than,))
+
     def close(self) -> None:
         self._db.close()

@@ -27,6 +27,7 @@ class Scenario:
     settings: dict = field(default_factory=dict)
     env: dict = field(default_factory=dict)
     check: Callable[[dict, list[dict]], list[str]] = lambda res, rows: []
+    runner: Callable[[Path, float], tuple[dict, list[str]]] | None = None  # multi-run scenarios (S18, S19)
 
 
 def _rows(res: dict) -> list[dict]:
@@ -173,6 +174,106 @@ def chk_term2(res, rows):
     return errs
 
 
+def _busiest_monday_room(rows: list[dict]) -> tuple[str, int]:
+    from collections import Counter
+    c = Counter(r["room"] for r in rows if r["day"] == 0 and r["room"] not in ("online", "UNASSIGNED"))
+    return c.most_common(1)[0]
+
+
+def run_warm_start(out_root: Path, seconds: float) -> tuple[dict, list[str]]:
+    """Publish IT, close its busiest Monday room, re-generate warm (from the published version) and
+    cold (from scratch): the warm run must move far fewer classes and keep the closure."""
+    from .service.versions import diff_rows, read_rows, snapshot
+    base = Settings().with_(programs=("IT",), llm_provider="offline", solver_time_limit=seconds, out_root=out_root)
+    r0 = run(base, [], "S18-published", echo=False)
+    if r0["status"] != "ok":
+        return r0, [f"baseline status {r0['status']}"]
+    rows0 = read_rows(out_root / "S18-published" / "timetable.csv")
+    room, n = _busiest_monday_room(rows0)
+    snapshot(out_root / "S18-published", out_root / "S18-v1")
+    req = [f"Аудитория {room} недоступна в понедельник"]
+    out, errs = {}, []
+    for name, kw in [("warm", {"warm_start": out_root / "S18-v1" / "starts.json"}), ("cold", {})]:
+        r = run(base.with_(**kw), req, f"S18-{name}", echo=False)
+        rows = read_rows(out_root / f"S18-{name}" / "timetable.csv")
+        d = diff_rows(rows0, rows)
+        used = sum(1 for x in rows if x["room"] == room and x["day"] == 0)
+        errs += [f"{name}: {e}" for e in _ok(r)] + ([f"{name}: {room} still used {used} h on Monday"] if used else [])
+        out[name] = {**d, "groups": None, "res": r}
+    w, c = out["warm"], out["cold"]
+    if w["hours_moved"] + w["room_changes"] >= c["hours_moved"] + c["room_changes"]:
+        errs.append(f"warm start changed {w['hours_moved']}+{w['room_changes']} h, cold {c['hours_moved']}+{c['room_changes']} h")
+    if w["hours_moved"] > 0.05 * w["total_hours"]:
+        errs.append(f"warm start moved {w['hours_moved']} of {w['total_hours']} h (> 5 %)")
+    res = {**w["res"], "detail": f"{room} закрыта в пн ({n} ч): тёплый старт — перенесено {w['hours_moved']} ч, смена ауд. "
+                                  f"{w['room_changes']} ч, групп {w['groups_affected']}; с нуля — {c['hours_moved']} ч, "
+                                  f"{c['room_changes']} ч, групп {c['groups_affected']} из {len({r['group'] for r in rows0})}"}
+    return res, errs
+
+
+def run_autopilot(out_root: Path, seconds: float) -> tuple[dict, list[str]]:
+    """The 24/7 service with the real pipeline: first version -> staff request -> warm re-generation
+    -> publication with a change notice; improvement attempts are disabled to keep the test short."""
+    from .service.autopilot import Autopilot
+    from .service.versions import read_rows
+    from .web.runs import RunManager
+    svc = out_root / "S19"
+    old = os.environ.get("TT_OUT")
+    os.environ["TT_OUT"] = str(svc)  # the run manager resolves run folders from TT_OUT
+    ap = Autopilot(RunManager(), Settings().with_(out_root=svc))
+    errs: list[str] = []
+    try:
+        ap.store.set("profile", {"programs": ["IT"], "solver_seconds": seconds, "llm": "offline", "max_improve_attempts": 0})
+
+        def until_idle() -> list[dict]:
+            seen, deadline = [], time.time() + 300
+            while time.time() < deadline:
+                r = ap.tick()
+                seen.append(r)
+                if r["state"] in ("idle", "error"):
+                    break
+                time.sleep(1 if r["state"] == "busy" else 0)
+            return seen
+
+        first = until_idle()
+        v1 = ap.store.current_version()
+        if not v1:
+            return {"status": "failed"}, [f"no first version: {first[-1]}"]
+        room, n = _busiest_monday_room(read_rows(ap.store.version_dir(v1["id"]) / "timetable.csv"))
+        rid = ap.store.add_request(f"Аудитория {room} недоступна в понедельник", "Диспетчер")
+        bad = ap.store.add_request("У группы XX-0000 свободна пятница", "Деканат")
+        second = until_idle()
+        v2 = ap.store.current_version()
+        states = [r["state"] for r in first + second]
+        if not v2 or v2["id"] != v1["id"] + 1:
+            errs.append(f"no second version (states {states})")
+        else:
+            rows = read_rows(ap.store.version_dir(v2["id"]) / "timetable.csv")
+            if any(x["room"] == room and x["day"] == 0 for x in rows):
+                errs.append(f"{room} still used on Monday in v{v2['id']}")
+            if v2["diff"]["hours_moved"] > 0.05 * v2["diff"]["total_hours"]:
+                errs.append(f"v{v2['id']} moved {v2['diff']['hours_moved']} h")
+            if not v2["announcement"]:
+                errs.append("no change notice")
+        if ap.store.request(rid)["status"] != "applied":
+            errs.append(f"request status {ap.store.request(rid)['status']}")
+        if ap.store.request(bad)["status"] != "rejected":
+            errs.append("unknown group was not rejected")
+        if states[-1] != "idle":
+            errs.append(f"service did not settle: {states[-1]}")
+        d = (v2 or {}).get("diff") or {}
+        res = {"status": "ok" if not errs else "failed", "detail": f"такты: {len(states)}; v{v1['id']} → v{(v2 or {}).get('id')}: "
+               f"перенесено {d.get('hours_moved')} ч, смена ауд. {d.get('room_changes')} ч; заявка «{room} в пн» применена, "
+               f"неизвестная группа отклонена"}
+        return res, errs
+    finally:
+        ap.close()
+        if old is None:
+            os.environ.pop("TT_OUT", None)
+        else:
+            os.environ["TT_OUT"] = old
+
+
 IT = {"programs": ("IT",)}
 SCENARIOS: list[Scenario] = [
     Scenario("S01", "Базовый прогон, программа IT (22 группы)", "0 жёстких нарушений, расписание экспортировано",
@@ -210,10 +311,23 @@ SCENARIOS: list[Scenario] = [
              check=chk_exports),
     Scenario("S16", "Второй триместр учебного года", "курсы триместра 5 (OS и др.) в расписании",
              settings={**IT, "term": 2}, check=chk_term2),
+    Scenario("S17", "Сбой OpenAI-провайдера", "ошибка OpenAI залогирована, офлайн-фолбэк, прогон ok",
+             ["1 курс заканчивает до 18:00"], {**IT, "llm_provider": "openai", "llm_timeout": 3.0},
+             env={"OPENAI_API_KEY": "invalid-test-key", "OPENAI_BASE_URL": "http://127.0.0.1:9"},
+             check=chk_llm_fallback),
+    Scenario("S18", "Тёплый старт: аудитория закрыта после публикации",
+             "закрытая аудитория не используется; переносов намного меньше, чем при генерации с нуля (≤ 5 % часов)",
+             runner=run_warm_start),
+    Scenario("S19", "Служба 24/7: заявка → перегенерация → публикация",
+             "автопилот публикует v1, принимает заявку, отклоняет неизвестную группу, публикует v2 с малым числом переносов",
+             runner=run_autopilot),
 ]
 
 
 def run_scenario(sc: Scenario, out_root: Path, seconds: float = 10.0) -> tuple[bool, list[str], dict]:
+    if sc.runner is not None:
+        res, errs = sc.runner(out_root, seconds)
+        return not errs, errs, res
     base = {"llm_provider": "offline", "solver_time_limit": seconds, "out_root": out_root}
     st = Settings().with_(**{**base, **sc.settings})
     old = {k: os.environ.get(k) for k in sc.env}
@@ -242,7 +356,7 @@ def main() -> int:
         ok, errs, res = run_scenario(sc, out_root)
         passed += ok
         soft = res.get("soft") or {}
-        detail = "; ".join(errs) if errs else (f"окна {soft.get('gap_hours_per_group')} ч/гр, "
+        detail = "; ".join(errs) if errs else res.get("detail") or (f"окна {soft.get('gap_hours_per_group')} ч/гр, "
                                                 f"шагов {res.get('steps')}" if soft else res.get("reason", ""))
         lines.append(f"| {sc.id} | {sc.title} | {sc.expected} | {'✅' if ok else '❌'} | "
                      f"{time.perf_counter() - t0:.1f} | {detail} |")

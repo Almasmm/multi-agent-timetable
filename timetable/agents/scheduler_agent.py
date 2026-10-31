@@ -3,12 +3,13 @@ from __future__ import annotations
 from ..core.agent import BaseAgent
 from ..domain.demand import partition
 from ..solver.time_model import solve_chunk
-from .common import H, chunk_sessions, constraint_index, days, run_params
+from .common import H, chunk_sessions, constraint_index, days, run_params, warm_starts
 
 
 class SchedulerAgent(BaseAgent):
     name = "scheduler"
-    role = "Decomposes the problem into chunks and assigns start times with CP-SAT inside the room quota."
+    role = ("Decomposes the problem into chunks and assigns start times with CP-SAT inside the room quota, "
+            "starting from the GA seed when one exists.")
     done_when = "every chunk has a solution (status OPTIMAL/FEASIBLE) or a diagnosis of why not"
 
     def register_tools(self) -> None:
@@ -34,7 +35,8 @@ class SchedulerAgent(BaseAgent):
         res = self.call_tool("cp_sat_solve", sessions=sessions, cindex=cidx, quotas=self.require(f"quota:{chunk}"),
                              caps=self.require("caps"), days=days(self.ctx, chunk), H=H,
                              time_limit=st.solver_time_limit * factor, workers=st.solver_workers,
-                             seed=st.seed + chunk, max_daily=max_daily)
+                             seed=st.seed + chunk, max_daily=max_daily, hint=self.get(f"seed:{chunk}"),
+                             prev=warm_starts(self.ctx, sessions), w_stable=st.stability_weight)
         if res.ok:
             self.put(f"solution:{chunk}", res.starts)
         return {"status": res.status, "ok": res.ok, "diagnostics": res.diagnostics, "stats": res.stats,

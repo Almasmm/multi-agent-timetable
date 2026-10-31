@@ -18,9 +18,10 @@ class RunLogger:
         path.parent.mkdir(parents=True, exist_ok=True)
         self._fh = path.open("a", encoding="utf-8")
         self.calls: Counter[str] = Counter()  # agent -> number of tool + LLM calls
+        self.extra: dict[str, Any] = {}  # fields stamped on every record (e.g. the service tick number)
 
     def log(self, kind: str, agent: str, **fields: Any) -> None:
-        rec = {"ts": round(time.time(), 3), "run": self.run_id, "kind": kind, "agent": agent, **fields}
+        rec = {"ts": round(time.time(), 3), "run": self.run_id, "kind": kind, "agent": agent, **self.extra, **fields}
         with self._lock:
             if kind in ("tool_call", "llm_call") and fields.get("attempt", 1) == 1:
                 self.calls[agent] += 1

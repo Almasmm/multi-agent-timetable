@@ -3,35 +3,83 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Timetable Agents</title>
+<title>Timetable Agents · AITU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@100..800&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M8 9h16M8 16h10M8 23h13' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%231F5FD1'/%3E%3Crect x='5' y='6' width='14' height='13' rx='2' fill='none' stroke='white' stroke-width='1.8'/%3E%3Cpath d='M5 10h14M9 4v4M15 4v4' stroke='white' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
 </head>
 <body>
-<div class="app">
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="logo">TA</div>
-      <div><b>Timetable Agents</b><span>Расписание · AITU</span></div>
+<div class="shell" id="shell">
+  <aside class="side" id="side" aria-label="Навигация">
+    <div class="side-top">
+      <a class="brand" href="#/" title="Timetable Agents · Astana IT University">
+        <span class="logo" data-ic="calendar"></span>
+        <span class="brand-t"><b>Timetable Agents</b><small>Astana IT University</small></span>
+      </a>
+      <button class="side-collapse" id="side-collapse" title="Свернуть панель" aria-label="Свернуть панель" data-ic="panel"></button>
     </div>
-    <nav class="nav" id="nav">
-      <a href="#/" data-route="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12 12 3l9 9M5 10v10h14V10"/></svg>Обзор</a>
-      <a href="#/new" data-route="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Новый прогон</a>
-      <a href="#/runs" data-route="runs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Прогоны</a>
-      <a href="#/agents" data-route="agents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Агенты</a>
+    <div class="compose-row">
+      <a class="compose" href="#/requests/new" title="Новая заявка (N)"><i data-ic="squarePen"></i><span>Новая заявка</span><kbd>N</kbd></a>
+      <button class="side-icon" id="tick-btn" title="Агенты: проверить сейчас" aria-label="Проверить сейчас" data-ic="refresh"></button>
+    </div>
+    <nav class="side-nav" id="nav">
+      <div class="side-label">Расписание</div>
+      <a href="#/" data-route="home"><i data-ic="dashboard"></i><span>Центр управления</span></a>
+      <a href="#/schedule" data-route="schedule"><i data-ic="calendar"></i><span>Расписание</span><em class="pill" id="nb-version" hidden></em></a>
+      <a href="#/requests" data-route="requests"><i data-ic="inbox"></i><span>Заявки</span><em class="count" id="nb-requests" hidden></em></a>
+      <div class="side-label">Агенты 24/7</div>
+      <a href="#/autopilot" data-route="autopilot"><i data-ic="bot"></i><span>Автопилот</span><em class="live-dot" id="nb-pilot" hidden></em></a>
+      <a href="#/agents" data-route="agents"><i data-ic="network"></i><span>Агенты</span></a>
+      <a href="#/runs" data-route="runs"><i data-ic="history"></i><span>Прогоны</span><em class="count" id="nb-runs" hidden></em></a>
+      <a href="#/new" data-route="new"><i data-ic="playCircle"></i><span>Новый прогон</span></a>
     </nav>
-    <div class="spacer"></div>
-    <div class="foot">
-      <div><span class="live-dot" id="srv-dot"></span><span id="srv-text">сервер онлайн</span></div>
-      <button class="btn sm" id="theme-btn">Тема: авто</button>
-      <div class="small">8 агентов · OR-Tools CP-SAT · Claude · SQLite</div>
+    <div class="side-bottom">
+      <a class="pilot-card" href="#/autopilot" id="pilot-card">
+        <i class="pc-ic" data-ic="bot"></i>
+        <span class="pc-t"><b>Автопилот 24/7</b><small id="pilot-text">подключение…</small></span>
+        <span class="pc-sw" id="pilot-sw" role="switch" aria-checked="false" tabindex="0" title="Включить или выключить автопилот"><i></i></span>
+      </a>
+      <button class="side-row" id="prefs-btn" aria-haspopup="dialog"><i data-ic="sliders"></i><span id="theme-text">Вид</span></button>
     </div>
   </aside>
-  <main id="main"></main>
+  <div class="side-scrim" id="side-scrim"></div>
+
+  <div class="work" id="work">
+    <header class="topbar" id="topbar">
+      <button class="top-menu" id="nav-toggle" aria-label="Меню" aria-expanded="false" data-ic="menu"></button>
+      <div class="top-title"><small id="top-eyebrow">Расписание</small><b id="top-title">Центр управления</b></div>
+      <button class="top-search" id="search-btn" aria-label="Поиск и команды"><i data-ic="search"></i><span>Группа, аудитория, прогон или команда</span><kbd>Ctrl K</kbd></button>
+      <div class="top-right">
+        <span class="srv" id="srv" title="Связь с сервером"><i class="live-dot"></i><span id="srv-text">онлайн</span></span>
+        <span class="avatar" title="Диспетчер расписания AITU">ДС</span>
+      </div>
+    </header>
+    <main id="main"></main>
+  </div>
 </div>
-<div class="toast" id="toast"></div>
+
+<!-- floating layers (glass): context panel, command palette, view preferences -->
+<div class="ctx-scrim" id="ctx-scrim"></div>
+<aside class="ctx" id="ctx" role="dialog" aria-modal="false" aria-labelledby="ctx-title">
+  <div class="ctx-head"><div class="tt2"><small id="ctx-kicker"></small><h2 id="ctx-title"></h2></div><button class="ctx-close" id="ctx-close" aria-label="Закрыть панель" data-ic="x"></button></div>
+  <div class="ctx-body" id="ctx-body"></div>
+  <div class="ctx-foot" id="ctx-foot"></div>
+</aside>
+<div class="pal-scrim" id="pal-scrim"></div>
+<div class="pal" id="pal" role="dialog" aria-modal="true" aria-label="Поиск и команды">
+  <div class="pal-in"><i data-ic="search"></i><input type="text" id="pal-input" placeholder="Группа, аудитория, прогон или команда…" autocomplete="off" aria-label="Поиск"><kbd>Esc</kbd></div>
+  <div class="pal-list" id="pal-list" role="listbox"></div>
+  <div class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> выбор</span><span><kbd>Enter</kbd> открыть</span><span><kbd>/</kbd> или <kbd>Ctrl K</kbd> — открыть палитру</span></div>
+</div>
+<div class="prefs" id="prefs" role="dialog" aria-label="Вид">
+  <h3>Вид <button class="ctx-close" id="prefs-close" aria-label="Закрыть" data-ic="x"></button></h3>
+  <div class="field"><span class="lbl">Тема</span><div class="seg" id="pf-theme"><button data-v="light">Светлая</button><button data-v="dark">Тёмная</button><button data-v="auto">Системная</button></div></div>
+  <div class="field"><span class="lbl">Плотность строк</span><div class="seg" id="pf-density"><button data-v="compact">Компактно</button><button data-v="normal">Обычно</button><button data-v="comfy">Просторно</button></div></div>
+  <div class="field"><span class="lbl">Размер текста</span><div class="seg" id="pf-scale"><button data-v="s">93 %</button><button data-v="m">100 %</button><button data-v="l">113 %</button></div></div>
+</div>
+<div class="toast" id="toast" aria-live="polite"></div>
 <script src="app.js"></script>
 </body>
 </html>

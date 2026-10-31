@@ -1,6 +1,7 @@
 """CLI:  python -m timetable run [--term 1] [--programs IT,SE] [--require "..."] [--offline]
        python -m timetable agents      # print the agent specification table
-       python -m timetable web [--port 8000]   # local web platform (FastAPI + browser UI)"""
+       python -m timetable web [--port 8000]   # local web platform (FastAPI + browser UI)
+       python -m timetable autopilot [--once]  # 24/7 service without the web UI"""
 from __future__ import annotations
 
 import argparse
@@ -32,7 +33,13 @@ def main(argv: list[str] | None = None) -> int:
     w.add_argument("--host", default="127.0.0.1")
     w.add_argument("--port", type=int, default=8000)
     w.add_argument("--reload", action="store_true", help="auto-reload on code changes (development)")
+    a = sub.add_parser("autopilot", help="run the 24/7 service: requests -> re-generation -> publication")
+    a.add_argument("--once", action="store_true", help="route until the service is idle, then exit")
+    a.add_argument("--tick", type=float, help="seconds between checks (default TT_AUTOPILOT_TICK)")
     args = p.parse_args(argv)
+
+    if args.cmd == "autopilot":
+        return _autopilot(args.once, args.tick)
 
     if args.cmd == "web":
         from .web.server import serve
@@ -68,6 +75,31 @@ def main(argv: list[str] | None = None) -> int:
     print("\n" + json.dumps({k: v for k, v in result.items() if k != "load"}, ensure_ascii=False, indent=2))
     print("agent load:", {a: f"{v['share']:.0%}" for a, v in result["load"]["agents"].items()})
     return 0 if result["status"] == "ok" else 1
+
+
+def _autopilot(once: bool, tick: float | None) -> int:
+    import time
+
+    from .service.autopilot import Autopilot
+    from .web.runs import RunManager
+
+    st = Settings().with_(autopilot_tick=tick) if tick else Settings()
+    ap = Autopilot(RunManager(), st)
+    if once:
+        while True:
+            r = ap.tick()
+            print(json.dumps({k: v for k, v in r.items() if k != "ts"}, ensure_ascii=False), flush=True)
+            if r["state"] in ("idle", "error", "deferred"):
+                return 0 if r["state"] == "idle" else 1
+            time.sleep(2 if r["state"] == "busy" else 0)
+    print(f"Autopilot: checks every {ap.tick_s:.0f} s, log in {ap.root} (Ctrl+C to stop)", flush=True)
+    ap.start()
+    try:
+        while ap.running:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        ap.stop(persist=False)
+    return 0
 
 
 if __name__ == "__main__":

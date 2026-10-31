@@ -50,7 +50,11 @@ def slot_cost(t: int, dur: int, H: int, n_groups: int) -> int:
 
 def solve_chunk(sessions: list[Session], cindex: ConstraintIndex, quotas: dict[str, list[int]], caps: list[int],
                 days: list[int], H: int, time_limit: float, workers: int, seed: int,
-                banned: dict[str, set[int]] | None = None, max_daily: dict[str, int] | None = None) -> SolveResult:
+                banned: dict[str, set[int]] | None = None, max_daily: dict[str, int] | None = None,
+           hint: dict[str, int] | None = None, prev: dict[str, int] | None = None, w_stable: int = 0) -> SolveResult:
+    """``hint`` (session id -> start slot, e.g. the best GA individual) is passed to CP-SAT as a
+    solution hint: the solver starts its search from that timetable instead of from scratch.
+    ``prev`` is the published version (warm start): leaving its slot costs ``w_stable``."""
     t0 = time.perf_counter()
     banned = banned or {}
     m = cp_model.CpModel()
@@ -77,6 +81,8 @@ def solve_chunk(sessions: list[Session], cindex: ConstraintIndex, quotas: dict[s
                 for u in span:
                     cover[i][u].append(v)
                 c = slot_cost(t, s.duration, H, len(s.groups)) + sum(soft.get(u, 0) for u in span)
+                if prev and s.id in prev and t != prev[s.id]:
+                    c += w_stable
                 if c:
                     cost_terms.append(c * v)
         if not x[i]:
@@ -175,6 +181,12 @@ def solve_chunk(sessions: list[Session], cindex: ConstraintIndex, quotas: dict[s
         n_prec += 1
 
     m.Minimize(sum(cost_terms))
+    n_hint = 0
+    for i, s in enumerate(sessions):
+        t = (hint or {}).get(s.id)
+        if t is not None and t in x[i]:
+            m.AddHint(x[i][t], 1)
+            n_hint += 1
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = time_limit
     solver.parameters.num_workers = workers
@@ -182,7 +194,8 @@ def solve_chunk(sessions: list[Session], cindex: ConstraintIndex, quotas: dict[s
     solver.parameters.relative_gap_limit = 0.02
     status = solver.Solve(m)
     name = solver.StatusName(status)
-    stats = {"sessions": len(sessions), "bool_vars": sum(len(v) for v in x.values()), "gap_vars": n_gap,
+    stats = {"sessions": len(sessions), "bool_vars": sum(len(v) for v in x.values()), "gap_vars": n_gap, "hinted": n_hint,
+             "warm": sum(1 for s in sessions if s.id in (prev or {})),
              "precedence_terms": n_prec, "objective": solver.ObjectiveValue() if name in ("OPTIMAL", "FEASIBLE") else None,
              "best_bound": solver.BestObjectiveBound(), "solver_wall_s": round(solver.WallTime(), 2)}
     if name not in ("OPTIMAL", "FEASIBLE"):

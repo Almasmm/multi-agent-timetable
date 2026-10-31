@@ -58,8 +58,10 @@ class RoomAgent(BaseAgent):
 
     def _assign(self, starts: dict[str, int]):
         ds = self.require("dataset")
+        warm, warm_rooms = self.get("warm_start") or {}, self.get("warm_rooms") or {}
+        prev = {sid: room for sid, room in warm_rooms.items() if sid in warm and starts.get(sid) == warm[sid]}
         return assign_rooms(self.require("sessions"), starts, ds.rooms, constraint_index(self.ctx).room_blocked(),
-                            run_params(self.ctx)["gym_capacity"])
+                            run_params(self.ctx)["gym_capacity"], prev_rooms=prev)
 
     # --- tasks ---
     def on_init_capacity(self) -> dict:

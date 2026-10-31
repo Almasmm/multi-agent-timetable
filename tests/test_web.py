@@ -12,7 +12,7 @@ from timetable.web.server import create_app
 
 @pytest.fixture(scope="module")
 def client():
-    with TestClient(create_app()) as c:
+    with TestClient(create_app(autopilot=False)) as c:
         yield c
 
 
@@ -28,10 +28,14 @@ def test_datasets_are_validated_with_the_real_loader(client):
 def test_agent_table_matches_the_spec(client):
     spec = client.get("/api/agents").json()
     rows = spec["agents"]
-    assert len(rows) == 8 and all(len(r["tools"]) <= 5 for r in rows)
+    assert len(rows) == 9 and all(len(r["tools"]) <= 5 for r in rows)
     assert all(r["title"] and r["role"] and r["done"] for r in rows)  # Russian overlay covers every agent
     assert all(t["ru"] for r in rows for t in r["tools"])  # every tool has a Russian description
     assert len(spec["requirements"]) >= 10 and spec["protocol"]["message"]["intent"] == "task"
+    service = spec["service"]  # 24/7 service: its orchestrator + three agents, same limits
+    assert [a["name"] for a in service] == ["autopilot", "intake", "watcher", "publisher"]
+    assert all(len(a["tools"]) <= 5 and a["role"] and a["done"] for a in service)
+    assert all(t["en"] and t["ru"] for a in service for t in a["tools"])  # Russian spec matches the code
 
 
 def test_constraint_preview_explains_each_line(client):
@@ -93,3 +97,22 @@ def test_end_to_end_run_through_the_api(client):
 
     assert client.delete(f"/api/runs/{run_id}").status_code == 200
     assert client.get(f"/api/runs/{run_id}").status_code == 404
+
+
+def test_status_of_a_cancelled_run_lists_only_existing_files(tmp_path, monkeypatch):
+    """A run stopped by the user has no timetable yet: the UI must not offer Excel and must
+    show a calm 'stopped by the user' state instead of an error."""
+    import json
+    monkeypatch.setenv("TT_OUT", str(tmp_path))
+    d = tmp_path / "20261010-000000-stopped"
+    d.mkdir()
+    (d / "events.jsonl").write_text("", encoding="utf-8")
+    (d / "result.json").write_text(json.dumps({"status": "stopped", "reason": "run cancelled by the user",
+                                               "wall_s": 4.3, "steps": 2}), encoding="utf-8")
+    with TestClient(create_app(autopilot=False)) as c:
+        st = c.get("/api/runs/20261010-000000-stopped").json()
+        assert st["status"] == "stopped" and st["cancelled"] is True
+        assert st["files"] == ["events.jsonl", "result.json"]
+        assert c.get("/api/runs/20261010-000000-stopped/files/timetable.xlsx").status_code == 404
+        listed = c.get("/api/runs").json()
+        assert [r["id"] for r in listed] == ["20261010-000000-stopped"] and listed[0]["cancelled"] is True

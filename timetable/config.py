@@ -15,6 +15,7 @@ except ImportError:  # pragma: no cover
 
 ROOT = Path(__file__).resolve().parent.parent
 DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+DATASET_DIRS = [ROOT / "data", ROOT / "dataset-archive", ROOT / "data" / "uploads"]  # where workbooks are looked up
 
 
 def _env(name: str, default, cast=str):
@@ -48,7 +49,13 @@ class Settings:
     solver_time_limit: float = field(default_factory=lambda: _env("TT_SOLVER_SECONDS", 25.0, float))
     quota_slack: float = field(default_factory=lambda: _env("TT_QUOTA_SLACK", 1.15, float))
     solver_workers: int = field(default_factory=lambda: _env("TT_SOLVER_WORKERS", 8, int))
+    ga_enabled: bool = field(default_factory=lambda: _env("TT_GA", True, bool))  # GA first generation -> CP-SAT hint
+    ga_seconds: float = field(default_factory=lambda: _env("TT_GA_SECONDS", 4.0, float))
+    ga_population: int = field(default_factory=lambda: _env("TT_GA_POPULATION", 12, int))
     seed: int = field(default_factory=lambda: _env("TT_SEED", 7, int))
+    # warm start: starts.json of the published version; moving a session away from it costs stability_weight
+    warm_start: Path | None = field(default_factory=lambda: Path(_env("TT_WARM_START", "")) if _env("TT_WARM_START", "") else None)
+    stability_weight: int = field(default_factory=lambda: _env("TT_STABILITY_WEIGHT", 6, int))
     # --- reliability limits ---
     max_steps: int = field(default_factory=lambda: _env("TT_MAX_STEPS", 150, int))
     run_timeout: float = field(default_factory=lambda: _env("TT_RUN_TIMEOUT", 1800.0, float))
@@ -56,11 +63,16 @@ class Settings:
     tool_retries: int = field(default_factory=lambda: _env("TT_TOOL_RETRIES", 2, int))
     max_negotiation_rounds: int = field(default_factory=lambda: _env("TT_MAX_NEGOTIATION", 4, int))
     # --- LLM ---
-    llm_provider: str = field(default_factory=lambda: _env("TT_LLM", "auto"))  # auto | claude | offline
-    llm_model: str = field(default_factory=lambda: _env("TT_LLM_MODEL", "claude-opus-5-5"))
+    llm_provider: str = field(default_factory=lambda: _env("TT_LLM", "auto"))  # auto | openai | claude | offline
+    llm_model: str = field(default_factory=lambda: _env("TT_LLM_MODEL", "claude-opus-5-5"))  # Claude model
+    openai_model: str = field(default_factory=lambda: _env("TT_OPENAI_MODEL", "gpt-5-mini"))
     llm_timeout: float = field(default_factory=lambda: _env("TT_LLM_TIMEOUT", 90.0, float))
     # --- output ---
     out_root: Path = field(default_factory=lambda: Path(_env("TT_OUT", str(ROOT / "runs"))))
+    # --- 24/7 service (autopilot) ---
+    autopilot: str = field(default_factory=lambda: _env("TT_AUTOPILOT", "auto"))  # auto (resume saved state) | on | off
+    autopilot_tick: float = field(default_factory=lambda: _env("TT_AUTOPILOT_TICK", 60.0, float))
+    term_start: str = field(default_factory=lambda: _env("TT_TERM_START", "2026-09-07"))  # first Monday, for .ics export
 
     @property
     def days(self) -> list[str]:

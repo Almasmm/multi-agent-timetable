@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .agents.constraint_agent import ConstraintAgent
 from .agents.data_agent import DataAgent
+from .agents.genetic_agent import GeneticAgent
 from .agents.negotiator_agent import NegotiatorAgent
 from .agents.orchestrator import Orchestrator
 from .agents.reporter_agent import ReporterAgent
@@ -21,8 +22,8 @@ from .core.llm import LLMRouter
 from .core.runlog import RunLogger
 from .core.state import Blackboard
 
-AGENT_CLASSES = [DataAgent, ConstraintAgent, SchedulerAgent, RoomAgent, ValidatorAgent, NegotiatorAgent,
-                 ReporterAgent]
+AGENT_CLASSES = [DataAgent, ConstraintAgent, GeneticAgent, SchedulerAgent, RoomAgent, ValidatorAgent,
+                 NegotiatorAgent, ReporterAgent]
 
 
 def build(settings: Settings, run_name: str | None = None, echo: bool = True,
@@ -31,7 +32,8 @@ def build(settings: Settings, run_name: str | None = None, echo: bool = True,
     out = settings.out_root / run_id
     out.mkdir(parents=True, exist_ok=True)
     logger = RunLogger(out / "events.jsonl", run_id, echo=echo)
-    llm = LLMRouter(settings.llm_provider, settings.llm_model, settings.llm_timeout, logger)
+    llm = LLMRouter(settings.llm_provider, settings.llm_timeout, logger, claude_model=settings.llm_model,
+                    openai_model=settings.openai_model)
     if llm.disabled_reason:
         logger.log("info", "system", msg=llm.disabled_reason)
     ctx = RunContext(settings=settings, board=Blackboard(out / "state.sqlite"), logger=logger, llm=llm, out_dir=out,
@@ -54,7 +56,9 @@ def run(settings: Settings, requirements: list[str], run_name: str | None = None
     result["requirements"] = requirements
     result["settings"] = {"data_path": str(settings.data_path), "term": settings.term, "programs": list(settings.programs),
                           "allow_saturday": settings.allow_saturday, "solver_time_limit": settings.solver_time_limit,
-                          "llm_provider": settings.llm_provider, "chunk_target_groups": settings.chunk_target_groups}
+                          "llm_provider": settings.llm_provider, "chunk_target_groups": settings.chunk_target_groups,
+                          "ga_enabled": settings.ga_enabled, "ga_seconds": settings.ga_seconds, "seed": settings.seed,
+                          "warm_start": str(settings.warm_start) if settings.warm_start else None}
     (Path(ctx.out_dir) / "result.json").write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str),
                                                    encoding="utf-8")
     ctx.logger.close()
