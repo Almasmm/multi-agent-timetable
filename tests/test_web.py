@@ -16,6 +16,16 @@ def client():
         yield c
 
 
+def test_health_endpoint_for_probes(client):
+    """Docker HEALTHCHECK, the Jenkins smoke test and Kubernetes probes all call this endpoint."""
+    r = client.get("/api/health")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["status"] == "ok" and body["version"]
+    assert body["data"] is True  # default workbook is present
+    assert body["autopilot"] is False  # tests start the app with the autopilot disabled
+
+
 def test_datasets_are_validated_with_the_real_loader(client):
     ds = client.get("/api/datasets").json()
     valid = [d for d in ds if d["valid"]]

@@ -1,0 +1,10 @@
+# Run results (runs/, including the 24/7 service SQLite) and uploaded workbooks survive pod restarts.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: timetable-data
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 2Gi

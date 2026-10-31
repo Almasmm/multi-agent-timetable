@@ -1,0 +1,13 @@
+# Application objects, applied by the Jenkins CD stage (kubectl apply -k, image tag pinned per build).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: timetable
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: multi-agent-timetable
+    includeSelectors: false
+resources:
+  - configmap.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml

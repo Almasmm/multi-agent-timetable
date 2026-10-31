@@ -37,7 +37,7 @@ class RoomAgent(BaseAgent):
         cap = self.require("capacity")
         caps = self.require("caps")
         chunks = self.require("chunks")
-        sessions = self.require("sessions")
+        self.require("sessions")  # precondition: sessions are already on the blackboard
         validated = [i for i in range(len(chunks)) if self.get(f"validated:{i}") and i != chunk]
         used = {r: [0] * N_SLOTS for r in cap}
         for i in validated:

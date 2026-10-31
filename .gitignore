@@ -9,3 +9,10 @@ runs/
 runs_*.log
 data/uploads/
 dataset-archive/
+# DevOps: local secrets and CI outputs never go to git
+ci/jenkins/.env
+ci/jenkins/secrets/
+reports/
+build/
+.coverage
+.ruff_cache/

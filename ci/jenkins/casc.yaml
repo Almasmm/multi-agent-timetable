@@ -1,0 +1,78 @@
+# Jenkins Configuration as Code: the whole server (users, security, credentials, the CI/CD job) is
+# described here, so the server can be destroyed and recreated with `docker compose up -d --build`.
+# Values in ${...} come from ci/jenkins/.env (git-ignored) or from files in ci/jenkins/secrets/.
+jenkins:
+  systemMessage: "CI/CD of the multi-agent timetable generator. Configured as code: ci/jenkins/casc.yaml"
+  numExecutors: 2
+  mode: NORMAL
+  markupFormatter: plainText
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "${JENKINS_ADMIN_ID:-admin}"
+          password: "${JENKINS_ADMIN_PASSWORD}"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  globalNodeProperties:
+    - envVars:
+        env:
+          - key: DOCKERHUB_REPO
+            value: "${DOCKERHUB_REPO:-}"
+
+unclassified:
+  location:
+    url: "http://localhost:8080/"
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: dockerhub
+              description: "Docker Hub user + access token (image push from main)"
+              username: "${DOCKERHUB_USER:-not-configured}"
+              password: "${DOCKERHUB_TOKEN:-not-configured}"
+          - file:
+              scope: GLOBAL
+              id: minikube-kubeconfig
+              description: "kubeconfig of the jenkins-deployer ServiceAccount (namespace timetable only)"
+              fileName: kubeconfig
+              secretBytes: "${readFileBase64:/run/secrets/kubeconfig}"
+
+jobs:
+  - script: >
+      multibranchPipelineJob('multi-agent-timetable') {
+        displayName('multi-agent-timetable')
+        description('CI on every branch (lint, tests, Docker image, smoke test). CD from main: Docker Hub + Minikube.')
+        branchSources {
+          branchSource {
+            source {
+              git {
+                id('github-multi-agent-timetable')
+                remote('https://github.com/Almasmm/multi-agent-timetable.git')
+                traits {
+                  gitBranchDiscovery()
+                }
+              }
+            }
+          }
+        }
+        factory {
+          workflowBranchProjectFactory {
+            scriptPath('Jenkinsfile')
+          }
+        }
+        triggers {
+          periodicFolderTrigger {
+            interval('1m')
+          }
+        }
+        orphanedItemStrategy {
+          discardOldItems {
+            numToKeep(10)
+          }
+        }
+      }
