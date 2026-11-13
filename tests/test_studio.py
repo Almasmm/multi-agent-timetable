@@ -57,6 +57,17 @@ def test_rule_proposal_is_evaluated_and_added_on_accept(desk):
     assert desk.store.get("force_job")["kind"] == "regenerate"  # the Watcher will propose the regeneration
 
 
+def test_accepted_rule_says_the_regeneration_waits_for_clean_data(desk):
+    """data/input.xlsx has loader problems: the rule is added and queued, but the operator is told what blocks it."""
+    p = desk.create("Желательно не ставить занятия после 18:00", wait=True)
+    r = desk.accept(p["id"])
+    last = r["messages"][-1]
+    assert last["agent"] == "watcher" and "ждёт" in last["text"] and "Данные вуза" in last["text"]
+    assert desk.store.get("force_job")["kind"] == "regenerate"  # kept: it starts once the data is fixed
+    desk.tools.editor.settings = desk.tools.editor.settings.with_(data_gate=False)
+    assert desk.tools.regenerate()["note"].startswith("Наблюдатель предложит")
+
+
 def test_without_classes_the_agents_ask_for_details(desk):
     p = desk.create("Сделайте расписание IT-2301 удобнее", wait=True)
     assert p["status"] == "needs_input" and "занятия" in p["messages"][-1]["text"]
@@ -108,7 +119,7 @@ def test_live_feed_merges_sources_and_reads_incrementally(tmp_path):
 
 def test_one_button_generation_starts_a_service_job(tmp_path):
     mgr = FakeManager(tmp_path)
-    ap = Autopilot(mgr, Settings().with_(out_root=tmp_path, llm_provider="offline"))
+    ap = Autopilot(mgr, Settings().with_(out_root=tmp_path, llm_provider="offline", data_gate=False))
     ap.store.set("profile", {"llm": "offline", "improve_every_min": 999, "stable_after": "2000-01-01"})
     try:
         ap.tick(), ap.tick()  # v1

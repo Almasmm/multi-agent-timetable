@@ -28,7 +28,7 @@ payload: JSON, correlation_id}`.
 |---|---|---|---|---|---|
 | **Autopilot** (сервисный оркестратор) | Раз в `TT_AUTOPILOT_TICK` секунд маршрутизирует сообщения между агентами службы и конвейером. Предметной работы не делает | такт по таймеру, кнопке или `--once` | состояние такта: `idle / busy / started / reviewed / deferred / error` | нет | не завершается; каждый такт заканчивается записанным состоянием |
 | **Intake** (Приёмная) | Разбирает заявки сотрудников: понята ли фраза, существуют ли группа, аудитория, программа | `triage {request_id}` | `{status: accepted / rejected / review, reason}`; вердикт в заявке | `ground` (офлайн-разбор + сверка с Excel), `summarize` (LLM / шаблон), `record` | у каждой новой заявки есть вердикт |
-| **Watcher** (Наблюдатель) | Следит за данными и требованиями, предлагает следующее задание | `scan {}`, `propose {fingerprint}` | `{fingerprint, new_requests}` / `{kind: generate / regenerate / improve / wait, reason, params}` | `fingerprint` (хэш Excel), `inbox`, `propose` | ровно одно предложение на такт |
+| **Watcher** (Наблюдатель) | Следит за данными и требованиями, предлагает следующее задание | `scan {}`, `propose {fingerprint}` | `{fingerprint, new_requests}` / `{kind: generate / regenerate / improve / wait, reason, params}` | `fingerprint` (хэш Excel), `inbox`, `propose`, `check_data` (готовность данных) | ровно одно предложение на такт |
 | **Publisher** (Публикатор) | Выпускающий: публикует только прогон без жёстких нарушений, который нужен (изменения) или лучше (улучшение) | `review {job_id, run_dir}` | `{status: published / kept / failed, reason, version, diff}`; снимок `versions/v<N>/` | `evaluate`, `publish`, `announce` (LLM / шаблон) | прогон опубликован как версия или отложен с причиной |
 
 Правила Наблюдателя: нет версии → `generate`; изменился хэш Excel или набор правил (профиль + принятые
@@ -148,6 +148,15 @@ API: `GET/POST /api/proposals`, `GET /api/proposals/{id}`, `POST /api/proposals/
   `data/uploads/university.xlsx`, и агенты переключаются на неё. Дальше каждое сохранение откладывает прежний файл в
   `data/uploads/.history/` (30 версий, любую можно вернуть). Новый отпечаток файла → Наблюдатель предлагает
   перегенерацию с тёплым стартом.
+* **Генерация только на чистых данных.** `datasets.readiness` прогоняет книгу через ту же проверку; блокирует всё,
+  кроме заметок уровня `info`: ошибки ячеек, пропущенные строки, значения, которые загрузчик угадал бы
+  («onlline» → «online», округление часов). Пока проблемы есть, Наблюдатель (`check_data`) отвечает `wait`, а
+  `POST /api/generate` и `POST /api/runs` возвращают 409 с причиной. На страницах «Генерация», «Главная» и «Сводка»
+  виден список проблем с таблицей и строкой. Отключение для тестов и экспериментов: `TT_DATA_GATE=false`.
+* **Параметры генерации — не данные.** Листа `Settings` в книге больше нет (в старых файлах он тихо пропускается).
+  Часы в день, суббота, группы в лекционном потоке и на физкультуре задаются на странице «Правила»
+  (`GET/PUT /api/rules/params`, хранятся в профиле службы). Значение, отличное от умолчания, меняет `config_hash`,
+  и Наблюдатель предлагает перегенерацию.
 
 API: `GET /api/data/working`, `GET /api/data/template` (единый шаблон), `POST /api/data/{id}/import[?table=]`,
 `POST /api/data/{id}/check`, `POST /api/data/{id}/autofix`, `PUT /api/data/{id}`, `POST /api/data/{id}/restore`,

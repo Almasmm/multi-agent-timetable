@@ -462,6 +462,56 @@ def summarize(ds, clean: dict) -> dict:
                        "warning": sum(i["level"] == "warning" for i in ds.issues)}}
 
 
+_ready_cache: dict[str, tuple[float, dict]] = {}
+
+
+def readiness(path: Path) -> dict:
+    """Is the workbook ready for generation? Every problem the Data agent's loader reports (cell errors, skipped
+    rows, values it would have to guess) must be fixed by the operator first; notes of level "info" do not block."""
+    mtime = path.stat().st_mtime
+    hit = _ready_cache.get(str(path))
+    if hit and hit[0] == mtime:
+        return hit[1]
+    try:
+        tables = read_tables(path)
+        res = check(path, tables)
+    except ValueError as exc:  # not a university workbook at all
+        out = {"ready": False, "problems": 1, "errors": 1, "warnings": 0, "fixed": 0,
+               "items": [{"level": "error", "text": str(exc), "t": None}], "dataset": path.name}
+        _ready_cache[str(path)] = (mtime, out)
+        return out
+    cells = res["cells"]
+    issues = [i for i in res["issues"] if i["level"] != "info"]
+    errors = sum(c["level"] == "error" for c in cells)
+    warnings = sum(c["level"] != "error" for c in cells) + sum(i["level"] == "warning" for i in issues)
+    fixed = sum(i["level"] == "fixed" for i in issues)
+    items = [{"level": c["level"], "text": _cell_where(tables, c), "t": c["t"]} for c in cells if c["level"] == "error"][:4] + \
+        [{"level": i["level"], "text": _issue_where(i), "t": i["t"]}
+         for i in sorted(issues, key=lambda i: i["level"] != "warning")][:6]
+    out = {"ready": not (errors or warnings or fixed), "problems": errors + warnings + fixed, "errors": errors,
+           "warnings": warnings, "fixed": fixed, "items": items, "dataset": path.name}
+    _ready_cache[str(path)] = (mtime, out)
+    return out
+
+
+def _cell_where(tables: dict, c: dict) -> str:
+    """'Учебный план, строка 12, Формат «onlline»: допустимо …' - where the operator has to look."""
+    col = next((x for x in TABLES[c["t"]]["cols"] if x["key"] == c["c"]), {"label": c["c"]})
+    rows = tables.get(c["t"]) or []
+    value = rows[c["r"]].get(c["c"]) if 0 <= c["r"] < len(rows) else None
+    shown = f" «{value}»" if value not in (None, "") else ""
+    return f"{TABLES[c['t']]['title']}, строка {c['r'] + 1}, {col['label']}{shown}: {c['text']}"
+
+
+def _issue_where(i: dict) -> str:
+    return f"{TABLES[i['t']]['title']}, строка {i['r'] + 1}: {i['text']}" if i["t"] and i["r"] is not None else i["text"]
+
+
+def not_ready_reason(r: dict) -> str:
+    return (f"данные вуза не готовы ({r['dataset']}): проблем — {r['problems']}; исправьте их на странице «Данные вуза», "
+            "после этого агенты сгенерируют расписание")
+
+
 def _complete(path: Path, tables: dict) -> dict:
     """Tables missing from a request are taken from the file as it is."""
     missing = [t for t in EDITABLE if t not in tables]

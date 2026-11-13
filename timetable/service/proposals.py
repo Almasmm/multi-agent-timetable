@@ -70,7 +70,8 @@ class ProposalDesk:
             res = self.tools.add_rule(p["text"], mode or out.get("mode") or "auto")
             q = self.tools.regenerate("regenerate", f"предложение №{pid}")
             self._say(pid, "constraints", f"Добавил правило №{res['number']}: {res['understood']}.")
-            self._say(pid, "watcher", "Поставил перегенерацию с тёплым стартом." if q.get("queued") else q.get("note", ""))
+            done = q.get("queued") and not q.get("waits_for_data")
+            self._say(pid, "watcher", "Поставил перегенерацию с тёплым стартом." if done else q.get("note", ""))
             out.update(rule_number=res["number"])
         else:
             res = self.tools.publish_draft(f"Предложение №{pid}: {p['text']}")

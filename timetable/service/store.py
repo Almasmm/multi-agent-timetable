@@ -36,7 +36,13 @@ DEFAULT_PROFILE: dict[str, Any] = {
     "max_improve_attempts": 4,  # per published version
     "stable_after": "",         # date the term starts (YYYY-MM-DD, default TT_TERM_START): after it changes must be small
     "max_moved_share": 0.1,     # live term: an improvement may move at most 10 % of the academic hours
+    # generation parameters (rules page): limits the solver works with
+    "max_hours_day": 8,         # academic hours per group per day
+    "allow_saturday": False,    # False: Saturday only as a concession of the Negotiator
+    "lecture_stream": 2,        # groups joined into one offline lecture stream
+    "gym_capacity": 8,          # groups at Physical Education at the same time
 }
+GEN_PARAMS = ("max_hours_day", "allow_saturday", "lecture_stream", "gym_capacity")
 REQUEST_OPEN = ("new", "review")      # not yet decided
 REQUEST_ACTIVE = ("accepted", "applied")  # part of the standing requirements
 

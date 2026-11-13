@@ -1,110 +1,96 @@
-[
+{
+ "captured_at": "2026-11-13T15:13:27.111Z",
+ "base": "isolated copy of runs/_service, autopilot off",
+ "pages": [
   {
-    "page": "overview",
-    "route": "#/",
-    "theme": "light",
-    "viewport": [
-      1600,
-      1100
-    ],
-    "errors": [],
-    "failed_http": [],
-    "content_chars": 1063
+   "name": "platform-overview",
+   "route": "#/",
+   "theme": "light",
+   "viewport": "1600x1100",
+   "ready_selector_found": true,
+   "js_errors": [],
+   "failed_local_requests": []
   },
   {
-    "page": "schedule",
-    "route": "#/schedule/group/IT-2301",
-    "theme": "light",
-    "viewport": [
-      1600,
-      1100
-    ],
-    "errors": [],
-    "failed_http": [],
-    "content_chars": 1561
+   "name": "platform-schedule",
+   "route": "#/schedule/group/IT-2301",
+   "theme": "light",
+   "viewport": "1600x1100",
+   "ready_selector_found": true,
+   "js_errors": [],
+   "failed_local_requests": []
   },
   {
-    "page": "data",
-    "route": "#/data",
-    "theme": "light",
-    "viewport": [
-      1600,
-      1100
-    ],
-    "errors": [],
-    "failed_http": [],
-    "content_chars": 5933
+   "name": "platform-schedule-dark",
+   "route": "#/schedule/group/IT-2301",
+   "theme": "dark",
+   "viewport": "1600x1100",
+   "ready_selector_found": true,
+   "js_errors": [],
+   "failed_local_requests": []
   },
   {
-    "page": "rules",
-    "route": "#/rules",
-    "theme": "light",
-    "viewport": [
-      1600,
-      1100
-    ],
-    "errors": [],
-    "failed_http": [],
-    "content_chars": 236
+   "name": "platform-data",
+   "route": "#/data/overview",
+   "theme": "light",
+   "viewport": "1600x1100",
+   "ready_selector_found": true,
+   "js_errors": [],
+   "failed_local_requests": []
   },
   {
-    "page": "schedule-dark",
-    "route": "#/schedule/group/IT-2301",
-    "theme": "dark",
-    "viewport": [
-      1600,
-      1100
-    ],
-    "errors": [],
-    "failed_http": [],
-    "content_chars": 1561
+   "name": "platform-data-courses",
+   "route": "#/data/courses",
+   "theme": "light",
+   "viewport": "1600x1100",
+   "ready_selector_found": true,
+   "js_errors": [],
+   "failed_local_requests": []
   },
   {
-    "page": "proposals",
-    "route": "#/proposals/new",
-    "theme": "light",
-    "viewport": [
-      1600,
-      1100
-    ],
-    "errors": [],
-    "failed_http": [],
-    "content_chars": 337
+   "name": "platform-rules",
+   "route": "#/rules",
+   "theme": "light",
+   "viewport": "1600x1100",
+   "ready_selector_found": true,
+   "js_errors": [],
+   "failed_local_requests": []
   },
   {
-    "page": "agents",
-    "route": "#/agents",
-    "theme": "dark",
-    "viewport": [
-      1600,
-      1450
-    ],
-    "errors": [],
-    "failed_http": [],
-    "content_chars": 1666
+   "name": "platform-proposals",
+   "route": "#/proposals/1",
+   "theme": "light",
+   "viewport": "1600x1100",
+   "ready_selector_found": true,
+   "js_errors": [],
+   "failed_local_requests": []
   },
   {
-    "page": "generate",
-    "route": "#/generate",
-    "theme": "light",
-    "viewport": [
-      1600,
-      1100
-    ],
-    "errors": [],
-    "failed_http": [],
-    "content_chars": 4191
+   "name": "platform-generate",
+   "route": "#/generate",
+   "theme": "light",
+   "viewport": "1600x1100",
+   "ready_selector_found": true,
+   "js_errors": [],
+   "failed_local_requests": []
   },
   {
-    "page": "live",
-    "route": "#/live",
-    "theme": "light",
-    "viewport": [
-      1600,
-      1100
-    ],
-    "errors": [],
-    "failed_http": [],
-    "content_chars": 5740
+   "name": "platform-live",
+   "route": "#/live",
+   "theme": "light",
+   "viewport": "1600x1100",
+   "ready_selector_found": true,
+   "js_errors": [],
+   "failed_local_requests": []
+  },
+  {
+   "name": "platform-agents",
+   "route": "#/agents",
+   "theme": "dark",
+   "viewport": "1600x1450",
+   "ready_selector_found": true,
+   "js_errors": [],
+   "failed_local_requests": []
   }
-]
+ ]
+}

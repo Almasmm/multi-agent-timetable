@@ -180,6 +180,25 @@ def test_data_api(uploads, tmp_path, monkeypatch):
         assert c.get("/api/data/input.xlsx/download").content == INPUT.read_bytes()
 
 
+def test_readiness_lists_what_blocks_generation(uploads):
+    dirty = D.readiness(INPUT)
+    assert not dirty["ready"] and dirty["errors"] == 11 and dirty["warnings"] >= 2 and dirty["fixed"] >= 1
+    clean = uploads / "clean.xlsx"
+    clean.write_bytes(D.template())
+    assert D.readiness(clean)["ready"] and D.readiness(clean)["problems"] == 0
+
+
+def test_the_api_refuses_to_generate_on_dirty_data(uploads, tmp_path, monkeypatch):
+    monkeypatch.setenv("TT_OUT", str(tmp_path / "runs"))
+    from timetable.web.server import create_app
+    with TestClient(create_app(autopilot=False)) as c:
+        g = c.get("/api/generate").json()
+        assert g["data"]["ready"] is False and g["data"]["gate"] is True and g["data"]["items"]
+        r = c.post("/api/generate")
+        assert r.status_code == 409 and "данные вуза не готовы" in r.json()["error"]
+        assert c.post("/api/runs", json={"dataset": "input.xlsx", "programs": ["IT"]}).status_code == 409
+
+
 def test_dataset_folders_unchanged():
     """Guard: the real uploads folder is restored after the swapped tests."""
     assert DATASET_DIRS[-1] == ROOT / "data" / "uploads" and INPUT.exists()
@@ -246,8 +265,8 @@ def test_extra_sheets_survive_import_and_save(uploads):
     copy = D.copy(INPUT, "university")
     tables = D.autofix(D.read_tables(copy))["tables"]
     tables["groups"][0]["admission_year"], tables["rooms"][0]["features"] = 2023, "projector"
-    D.save(copy, tables, None, "", {"Teachers": imp["extra"]["Teachers"], "Settings": imp["extra"]["Settings"]})
-    assert D.extra_counts(copy) == {"Teachers": 2, "Settings": 9}
+    D.save(copy, tables, None, "", {"Teachers": imp["extra"]["Teachers"], "Calendar": imp["extra"]["Calendar"]})
+    assert D.extra_counts(copy) == {"Teachers": 2, "Calendar": 1}
     back = D.read_tables(copy)
     assert back["groups"][0]["admission_year"] == 2023 and back["rooms"][0]["features"] == "projector"  # new columns kept
     D.save(copy, back, None)  # a later save without uploads keeps the extra sheets

@@ -1812,8 +1812,10 @@ async function renderRules() {
     <section class="card pad0">
       <div class="card-head pad"><h2>${I.shield} Правила вуза <span class="count-n">${rulesUi.rules.length}</span></h2></div>
       <div id="r-list"></div>
-    </section>`);
+    </section>
+    <section class="card gen-params" id="gp"></section>`);
   drawRuleList();
+  drawGenParams();
   $("#r-regen").onclick = async e => {
     e.target.disabled = true;
     try { await post("/api/chat/watcher", { text: "Перегенерируй расписание с учётом правил" }); toast("Наблюдатель поставил задание: расписание перегенерируется с тёплым стартом"); }
@@ -1856,6 +1858,25 @@ function ruleHow(info, live = false) {
   if (!info.spec) return `<span class="how warn">${I.info} Не распознано офлайн — разберёт Claude${live ? ", либо уточните формулировку" : ""}</span>`;
   const k = KIND_RULE[info.spec.kind] || ["правило", "info"];
   return `<span class="how">${I[k[1]]}<span class="kind-tag">${k[0]}</span>${esc(describeSpec(info.spec))}</span>`;
+}
+// generation parameters: limits the solver works with (not data: they live here, not in the Excel workbook)
+async function drawGenParams() {
+  const host = $("#gp"); if (!host) return;
+  let p; try { p = await api("/api/rules/params"); } catch (_) { return; }
+  const num = (k, label, min, max, hint) => `<label class="gpf"><span>${label}</span><input type="number" min="${min}" max="${max}" data-k="${k}" value="${p[k]}"><small>${hint}</small></label>`;
+  host.innerHTML = `<div class="card-head"><h2>${I.sliders} Параметры генерации</h2></div>
+    <div class="gp-grid">${num("max_hours_day", "Часов в день у группы", 2, 12, "не больше")}
+      <div class="gpf"><span>Суббота</span><div class="seg" id="gp-sat"><button data-v="no">Только как уступка</button><button data-v="yes">Разрешена</button></div><small>уступку выбирает Переговорщик</small></div>
+      ${num("lecture_stream", "Групп в лекционном потоке", 1, 10, "очные лекции")}
+      ${num("gym_capacity", "Групп на физкультуре одновременно", 1, 40, "вместимость спортзалов")}</div>`;
+  const save = debounce(async () => {
+    const body = { allow_saturday: p.allow_saturday };
+    $$("input[data-k]", host).forEach(i => { body[i.dataset.k] = +i.value; });
+    try { p = { ...p, ...(await api("/api/rules/params", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })) }; toast("Параметры сохранены — учтём при следующей генерации"); }
+    catch (e) { toast(e.message, true); }
+  }, 600);
+  $$("input[data-k]", host).forEach(i => i.oninput = save);
+  bindSeg($("#gp-sat"), p.allow_saturday ? "yes" : "no", v => { p.allow_saturday = v === "yes"; save(); });
 }
 function drawRuleList() {
   const host = $("#r-list"); if (!host) return;

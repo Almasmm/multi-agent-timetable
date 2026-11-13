@@ -15,16 +15,18 @@ const propBadge = s => { const [t, c] = PROP_STATUS[s] || [s, ""]; return `<span
 
 // ================================================================== home: what is happening with the timetable
 async function renderHome() {
-  const [ap, datasets, props, edit] = await Promise.all([api("/api/autopilot"), api("/api/datasets"), api("/api/proposals").catch(() => []),
-    api("/api/edit").catch(() => null)]);
+  const [ap, datasets, props, edit, gen] = await Promise.all([api("/api/autopilot"), api("/api/datasets"), api("/api/proposals").catch(() => []),
+    api("/api/edit").catch(() => null), api("/api/generate").catch(() => null)]);
   if (currentPage !== "home") return;
   const cur = ap.current, pub = cur ? await getPublished(cur.id) : null;
   const ds = datasets.find(d => d.valid && d.id === ap.profile.dataset) || datasets.find(d => d.valid);
   const mt = pub && pub.version ? pubMetrics(pub, ds, ap.profile) : null, soft = (cur && cur.soft) || {};
   const job = ap.job, lastJob = ap.jobs[0];
   const waiting = props.filter(p => p.status === "ready" || p.status === "needs_input"), talking = props.filter(p => p.status === "discussing");
+  const dirty = gen && gen.data && gen.data.gate && !gen.data.ready;
   const attention = [
-    !cur && { cls: "warn", ic: "cal", t: "Расписания ещё нет", s: "Сгенерируйте первую версию", href: "#/generate", cta: "Сгенерировать" },
+    dirty && { cls: "bad", ic: "db", t: `Генерация остановлена: в данных ${plural(gen.data.problems, "проблема", "проблемы", "проблем")}`, s: "Исправьте их в «Данные вуза» — до этого агенты не строят расписание", href: "#/data/overview", cta: "Исправить" },
+    !cur && !dirty && { cls: "warn", ic: "cal", t: "Расписания ещё нет", s: "Сгенерируйте первую версию", href: "#/generate", cta: "Сгенерировать" },
     job && { cls: "run", ic: "layers", t: `Идёт ${JOB_RU[job.kind] || job.kind}`, s: job.reason, href: "#/generate", cta: "Смотреть" },
     waiting.length && { cls: "warn", ic: "msg", t: plural(waiting.length, "предложение ждёт решения", "предложения ждут решения", "предложений ждут решения"), s: waiting[0].text, href: `#/proposals/${waiting[0].id}`, cta: "Открыть" },
     talking.length && { cls: "run", ic: "msg", t: `Агенты обсуждают ${plural(talking.length, "предложение", "предложения", "предложений")}`, s: talking[0].text, href: `#/proposals/${talking[0].id}`, cta: "Открыть" },
@@ -198,6 +200,7 @@ async function renderGenerate() {
   const st = await api("/api/generate");
   if (currentPage !== "generate") return;
   const p = st.profile;
+  genUi.data = st.data;
   if (genUi.run !== (st.active || st.last)) Object.assign(genUi, { run: st.active || st.last, off: 0, events: [], group: null, reviewed: null, status: null, seen: new Set() });
   $("#main").innerHTML = page(pageHead("Генерация", `${esc(p.dataset)} · триместр ${p.term} · ${p.programs.length ? esc(p.programs.join(", ")) : "все программы"} · ${plural(p.requirements.length, "правило", "правила", "правил")}`,
     `<a class="btn" href="#/live">${I.pulse} Работа агентов</a>`), `
@@ -231,9 +234,20 @@ async function genStart(btn) {
 async function genTick() {
   clearTimeout(pageTimer);
   const id = genUi.run, hero = $("#gen-hero"); if (!hero) return;
-  const btn = running => `<button class="btn primary lg gen-go" id="gen-go" ${running ? "disabled" : ""}>${I.playCircle} Сгенерировать расписание</button>`;
+  const blocked = genUi.data && genUi.data.gate && !genUi.data.ready;
+  const btn = running => `<button class="btn primary lg gen-go" id="gen-go" ${running || blocked ? "disabled" : ""} title="${blocked ? "сначала исправьте данные вуза" : ""}">${I.playCircle} Сгенерировать расписание</button>`;
+  const gateHtml = () => {
+    const d = genUi.data;
+    return `<div class="gate bad gen-gate"><span class="gate-ic">${I.alertCircle}</span><span class="gate-t"><b>Генерация остановлена: в данных вуза ${plural(d.problems, "проблема", "проблемы", "проблем")}</b>
+      <small>Агенты не строят расписание, пока загрузчик Data-агента находит ошибки. Исправьте их — кнопка станет активной.</small>
+      <ul>${(d.items || []).slice(0, 5).map(i => `<li class="${i.level}">${esc(i.text)}</li>`).join("")}</ul></span>
+      <a class="btn sm primary" href="#/data/overview">${I.db} Исправить данные</a></div>`;
+  };
+  const gateEl = $("#gen-gate-slot") || (() => { hero.insertAdjacentHTML("beforebegin", '<div id="gen-gate-slot"></div>'); return $("#gen-gate-slot"); })();
+  gateEl.innerHTML = blocked ? gateHtml() : "";
   if (!id) {
-    hero.innerHTML = `<div class="gh-state"><span class="gh-ic">${I.playCircle}</span><div><h2>Готово к генерации</h2><p>Агенты построят расписание по данным вуза и правилам и проверят его</p></div></div>${btn(false)}`;
+    hero.innerHTML = blocked ? `<div class="gh-state"><span class="gh-ic">${I.db}</span><div><h2>Ждём исправления данных</h2><p>Как только проблем не останется, кнопка станет активной</p></div></div>${btn(false)}`
+      : `<div class="gh-state"><span class="gh-ic">${I.playCircle}</span><div><h2>Готово к генерации</h2><p>Агенты построят расписание по данным вуза и правилам и проверят его</p></div></div>${btn(false)}`;
     $("#gen-go").onclick = e => genStart(e.currentTarget);
     ["#gen-stages", "#gen-kpis"].forEach(s => { $(s).innerHTML = ""; });
     $("#gen-heat").innerHTML = '<div class="empty-state small"><p>Неделя заполнится во время генерации</p></div>';

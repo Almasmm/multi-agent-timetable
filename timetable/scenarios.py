@@ -220,7 +220,7 @@ def run_autopilot(out_root: Path, seconds: float) -> tuple[dict, list[str]]:
     svc = out_root / "S19"
     old = os.environ.get("TT_OUT")
     os.environ["TT_OUT"] = str(svc)  # the run manager resolves run folders from TT_OUT
-    ap = Autopilot(RunManager(), Settings().with_(out_root=svc))
+    ap = Autopilot(RunManager(), Settings().with_(out_root=svc, data_gate=False))  # S19 is about routing on the raw file
     errs: list[str] = []
     try:
         ap.store.set("profile", {"programs": ["IT"], "solver_seconds": seconds, "llm": "offline", "max_improve_attempts": 0})

@@ -269,6 +269,10 @@ class RunManager:
                 kw["chunk_target_groups"] = int(params["chunk_groups"])
             if params.get("stream"):
                 kw["lecture_stream_size"] = int(params["stream"])
+            if params.get("max_hours_day"):
+                kw["max_hours_per_day"] = int(params["max_hours_day"])
+            if params.get("gym"):
+                kw["gym_capacity"] = int(params["gym"])
             if params.get("seed") is not None:
                 kw["seed"] = int(params["seed"])
             if params.get("warm_start_path"):  # set by the server / autopilot, never taken from a request body

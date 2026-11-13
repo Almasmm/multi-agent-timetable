@@ -28,6 +28,7 @@ from ..core.llm import ClaudeLLM, resolve_provider
 from ..core.runlog import RunLogger
 from ..domain.constraints import split_mode, with_mode
 from ..domain.preview import describe_rules
+from . import datasets
 from .agents import describe_spec, find_dataset
 from .editor import DAY_RU, KIND_RU, ScheduleEditor
 from .store import REQUEST_ACTIVE, REQUEST_OPEN, ServiceStore
@@ -355,6 +356,15 @@ class ChatTools:
             return {"queued": False, "note": "уже идёт задание - дождитесь его окончания"}
         self.store.set("force_job", {"kind": kind, "reason": reason or "без комментария"})
         self._tick_soon()
+        if self.editor.settings.data_gate:  # the Watcher keeps the job until the university data is clean
+            try:
+                ready = datasets.readiness(find_dataset(self.store.profile()["dataset"]))
+            except FileNotFoundError:
+                ready = {"ready": False, "problems": 1}
+            if not ready["ready"]:
+                return {"queued": True, "kind": kind, "waits_for_data": ready["problems"],
+                        "note": f"Задание в очереди, но ждёт данные: проблем — {ready['problems']}. Исправьте их в «Данные вуза» "
+                                "— тогда Наблюдатель запустит перегенерацию."}
         return {"queued": True, "kind": kind, "note": "Наблюдатель предложит задание, Автопилот запустит конвейер"}
 
     def jobs_history(self) -> dict:

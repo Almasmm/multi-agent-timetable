@@ -2,6 +2,7 @@
 (IT programme, offline LLM, ~10-20 s). Run with ``pytest tests/test_web.py``."""
 from __future__ import annotations
 
+import os
 import time
 
 import pytest
@@ -12,8 +13,12 @@ from timetable.web.server import create_app
 
 @pytest.fixture(scope="module")
 def client():
-    with TestClient(create_app(autopilot=False)) as c:
-        yield c
+    os.environ["TT_DATA_GATE"] = "false"  # these runs use the raw university file on purpose (dirty data handling)
+    try:
+        with TestClient(create_app(autopilot=False)) as c:
+            yield c
+    finally:
+        os.environ.pop("TT_DATA_GATE", None)
 
 
 def test_health_endpoint_for_probes(client):

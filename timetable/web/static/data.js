@@ -15,7 +15,7 @@ const DATA_EDITABLE = ["rooms", "groups", "courses", "timeslots"];
 // sheets collected for the full timetable (teachers, load...): kept in the workbook, used by the agents later
 const EXTRA_RU = { Teachers: ["Преподаватели", "users"], TeacherLoad: ["Нагрузка", "layers"], TeacherUnavailability: ["Занятость преподавателей", "clock"],
   Subgroups: ["Подгруппы", "group"], Electives: ["Выбор студентов", "check"], RoomUnavailability: ["Закрытые аудитории", "door"],
-  Calendar: ["Календарь", "calendar"], Holidays: ["Праздники", "cal"], Settings: ["Параметры вуза", "sliders"] };
+  Calendar: ["Календарь", "calendar"], Holidays: ["Праздники", "cal"] };
 const ROOM_TYPE_RU = { L: "Лекционные", P: "Практические", K: "Компьютерные классы" };
 const dataUi = { tab: "overview", ed: null, term: 1, lastHash: location.hash, grid: null };
 const encId = id => encodeURIComponent(id);
@@ -117,9 +117,12 @@ function dataStats(t = null, ed = dataUi.ed) {
 const dataDirty = () => { const s = dataStats(); return s.cells + s.added + s.removed > 0 || !!(dataUi.ed && dataUi.ed.extra); };
 const tableIssues = t => {
   const ed = dataUi.ed, errs = ed.check.cells.filter(c => c.t === t && c.level === "error").length;
-  const warns = ed.check.cells.filter(c => c.t === t && c.level !== "error").length + ed.check.issues.filter(i => i.t === t && i.level === "warning").length;
+  const warns = ed.check.cells.filter(c => c.t === t && c.level !== "error").length
+    + ed.check.issues.filter(i => i.t === t && (i.level === "warning" || i.level === "fixed")).length;
   return { errs, warns };
 };
+// same rule as the server gate (datasets.readiness): every problem except "info" blocks generation
+const dataProblems = () => { const c = dataUi.ed.check; return c.cells.length + c.issues.filter(i => i.level !== "info").length; };
 
 // ------------------------------------------------------------------ page
 function drawDataPage() {
@@ -179,7 +182,9 @@ function syncDataNav() {
     const el = document.getElementById(`nd-${t}`); if (!el) continue;
     if (!ed || !ed.check) { el.hidden = true; continue; }
     const { errs } = tableIssues(t), st = dataStats(t), chg = st.cells + st.added + st.removed;
-    el.hidden = !(errs || chg); el.className = `dot ${errs ? "bad" : "chg"}`; el.title = errs ? `ошибок: ${errs}` : `изменено: ${chg}`;
+    const { warns } = tableIssues(t);
+    el.hidden = !(errs || warns || chg); el.className = `dot ${errs || warns ? "bad" : "chg"}`;
+    el.title = errs || warns ? `проблем: ${errs + warns}` : `изменено: ${chg}`;
   }
 }
 
@@ -300,11 +305,15 @@ function dataHistory() {
 // ------------------------------------------------------------------ overview window
 function dataOverview(host) {
   const ed = dataUi.ed, s = ed.check.summary, errs = ed.check.errors;
-  const warns = ed.check.issues.filter(i => i.level === "warning").length + ed.check.cells.filter(c => c.level !== "error").length;
+  const warns = ed.check.issues.filter(i => i.level === "warning" || i.level === "fixed").length + ed.check.cells.filter(c => c.level !== "error").length;
+  const problems = dataProblems();
   const progs = Object.keys(s.load).sort(), years = [...new Set(progs.flatMap(p => Object.keys(s.load[p]).map(Number)))].sort((a, b) => a - b);
   const term = dataUi.term, maxH = Math.max(1, ...progs.flatMap(p => Object.values(s.load[p]).map(c => c.hours[term - 1])));
   const types = Object.entries(s.rooms_by_type).sort((a, b) => b[1].seats - a[1].seats), maxSeats = Math.max(1, ...types.map(([, x]) => x.seats));
   host.innerHTML = `
+    ${problems ? `<div class="gate bad"><span class="gate-ic">${I.alertCircle}</span><span class="gate-t"><b>Генерация остановлена: ${plural(problems, "проблема", "проблемы", "проблем")} в данных</b><small>Исправьте их ниже — агенты не строят расписание по данным с ошибками</small></span>
+        ${errs ? `<button class="btn sm primary" id="gate-fix">${I.sparkle} Исправить автоматически</button>` : ""}<a class="btn sm" href="#" id="gate-list">Показать ${I.arrow}</a></div>`
+      : `<div class="gate ok"><span class="gate-ic">${I.checkCircle}</span><span class="gate-t"><b>Данные готовы к генерации</b><small>Загрузчик Data-агента не нашёл проблем</small></span><a class="btn sm" href="#/generate">${I.playCircle} Генерация</a></div>`}
     <div class="kpi-row d-kpis">${kpi(s.programs, "программ")}${kpi(s.groups, "групп", "", plural(s.students, "студент", "студента", "студентов"))}
       ${kpi(s.rooms, "аудиторий", "", `${s.seats} мест${s.unavailable_rooms ? ` · ${s.unavailable_rooms} закрыто` : ""}`)}${kpi(s.courses, "дисциплин", "", `${s.weeks} недель в триместре`)}
       ${kpi(errs || warns, errs ? "ошибок" : "предупреждений", errs ? "bad" : warns ? "warn" : "ok", s.issues.fixed ? `${s.issues.fixed} исправит загрузчик` : "")}</div>
@@ -330,6 +339,8 @@ function dataOverview(host) {
         ["Timeslots", "Сетка времени", "slot_index (или pair), start, end — 12 пар, одинаковых для Пн–Сб"],
         ["Teachers, TeacherLoad…", "Для полного расписания", "преподаватели, нагрузка и занятость, подгруппы, выбор студентов, календарь, параметры"]].map(([n, t, c]) => `<div class="sheet"><span class="mono">${n}</span><b>${t}</b><small>${c}</small></div>`).join("")}</div></section>`;
   bindSeg($("#ov-term"), String(term), v => { dataUi.term = +v; dataOverview(host); });
+  const gf = $("#gate-fix", host); if (gf) gf.onclick = () => dataAutofix();
+  const gl = $("#gate-list", host); if (gl) gl.onclick = e => { e.preventDefault(); $("#ov-issues").scrollIntoView({ behavior: "smooth", block: "start" }); };
   $$(".load td[data-p]", host).forEach(td => td.onclick = () => { dataView("courses", { program: td.dataset.p, trimester: td.dataset.tri }); dataTab("courses"); });
   $$(".rt[data-rt]", host).forEach(b => b.onclick = () => { dataView("rooms", { room_type: b.dataset.rt }); dataTab("rooms"); });
   dataIssues($("#ov-issues", host));
@@ -364,7 +375,7 @@ function dataIssues(host) {
   host.innerHTML = (errs.length ? `<div class="dw-issue bad">${I.sparkle}<span><b>Часть ошибок исправляется автоматически</b></span><span class="actions"><button class="btn sm primary" id="iss-fix">${I.sparkle} Исправить автоматически</button></span></div>` : "")
     + sec(`${I.xCircle} Ошибки`, errs, "error", "")
     + sec(`${I.alert} Предупреждения`, warns, "warning", "")
-    + sec(`${I.sparkle} Загрузчик исправит при чтении`, fixed, "fixed", "");
+    + sec(`${I.sparkle} Загрузчик угадывает — исправьте источник`, fixed, "fixed", "");
   $$("[data-go]", host).forEach(b => b.onclick = () => { const [t, id, c] = b.dataset.go.split("|"); dataJump(t, id ? +id : null, c); });
   const fx = $("#iss-fix", host); if (fx) fx.onclick = () => dataAutofix();
 }

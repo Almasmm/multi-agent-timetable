@@ -150,6 +150,13 @@ class AcceptIn(BaseModel):
     mode: Literal["auto", "hard", "soft"] | None = None
 
 
+class GenParamsIn(BaseModel):
+    max_hours_day: int = Field(8, ge=2, le=12)
+    allow_saturday: bool = False
+    lecture_stream: int = Field(2, ge=1, le=10)
+    gym_capacity: int = Field(8, ge=1, le=40)
+
+
 class StampIn(BaseModel):
     stamp: str = Field(pattern=r"^[0-9-]{8,30}$")
 
@@ -268,7 +275,11 @@ def create_app(autopilot: bool | None = None) -> FastAPI:
     @app.get("/api/generate")
     def generate_state():
         prof = pilot.store.profile()
-        return {"active": current_run(), "last": last_run(), "brief": pilot.brief(),
+        try:
+            data = D.readiness(D.find(prof["dataset"]))
+        except FileNotFoundError:
+            data = {"ready": False, "problems": 1, "items": [{"level": "error", "text": "файл данных не найден", "t": None}]}
+        return {"active": current_run(), "last": last_run(), "brief": pilot.brief(), "data": {**data, "gate": pilot.settings.data_gate},
                 "profile": {k: prof[k] for k in ("dataset", "term", "programs", "requirements", "solver_seconds", "llm")}}
 
     @app.post("/api/generate")
@@ -276,6 +287,7 @@ def create_app(autopilot: bool | None = None) -> FastAPI:
         rid = current_run()
         if rid:
             return {"state": "busy", "run_id": rid}
+        gate(pilot.store.profile()["dataset"])
         cur = pilot.store.current_version()
         pilot.store.set("force_job", {"kind": "regenerate", "reason": "кнопка «Сгенерировать»"})
         res = pilot.tick()
@@ -394,8 +406,15 @@ def create_app(autopilot: bool | None = None) -> FastAPI:
     def list_runs():
         return manager.list()
 
+    def gate(dataset: str) -> None:
+        if pilot.settings.data_gate:
+            r = D.readiness(D.find(dataset))
+            if not r["ready"]:
+                raise RuntimeError(D.not_ready_reason(r))
+
     @app.post("/api/runs", status_code=201)
     def start_run(req: RunRequest):
+        gate(req.dataset)
         params = req.model_dump()
         if params.pop("warm_start"):
             cur = pilot.store.current_version()
@@ -470,10 +489,20 @@ def create_app(autopilot: bool | None = None) -> FastAPI:
     def autopilot_tick():
         return pilot.tick()
 
+    @app.get("/api/rules/params")
+    def rules_params():
+        prof = pilot.store.profile()
+        return {k: prof[k] for k in GenParamsIn.model_fields}
+
+    @app.put("/api/rules/params")
+    def rules_params_save(req: GenParamsIn):
+        pilot.store.set("profile", {**pilot.store.profile(), **req.model_dump()})
+        return rules_params()
+
     @app.put("/api/autopilot/profile")
     def autopilot_profile(req: ProfileIn):
         R.resolve_dataset(req.dataset)
-        prof = req.model_dump()
+        prof = {**pilot.store.profile(), **req.model_dump()}  # keeps the generation parameters of the rules page
         prof["requirements"] = [x.strip() for x in prof["requirements"] if x.strip()]
         pilot.store.set("profile", prof)
         return pilot.store.profile()

@@ -113,7 +113,8 @@ class FakeManager:
 @pytest.fixture()
 def pilot(tmp_path):
     mgr = FakeManager(tmp_path)
-    ap = Autopilot(mgr, Settings().with_(out_root=tmp_path, llm_provider="offline"))
+    # routing tests: the data gate (no generation on dirty data) has its own test below
+    ap = Autopilot(mgr, Settings().with_(out_root=tmp_path, llm_provider="offline", data_gate=False))
     ap.store.set("profile", {"llm": "offline", "improve_every_min": 0, "max_improve_attempts": 2, "stable_after": "2000-01-01"})
     yield ap, mgr
     ap.close()
@@ -185,9 +186,27 @@ def test_autopilot_rejects_failed_runs_and_pauses_after_three_failures(pilot):
     assert cyc[0]["state"] == "idle" and cyc[1]["state"] == "reviewed" and cyc[1]["events"]
 
 
+def test_no_generation_while_the_data_has_problems(tmp_path):
+    """data/input.xlsx has 'onlline' typos and a group without a curriculum: the Watcher waits for the operator."""
+    mgr = FakeManager(tmp_path)
+    ap = Autopilot(mgr, Settings().with_(out_root=tmp_path, llm_provider="offline"))
+    try:
+        r = ap.tick()
+        assert r["state"] == "idle" and "данные вуза не готовы" in r["reason"] and not mgr.started
+    finally:
+        ap.close()
+
+
+def test_generation_parameters_reach_the_run_and_change_the_config_hash():
+    base = {"dataset": "input.xlsx", "term": 1, "programs": []}
+    assert config_hash({**base, "max_hours_day": 8}, []) == config_hash(base, [])  # defaults keep old hashes
+    assert config_hash({**base, "max_hours_day": 6}, []) != config_hash(base, [])
+
+
 # ------------------------------------------------------------------ web API of the service
 def test_service_api(tmp_path, monkeypatch):
     monkeypatch.setenv("TT_OUT", str(tmp_path))
+    monkeypatch.setenv("TT_DATA_GATE", "false")
     from timetable.web.server import create_app
     with TestClient(create_app(autopilot=False)) as c:
         assert c.get("/api/published").json() == {"version": None}
@@ -207,3 +226,8 @@ def test_service_api(tmp_path, monkeypatch):
         assert c.get("/api/autopilot/brief").json()["open_requests"] == 0
         assert c.post("/api/runs", json={"dataset": "input.xlsx", "warm_start": True}).status_code == 400  # nothing published
         assert c.get("/api/published/files/..%2F.env").status_code == 404
+        p = c.put("/api/rules/params", json={"max_hours_day": 6, "allow_saturday": True, "lecture_stream": 3, "gym_capacity": 6}).json()
+        assert p["max_hours_day"] == 6 and c.get("/api/autopilot").json()["profile"]["allow_saturday"] is True
+        prof = c.get("/api/autopilot").json()["profile"]
+        c.put("/api/autopilot/profile", json={k: prof[k] for k in ("dataset", "term", "programs", "requirements")})
+        assert c.get("/api/rules/params").json()["lecture_stream"] == 3  # saving the profile keeps the parameters

@@ -16,10 +16,11 @@ from .models import GYM, LAB, LECTURE, PRACTICE, Course, Dataset, Group, Room
 
 SERVICE_SHEETS = {"Groups", "Rooms", "Timeslots"}
 # Sheets of the full university workbook that the solver does not use yet (teachers, their load and availability,
-# subgroups, electives, room closures, calendar, settings): kept in the file, never read as curricula.
+# subgroups, electives, room closures, calendar): kept in the file, never read as curricula. Generation parameters
+# (hours per day, Saturday, streams) are not data: they are set on the rules page («Правила»).
 EXTRA_SHEETS = ("Teachers", "TeacherLoad", "TeacherUnavailability", "Subgroups", "Electives", "RoomUnavailability",
-                "Calendar", "Holidays", "Settings")
-INFO_SHEETS = {"README", "Programs", "Check", *EXTRA_SHEETS}  # instruction, reference, notes and the extra sheets
+                "Calendar", "Holidays")
+INFO_SHEETS = {"README", "Programs", "Check", "Settings", *EXTRA_SHEETS}  # "Settings": older workbooks, skipped quietly
 CURRICULUM_COLS = ["course_name", "trimester", "credits", "lecture_slots", "practice_slots",
                    "lab_slots", "delivery_mode", "lecture_precedes_practice"]
 CYRILLIC_LOOKALIKES = str.maketrans("СсАаВЕеКкМНОоРрТХх", "CcAaBEeKkMHOoPpTXx")

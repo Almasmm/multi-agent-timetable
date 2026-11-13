@@ -73,7 +73,9 @@ class Settings:
     # --- 24/7 service (autopilot) ---
     autopilot: str = field(default_factory=lambda: _env("TT_AUTOPILOT", "auto"))  # auto (resume saved state) | on | off
     autopilot_tick: float = field(default_factory=lambda: _env("TT_AUTOPILOT_TICK", 60.0, float))
-    term_start: str = field(default_factory=lambda: _env("TT_TERM_START", "2026-09-07"))  # first Monday, for .ics export
+    term_start: str = field(default_factory=lambda: _env("TT_TERM_START", "2026-09-07"))
+    # no generation while the loader reports problems in the university data (TT_DATA_GATE=false: tests, experiments)
+    data_gate: bool = field(default_factory=lambda: _env("TT_DATA_GATE", True, bool))  # first Monday, for .ics export
 
     @property
     def days(self) -> list[str]:

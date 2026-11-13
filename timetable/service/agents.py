@@ -14,10 +14,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from . import datasets
 from ..config import DATASET_DIRS
 from ..core.agent import BaseAgent, RunContext
 from ..domain.preview import preview_texts
-from .store import ServiceStore
+from .store import DEFAULT_PROFILE, GEN_PARAMS, ServiceStore
 from .versions import diff_rows, quality_score, read_json, read_rows, snapshot
 
 DAY_RU = {"Mon": "Пн", "Tue": "Вт", "Wed": "Ср", "Thu": "Чт", "Fri": "Пт", "Sat": "Сб"}
@@ -65,7 +66,8 @@ def live_term(profile: dict, settings_term_start: str, now: float) -> bool:
 def config_hash(profile: dict, requirements: list[str]) -> str:
     """Fingerprint of everything that defines the wanted timetable except the data file."""
     keys = ("dataset", "term", "programs")
-    blob = json.dumps([{k: profile[k] for k in keys}, requirements], ensure_ascii=False, sort_keys=True)
+    params = {k: profile[k] for k in GEN_PARAMS if k in profile and profile[k] != DEFAULT_PROFILE[k]}  # defaults: old hashes stay
+    blob = json.dumps([{k: profile[k] for k in keys}, requirements, *([params] if params else [])], ensure_ascii=False, sort_keys=True)
     return hashlib.sha1(blob.encode()).hexdigest()[:12]
 
 
@@ -132,6 +134,8 @@ class WatcherAgent(ServiceAgent):
         self.add_tool("inbox", lambda: [r["id"] for r in reversed(self.store.requests(("new",)))],
                       "ids of requests nobody has triaged yet")
         self.add_tool("propose", self._propose, "state -> next job (kind, reason, run parameters)", retryable=False)
+        self.add_tool("check_data", lambda path: datasets.readiness(path),
+                      "is the data workbook ready: problems the Data agent's loader reports must be fixed first")
 
     def on_scan(self) -> dict:
         profile = self.store.profile()
@@ -139,6 +143,10 @@ class WatcherAgent(ServiceAgent):
         return {"fingerprint": fp, "new_requests": self.call_tool("inbox")}
 
     def on_propose(self, fingerprint: str) -> dict:
+        if self.ctx.settings.data_gate:  # no generation on data with unresolved problems
+            ready = self.call_tool("check_data", path=find_dataset(self.store.profile()["dataset"]))
+            if not ready["ready"]:
+                return {"kind": "wait", "reason": datasets.not_ready_reason(ready)}
         return self.call_tool("propose", fingerprint=fingerprint, now=time.time())
 
     def _propose(self, fingerprint: str, now: float) -> dict:
@@ -194,7 +202,8 @@ class WatcherAgent(ServiceAgent):
         params = {"dataset": profile["dataset"], "term": profile["term"], "programs": profile["programs"],
                   "requirements": reqs, "solver_seconds": min(seconds, 120), "llm": profile["llm"],
                   "seed": 7 + 101 * variant, "warm_start_path": warm, "fingerprint": fingerprint, "config": cfg,
-                  "live": live}
+                  "live": live, "max_hours_day": profile["max_hours_day"], "allow_saturday": profile["allow_saturday"],
+                  "stream": profile["lecture_stream"], "gym": profile["gym_capacity"]}
         return {"kind": kind, "reason": reason, "params": params}
 
 
