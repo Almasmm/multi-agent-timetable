@@ -1,0 +1,76 @@
+{
+  "status": "ok",
+  "hard_violations": {},
+  "soft": {
+    "gap_hours_total": 214,
+    "gap_hours_per_group": 7.38,
+    "late_hours_18_plus": 19,
+    "saturday_hours": 0,
+    "precedence_violations": 5,
+    "lectures_in_lecture_halls": "70/70"
+  },
+  "failed_chunks": [],
+  "steps": 15,
+  "load": {
+    "total_calls": 22,
+    "agents": {
+      "data": {
+        "calls": 4,
+        "share": 0.182
+      },
+      "rooms": {
+        "calls": 4,
+        "share": 0.182
+      },
+      "validator": {
+        "calls": 4,
+        "share": 0.182
+      },
+      "constraints": {
+        "calls": 3,
+        "share": 0.136
+      },
+      "scheduler": {
+        "calls": 3,
+        "share": 0.136
+      },
+      "negotiator": {
+        "calls": 3,
+        "share": 0.136
+      },
+      "genetic": {
+        "calls": 1,
+        "share": 0.045
+      }
+    },
+    "max_share": 0.182
+  },
+  "files": [
+    "C:\\dev\\multi-agent-timetable\\runs\\scenarios-20261113-190537\\S07\\timetable.xlsx",
+    "C:\\dev\\multi-agent-timetable\\runs\\scenarios-20261113-190537\\S07\\timetable.csv",
+    "C:\\dev\\multi-agent-timetable\\runs\\scenarios-20261113-190537\\S07\\timetable.html",
+    "C:\\dev\\multi-agent-timetable\\runs\\scenarios-20261113-190537\\S07\\report.md"
+  ],
+  "llm": "offline-rules",
+  "wall_s": 23.5,
+  "out_dir": "C:\\dev\\multi-agent-timetable\\runs\\scenarios-20261113-190537\\S07",
+  "requirements": [
+    "Physical Education только утром"
+  ],
+  "settings": {
+    "data_path": "data\\input.xlsx",
+    "term": 1,
+    "programs": [
+      "MT",
+      "ITM"
+    ],
+    "allow_saturday": false,
+    "solver_time_limit": 10.0,
+    "llm_provider": "offline",
+    "chunk_target_groups": 60,
+    "ga_enabled": true,
+    "ga_seconds": 4.0,
+    "seed": 7,
+    "warm_start": null
+  }
+}

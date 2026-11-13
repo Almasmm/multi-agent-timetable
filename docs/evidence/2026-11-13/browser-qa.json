@@ -1,0 +1,110 @@
+[
+  {
+    "page": "overview",
+    "route": "#/",
+    "theme": "light",
+    "viewport": [
+      1600,
+      1100
+    ],
+    "errors": [],
+    "failed_http": [],
+    "content_chars": 1063
+  },
+  {
+    "page": "schedule",
+    "route": "#/schedule/group/IT-2301",
+    "theme": "light",
+    "viewport": [
+      1600,
+      1100
+    ],
+    "errors": [],
+    "failed_http": [],
+    "content_chars": 1561
+  },
+  {
+    "page": "data",
+    "route": "#/data",
+    "theme": "light",
+    "viewport": [
+      1600,
+      1100
+    ],
+    "errors": [],
+    "failed_http": [],
+    "content_chars": 5933
+  },
+  {
+    "page": "rules",
+    "route": "#/rules",
+    "theme": "light",
+    "viewport": [
+      1600,
+      1100
+    ],
+    "errors": [],
+    "failed_http": [],
+    "content_chars": 236
+  },
+  {
+    "page": "schedule-dark",
+    "route": "#/schedule/group/IT-2301",
+    "theme": "dark",
+    "viewport": [
+      1600,
+      1100
+    ],
+    "errors": [],
+    "failed_http": [],
+    "content_chars": 1561
+  },
+  {
+    "page": "proposals",
+    "route": "#/proposals/new",
+    "theme": "light",
+    "viewport": [
+      1600,
+      1100
+    ],
+    "errors": [],
+    "failed_http": [],
+    "content_chars": 337
+  },
+  {
+    "page": "agents",
+    "route": "#/agents",
+    "theme": "dark",
+    "viewport": [
+      1600,
+      1450
+    ],
+    "errors": [],
+    "failed_http": [],
+    "content_chars": 1666
+  },
+  {
+    "page": "generate",
+    "route": "#/generate",
+    "theme": "light",
+    "viewport": [
+      1600,
+      1100
+    ],
+    "errors": [],
+    "failed_http": [],
+    "content_chars": 4191
+  },
+  {
+    "page": "live",
+    "route": "#/live",
+    "theme": "light",
+    "viewport": [
+      1600,
+      1100
+    ],
+    "errors": [],
+    "failed_http": [],
+    "content_chars": 5740
+  }
+]

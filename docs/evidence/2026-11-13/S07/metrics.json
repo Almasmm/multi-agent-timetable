@@ -1,0 +1,218 @@
+{
+  "run_id": "S07",
+  "started_at": "2026-11-13T19:06:51.963000+05:00",
+  "status": "ok",
+  "wall_s": 23.5,
+  "settings": {
+    "data_path": "data\\input.xlsx",
+    "term": 1,
+    "programs": [
+      "MT",
+      "ITM"
+    ],
+    "allow_saturday": false,
+    "solver_time_limit": 10.0,
+    "llm_provider": "offline",
+    "chunk_target_groups": 60,
+    "ga_enabled": true,
+    "ga_seconds": 4.0,
+    "seed": 7,
+    "warm_start": null
+  },
+  "programs": 2,
+  "groups": 29,
+  "sessions": 382,
+  "scheduled_sessions": 382,
+  "group_academic_hours": 820,
+  "physical_rooms": 104,
+  "independent_validation": {
+    "hard_violations": 0,
+    "by_type": {},
+    "violations": [],
+    "soft": {
+      "gap_hours_total": 214,
+      "gap_hours_per_group": 7.38,
+      "late_hours_18_plus": 19,
+      "saturday_hours": 0,
+      "precedence_violations": 5,
+      "lectures_in_lecture_halls": "70/70"
+    }
+  },
+  "llm_events": [
+    {
+      "agent": "data",
+      "name": "explain_data_issues",
+      "provider": "offline-rules",
+      "model": null,
+      "status": "ok",
+      "attempt": null
+    },
+    {
+      "agent": "constraints",
+      "name": "parse_constraints",
+      "provider": "offline-rules",
+      "model": null,
+      "status": "ok",
+      "attempt": null
+    },
+    {
+      "agent": "negotiator",
+      "name": "choose_concession",
+      "provider": "offline-rules",
+      "model": null,
+      "status": "ok",
+      "attempt": null
+    },
+    {
+      "agent": "validator",
+      "name": "critique",
+      "provider": "offline-rules",
+      "model": null,
+      "status": "ok",
+      "attempt": null
+    },
+    {
+      "agent": "reporter",
+      "name": "executive_summary",
+      "provider": "offline-rules",
+      "model": null,
+      "status": "ok",
+      "attempt": null
+    }
+  ],
+  "room_usage": {
+    "teaching_days": 5,
+    "hours_per_day": 12,
+    "resource_fund": 104,
+    "occupied_resource_hours": 611,
+    "ui_utilization": 0.09791666666666667,
+    "occupied_physical_room_hours": 573,
+    "physical_utilization": 0.09182692307692308
+  },
+  "load": {
+    "calls": {
+      "data": 4,
+      "constraints": 3,
+      "scheduler": 3,
+      "rooms": 4,
+      "genetic": 1,
+      "negotiator": 3,
+      "validator": 4,
+      "reporter": 4
+    },
+    "total_calls": 26,
+    "shares": {
+      "data": 0.15384615384615385,
+      "constraints": 0.11538461538461539,
+      "scheduler": 0.11538461538461539,
+      "rooms": 0.15384615384615385,
+      "genetic": 0.038461538461538464,
+      "negotiator": 0.11538461538461539,
+      "validator": 0.15384615384615385,
+      "reporter": 0.15384615384615385
+    },
+    "max_share": 0.15384615384615385
+  },
+  "data_issues": [
+    {
+      "level": "fixed",
+      "where": "BDH!3",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!4",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!11",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!15",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!18",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!20",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!21",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!24",
+      "issue": "Fundamentals of Anatomy / Molecular biology / Fundamentals of Physiology: lecture_slots=15 is not a multiple of 10 weeks, rounded to 2 h/week"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!24",
+      "issue": "Fundamentals of Anatomy / Molecular biology / Fundamentals of Physiology: lab_slots=15 is not a multiple of 10 weeks, rounded to 2 h/week"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!28",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!33",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!34",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!38",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "warning",
+      "where": "BDH!49",
+      "issue": "Medical Imaging Techniques / Digital Image Processing: no lecture/practice/lab slots - course skipped"
+    },
+    {
+      "level": "warning",
+      "where": "Groups!247",
+      "issue": "group TS-2101: no curriculum sheet 'TS' - group skipped"
+    },
+    {
+      "level": "fixed",
+      "where": "Rooms!68",
+      "issue": "room code 'С1.3.248' contained Cyrillic letters -> 'C1.3.248'"
+    },
+    {
+      "level": "fixed",
+      "where": "Rooms!68",
+      "issue": "duplicate room C1.3.248: kept capacity 20"
+    }
+  ],
+  "run_params": {
+    "allow_saturday": false,
+    "gym_capacity": 1,
+    "quota_mode": {},
+    "time_factor": {},
+    "tried": {
+      "0": [
+        "relax_user_constraints"
+      ]
+    },
+    "saturday_chunks": [],
+    "relaxed": [
+      "Physical Education только утром"
+    ]
+  }
+}

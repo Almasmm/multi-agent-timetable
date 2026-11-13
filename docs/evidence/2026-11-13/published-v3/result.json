@@ -1,0 +1,74 @@
+{
+  "status": "ok",
+  "hard_violations": {},
+  "soft": {
+    "gap_hours_total": 3374,
+    "gap_hours_per_group": 12.5,
+    "late_hours_18_plus": 245,
+    "saturday_hours": 0,
+    "precedence_violations": 36,
+    "lectures_in_lecture_halls": "388/418"
+  },
+  "failed_chunks": [],
+  "steps": 33,
+  "load": {
+    "total_calls": 41,
+    "agents": {
+      "validator": {
+        "calls": 9,
+        "share": 0.22
+      },
+      "rooms": {
+        "calls": 8,
+        "share": 0.195
+      },
+      "scheduler": {
+        "calls": 7,
+        "share": 0.171
+      },
+      "data": {
+        "calls": 5,
+        "share": 0.122
+      },
+      "genetic": {
+        "calls": 5,
+        "share": 0.122
+      },
+      "negotiator": {
+        "calls": 4,
+        "share": 0.098
+      },
+      "constraints": {
+        "calls": 3,
+        "share": 0.073
+      }
+    },
+    "max_share": 0.22
+  },
+  "files": [
+    "C:\\dev\\multi-agent-timetable\\runs\\20261113-184325-auto-regenerate-8\\timetable.xlsx",
+    "C:\\dev\\multi-agent-timetable\\runs\\20261113-184325-auto-regenerate-8\\timetable.csv",
+    "C:\\dev\\multi-agent-timetable\\runs\\20261113-184325-auto-regenerate-8\\timetable.html",
+    "C:\\dev\\multi-agent-timetable\\runs\\20261113-184325-auto-regenerate-8\\report.md"
+  ],
+  "llm": "claude/claude-opus-5-5",
+  "wall_s": 260.3,
+  "out_dir": "C:\\dev\\multi-agent-timetable\\runs\\20261113-184325-auto-regenerate-8",
+  "requirements": [
+    "[hard] Аудитория C1.3.361 недоступна в среду",
+    "Аудитория C1.1.141 недоступна в среду"
+  ],
+  "settings": {
+    "data_path": "C:\\dev\\multi-agent-timetable\\data\\input.xlsx",
+    "term": 1,
+    "programs": [],
+    "allow_saturday": false,
+    "solver_time_limit": 25.0,
+    "llm_provider": "auto",
+    "chunk_target_groups": 60,
+    "ga_enabled": true,
+    "ga_seconds": 4.0,
+    "seed": 7,
+    "warm_start": "C:\\dev\\multi-agent-timetable\\runs\\_service\\versions\\v2\\starts.json"
+  }
+}

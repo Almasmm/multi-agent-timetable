@@ -2,6 +2,7 @@
 language (via the LLM or offline rules), plus grounding to slot masks for the solver."""
 from __future__ import annotations
 
+import difflib
 import re
 from collections import defaultdict
 from typing import Literal
@@ -37,6 +38,52 @@ class ConstraintSpec(BaseModel):
 class ConstraintSet(BaseModel):
     constraints: list[ConstraintSpec] = Field(default_factory=list)
     unparsed: list[str] = Field(default_factory=list, description="sentences that could not be understood")
+
+
+# ----------------------------------------------------------------------------------------
+# Explicit hard / soft mode. The dispatcher can pin a rule's mode in the UI; it is stored as a
+# tag in front of the sentence: "[hard] ..." or "[soft:7] ..." (7 = penalty weight per hour).
+# Without a tag the parser decides from the wording ("желательно", "prefer" -> soft).
+# Soft mode only changes time windows (forbid_time); daily caps and closed rooms stay hard.
+# ----------------------------------------------------------------------------------------
+MODE_TAG = re.compile(r"^\s*\[(hard|soft)(?::(\d{1,2}))?\]\s*", re.IGNORECASE)
+SOFT_KINDS = ("forbid_time",)
+
+
+def split_mode(text: str) -> tuple[str, bool | None, int | None]:
+    """"[soft:7] text" -> ("text", False, 7); untagged text -> (text, None, None)."""
+    m = MODE_TAG.match(text)
+    if not m:
+        return text.strip(), None, None
+    return text[m.end():].strip(), m.group(1).lower() == "hard", int(m.group(2)) if m.group(2) else None
+
+
+def with_mode(text: str, hard: bool | None, weight: int | None = None) -> str:
+    """Inverse of :func:`split_mode`; ``hard=None`` removes the tag (mode from the wording)."""
+    clean = split_mode(text)[0]
+    if hard is None:
+        return clean
+    if hard:
+        return f"[hard] {clean}"
+    return f"[soft:{max(1, min(int(weight or 5), 20))}] {clean}"
+
+
+def apply_modes(cset: ConstraintSet, tagged: list[tuple[str, bool | None, int | None]]) -> ConstraintSet:
+    """Override hard/weight of parsed specs with the explicit tags. A spec is matched to its
+    sentence by ``source`` (exact, else the closest sentence - an LLM may rephrase slightly)."""
+    clean = [t[0] for t in tagged]
+    for spec in cset.constraints:
+        if spec.source in clean:
+            i = clean.index(spec.source)
+        else:
+            close = difflib.get_close_matches(spec.source, clean, n=1, cutoff=0.5)
+            i = clean.index(close[0]) if close else (0 if len(clean) == 1 else -1)
+        if i < 0 or tagged[i][1] is None:
+            continue
+        spec.hard = tagged[i][1] or spec.kind not in SOFT_KINDS
+        if tagged[i][2]:
+            spec.weight = tagged[i][2]
+    return cset
 
 
 # ----------------------------------------------------------------------------------------

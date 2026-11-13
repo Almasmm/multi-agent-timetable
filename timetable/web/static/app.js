@@ -1,6 +1,7 @@
 /* Timetable Agents - single-page UI (vanilla JS, no build step).
    Routes: #/ overview, #/schedule[/group|room/<sel>] published timetable, #/requests[/<id>|/new] staff requests,
-   #/autopilot 24/7 service, #/runs history, #/run/<id>/<tab> live + results, #/new start a run, #/agents services.
+   #/autopilot 24/7 service, #/runs history, #/run/<id>/<tab> live + results, #/new start a run, #/agents services,
+   #/data[/<category>] university data desk (data.js), #/rules, #/chat[/<agent>].
    Visual system «Аспан»: DESIGN.md (tokens live in styles.css). Floating layers: context panel, command palette, preferences. */
 "use strict";
 
@@ -121,13 +122,17 @@ const I = {
   panel: svg('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M16 15l-3-3 3-3"/>'),
   menu: svg('<path d="M4 6h16M4 12h16M4 18h16"/>'),
   x: svg('<path d="M18 6 6 18M6 6l12 12"/>'),
+  gear: svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
+  upload: svg('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>'),
+  redo: svg('<path d="M15 14l5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5 5.5 5.5 0 0 0 9.5 20H13"/>'),
 };
 // Route -> top bar (section, title); mirrors the sidebar sections.
 const ROUTES = {
-  home: ["Расписание", "Центр управления"], schedule: ["Расписание", "Опубликованное расписание"],
-  requests: ["Расписание", "Заявки сотрудников"], autopilot: ["Агенты 24/7", "Автопилот"],
-  runs: ["Агенты 24/7", "Прогоны"], run: ["Прогоны", "Прогон"], agents: ["Агенты 24/7", "Агенты"],
-  new: ["Агенты 24/7", "Новый прогон"],
+  home: ["Расписание", "Главная"], schedule: ["Расписание", "Расписание"], requests: ["Система", "Заявки сотрудников"],
+  generate: ["Расписание", "Генерация"], proposals: ["Расписание", "Предложения"], live: ["Агенты", "Работа агентов"],
+  data: ["Данные вуза", "Данные вуза"], rules: ["Агенты", "Правила"], chat: ["Агенты", "Чат с агентами"],
+  admin: ["Система", "Обзор"], autopilot: ["Система", "Автопилот"], agents: ["Система", "Агенты"],
+  runs: ["Система", "Прогоны"], run: ["Система", "Прогон"], new: ["Система", "Новый прогон"],
 };
 const REQ_STATUS = {
   new: { text: "новая", cls: "accent", c: "var(--primary)" }, review: { text: "у диспетчера", cls: "warn", c: "var(--warn)" },
@@ -199,7 +204,7 @@ const confirmDelete = id => confirm(`Удалить прогон ${id} со вс
 // minimal markdown (headings, bullets, tables, bold, inline code) for report.md and LLM texts
 function markdown(src) {
   const out = []; let list = false, table = [];
-  const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/`(.+?)`/g, "<code>$1</code>");
+  const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/`(.+?)`/g, "<code>$1</code>").replace(/(^|\s)_(\S.*?\S|\S)_(?=\s|$|[.,;:!?])/g, "$1<i>$2</i>");
   const flushTable = () => {
     if (!table.length) return;
     const rows = table.filter(r => !/^\|?\s*-{2,}/.test(r)).map(r => r.replace(/^\||\|$/g, "").split("|").map(c => c.trim()));
@@ -210,13 +215,14 @@ function markdown(src) {
   for (const raw of (src || "").split("\n")) {
     const line = raw.trimEnd();
     if (/^\|/.test(line)) { table.push(line); continue; } else flushTable();
-    if (/^\s*[-*] /.test(line)) { if (!list) { out.push("<ul>"); list = true; } out.push(`<li>${inline(line.replace(/^\s*[-*] /, ""))}</li>`); continue; }
-    if (list) { out.push("</ul>"); list = false; }
+    const li = /^\s*([-*]|\d+[.)]) /.exec(line);
+    if (li) { const tag = /\d/.test(li[1]) ? "ol" : "ul"; if (list !== tag) { if (list) out.push(`</${list}>`); out.push(`<${tag}>`); list = tag; } out.push(`<li>${inline(line.slice(li[0].length))}</li>`); continue; }
+    if (list) { out.push(`</${list}>`); list = false; }
     const m = /^(#{1,3}) (.*)/.exec(line);
     if (m) out.push(`<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`);
     else if (line.trim()) out.push(`<p>${inline(line)}</p>`);
   }
-  if (list) out.push("</ul>"); flushTable();
+  if (list) out.push(`</${list}>`); flushTable();
   return out.join("\n");
 }
 
@@ -271,7 +277,14 @@ applyPrefs();
 const closeNav = () => { document.body.classList.remove("nav-open"); $("#nav-toggle").setAttribute("aria-expanded", "false"); };
 $("#nav-toggle").onclick = () => { const open = document.body.classList.toggle("nav-open"); $("#nav-toggle").setAttribute("aria-expanded", String(open)); };
 $("#side-scrim").onclick = closeNav;
-$$("#nav a, .compose, #pilot-card").forEach(a => a.addEventListener("click", closeNav));
+$$("#nav a, .side-bottom a").forEach(a => a.addEventListener("click", closeNav));
+// «Данные вуза» is a drop-down group in the sidebar; it stays open on the data pages and remembers the choice
+function navGroup(open) {
+  const g = $("#nav-data"); if (!g) return;
+  g.setAttribute("aria-expanded", String(open)); g.parentElement.classList.toggle("open", open);
+}
+$("#nav-data").onclick = () => { const open = $("#nav-data").getAttribute("aria-expanded") !== "true"; navGroup(open); setPref("nav-data", open ? "1" : ""); };
+navGroup(pref("nav-data", "1") === "1");
 const setMini = on => { document.body.classList.toggle("side-mini", on); setPref("side-mini", on ? "1" : ""); };
 if (pref("side-mini", "")) document.body.classList.add("side-mini");
 $("#side-collapse").onclick = () => setMini(!document.body.classList.contains("side-mini"));
@@ -290,10 +303,17 @@ $("#ctx-close").onclick = closeCtx;
 const COMMANDS = [
   ["Центр управления", "#/", "dashboard"], ["Расписание: таблица всех занятий", "#/schedule", "table"],
   ["Расписание: неделя группы", "#/schedule/group", "calendar"], ["Расписание: неделя аудитории", "#/schedule/room", "door"],
-  ["Новая заявка", "#/requests/new", "squarePen"], ["Заявки", "#/requests", "inbox"],
+  ["Новое предложение", "#/proposals/new", "msg"], ["Предложения", "#/proposals", "inbox"], ["Генерация", "#/generate", "playCircle"],
+  ["Работа агентов в реальном времени", "#/live", "pulse"], ["Заявки сотрудников", "#/requests", "inbox"],
+  ["Правила: жёсткие и мягкие ограничения", "#/rules", "shield"], ["Чат с агентами", "#/chat", "msg"],
+  ["Данные вуза: сводка", "#/data/overview", "db"], ["Данные: аудитории", "#/data/rooms", "door"], ["Данные: группы", "#/data/groups", "users"],
+  ["Данные: учебный план и нагрузка", "#/data/courses", "layers"], ["Данные: сетка времени", "#/data/timeslots", "clock"],
+  ["Данные: загрузить всё из единого шаблона", () => { location.hash = "#/data/overview"; setTimeout(() => dataPick(null), 600); }, "upload"],
+  ["Расписание: редактировать перетаскиванием", () => { schedState.edit = true; schedState.version = null; location.hash = "#/schedule/group"; }, "pen"],
+  ["Чат: Планировщик (переносы занятий)", "#/chat/scheduler", "msg"], ["Чат: Ограничения (правила)", "#/chat/constraints", "msg"],
   ["Автопилот", "#/autopilot", "bot"], ["Агенты", "#/agents", "network"],
   ["Прогоны", "#/runs", "history"], ["Новый прогон", "#/new", "playCircle"],
-  ["Агенты: проверить сейчас", () => $("#tick-btn").click(), "refresh"],
+  ["Система: агенты, автопилот, прогоны", "#/admin", "gear"], ["Агенты: проверить сейчас", () => tickNow(), "refresh"],
   ["Автопилот: включить или выключить", () => setPilot(!(pilotBrief && pilotBrief.enabled)), "bot"],
   ["Вид: тема, плотность, размер текста", () => prefsBox.classList.add("on"), "sliders"],
 ];
@@ -318,7 +338,7 @@ async function drawPalette(q) {
 function renderPalette() {
   let sec = "";
   $("#pal-list").innerHTML = pal.items.length ? pal.items.map((it, i) => `${it.sec !== sec ? `<div class="pal-sec">${(sec = it.sec)}</div>` : ""}<a href="${typeof it.go === "string" ? it.go : "#"}" data-i="${i}" class="${i === pal.hl ? "hl" : ""}" role="option" aria-selected="${i === pal.hl}"><span class="ico">${I[it.ic]}</span><span class="${it.mono ? "mono" : ""}">${esc(it.label)}</span>${it.ty ? `<span class="ty">${it.ty}</span>` : ""}</a>`).join("")
-    : `<div class="empty">Ничего не найдено. Ищите по коду группы (IT-2301), аудитории (C1.3.361), имени прогона или названию команды.</div>`;
+    : `<div class="empty">Ничего не найдено</div>`;
   const hl = $("#pal-list a.hl"); if (hl) hl.scrollIntoView({ block: "nearest" });
 }
 function runPalette(it) { if (!it) return; closePalette(); if (typeof it.go === "function") it.go(); else location.hash = it.go; }
@@ -335,9 +355,9 @@ $("#pal-list").addEventListener("mousedown", e => { const a = e.target.closest("
 document.addEventListener("keydown", e => {
   if ((e.ctrlKey || e.metaKey) && ["k", "K", "л", "Л"].includes(e.key)) { e.preventDefault(); palOpen() ? closePalette() : openPalette(); return; }
   if (e.key === "Escape") { if (palOpen()) closePalette(); else if (prefsBox.classList.contains("on")) prefsBox.classList.remove("on"); else if (ctxOpen()) closeCtx(); return; }
-  if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest("input, textarea, select, [contenteditable]")) return;
+  if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest("input, textarea, select, [contenteditable], [data-keys]")) return;
   if (e.key === "/") { e.preventDefault(); openPalette(); }
-  else if (["n", "N", "т", "Т"].includes(e.key)) { e.preventDefault(); location.hash = "#/requests/new"; }
+  else if (["n", "N", "т", "Т"].includes(e.key)) { e.preventDefault(); location.hash = "#/proposals/new"; }
 });
 
 // 24/7 service status in the sidebar (polled; cheap /brief endpoint)
@@ -353,25 +373,23 @@ function pilotLine(b) {
 async function pollPilot() {
   try {
     const b = await api("/api/autopilot/brief"); pilotBrief = b;
-    $("#pilot-text").textContent = pilotLine(b);
-    const sw = $("#pilot-sw"); sw.setAttribute("aria-checked", String(!!b.enabled));
     const dot = $("#nb-pilot"); dot.hidden = false; dot.className = `live-dot ${b.enabled ? "beat" : "idle"}`;
-    const nr = $("#nb-requests"); nr.hidden = !b.open_requests; nr.textContent = b.open_requests;
+    $("#nav-admin").title = `Автопилот: ${pilotLine(b)}`;
+    const np = $("#nb-props"); np.hidden = !b.open_proposals; np.textContent = b.open_proposals || "";
+    $("#nb-gen").hidden = !(b.job || b.active_run);
     const nv = $("#nb-version"); nv.hidden = !b.current; if (b.current) nv.textContent = `v${b.current.id}`;
-    const ru = $("#nb-runs"); ru.hidden = !b.active_run; ru.textContent = "1";
-  } catch (_) { $("#pilot-text").textContent = "нет связи"; }
+  } catch (_) { $("#nav-admin").title = "нет связи"; }
 }
 async function setPilot(on) {
   try { await post("/api/autopilot/switch", { on }); toast(on ? "Автопилот включён: агенты работают 24/7" : "Автопилот выключен"); } catch (e) { toast(e.message, true); }
-  await pollPilot(); if (currentPage === "autopilot" || currentPage === "home") route();
+  await pollPilot(); if (["autopilot", "home", "admin"].includes(currentPage)) route();
 }
-$("#pilot-sw").addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); setPilot(!(pilotBrief && pilotBrief.enabled)); });
-$("#pilot-sw").addEventListener("keydown", e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); e.stopPropagation(); setPilot(!(pilotBrief && pilotBrief.enabled)); } });
-$("#tick-btn").onclick = async () => {
-  const b = $("#tick-btn"); b.classList.add("spin"); b.disabled = true;
+async function tickNow(b = null) {
+  if (b) { b.classList.add("spin"); b.disabled = true; }
   try { const r = await post("/api/autopilot/tick", {}); toast(tickText(r)); } catch (e) { toast(e.message, true); }
-  b.classList.remove("spin"); b.disabled = false; await pollPilot(); if (["autopilot", "requests", "home", "schedule"].includes(currentPage)) route();
-};
+  if (b) { b.classList.remove("spin"); b.disabled = false; }
+  await pollPilot(); if (["autopilot", "requests", "home", "schedule", "admin"].includes(currentPage)) route();
+}
 function tickText(r) {
   const s = { idle: "Агенты проверили всё: изменений нет", busy: "Идёт прогон — агенты ждут результат", started: "Агенты запустили генерацию", reviewed: "Публикатор проверил прогон", deferred: "Ждём окончания ручного прогона", error: "Ошибка такта" }[r.state] || r.state;
   return `${s}${r.reason ? ` · ${r.reason}` : ""}`;
@@ -387,12 +405,21 @@ function route() {
   const m = /^#\/run\/([A-Za-z0-9_.\-]+)(?:\/([a-z]+))?(?:\/([a-z]+))?(?:\/(.+))?/.exec(hash);
   const sm = /^#\/schedule(?:\/(group|room|table)(?:\/(.+))?)?/.exec(hash);
   const rq = /^#\/requests(?:\/(new|\d+))?/.exec(hash);
+  const ch = /^#\/chat(?:\/([a-z]+))?/.exec(hash);
+  const dm = /^#\/data(?:\/([a-z]+))?/.exec(hash);
+  const pm = /^#\/proposals(?:\/(new|\d+))?/.exec(hash);
   let name = "home";
   if (hash.startsWith("#/new")) name = "new"; else if (hash.startsWith("#/runs")) name = "runs";
   else if (hash.startsWith("#/agents")) name = "agents"; else if (m) name = "run";
   else if (sm) name = "schedule"; else if (rq) name = "requests"; else if (hash.startsWith("#/autopilot")) name = "autopilot";
+  else if (hash.startsWith("#/rules")) name = "rules"; else if (ch) name = "chat"; else if (dm) name = "data";
+  else if (hash.startsWith("#/admin")) name = "admin";
+  else if (pm) name = "proposals"; else if (hash.startsWith("#/generate")) name = "generate"; else if (hash.startsWith("#/live")) name = "live";
   currentPage = name;
-  $$("#nav a").forEach(a => a.classList.toggle("active", a.dataset.route === (name === "run" ? "runs" : name)));
+  const navKey = ["admin", "autopilot", "agents", "runs", "run", "new", "requests"].includes(name) ? "admin" : name;
+  const dataTabNow = (dm && dm[1]) || "overview";
+  $$("#nav a, #nav-admin").forEach(a => a.classList.toggle("active", a.dataset.route === navKey && (!a.dataset.tab || a.dataset.tab === dataTabNow)));
+  if (name === "data") navGroup(true);
   const [eyebrow, title] = ROUTES[name];
   $("#top-eyebrow").textContent = eyebrow; $("#top-title").textContent = name === "run" ? m[1] : title;
   closeCtx(); closePalette();
@@ -401,6 +428,8 @@ function route() {
     home: renderHome, new: renderNew, runs: renderRuns, agents: renderAgents, autopilot: renderAutopilot,
     schedule: () => renderSchedule(sm[1], sm[2] && decodeURIComponent(sm[2])), requests: () => renderRequests(rq[1]),
     run: () => renderRun(m[1], m[2], m[3], m[4] && decodeURIComponent(m[4])),
+    rules: renderRules, chat: () => renderChat(ch[1]), admin: renderAdmin,
+    proposals: () => renderProposals(pm[1]), generate: renderGenerate, live: renderLive, data: () => renderData(dm[1]),
   };
   pages[name]().catch(e => {
     main.innerHTML = `<div class="container page"><div class="card empty-state">${I.alertCircle}<h2>Не удалось открыть страницу</h2><p>${esc(e.message)}</p><div class="actions"><a class="btn" href="#/">В центр управления</a></div></div></div>`;
@@ -408,7 +437,9 @@ function route() {
 }
 window.addEventListener("hashchange", route);
 
-const crumbs = items => `<div class="crumbs"><a href="#/">Центр управления</a>${items.map(([l, h]) => ` <span>›</span> ${h ? `<a href="${h}">${l}</a>` : `<span>${l}</span>`}`).join("")}</div>`;
+// breadcrumbs start at «Система» (admin pages) unless the first item is marked as the root: [label, href, true]
+const crumbs = items => { const all = items[0] && items[0][2] ? items : [["Система", "#/admin"], ...items];
+  return `<div class="crumbs">${all.map(([l, h], i) => `${i ? " <span>›</span> " : ""}${h ? `<a href="${h}">${l}</a>` : `<span>${l}</span>`}`).join("")}</div>`; };
 function pageHead(title, sub, actions = "", crumbItems = null, meta = "") {
   return `<header class="page-head"><div>${crumbItems ? crumbs(crumbItems) : ""}<h1>${title}</h1>${sub ? `<div class="sub">${sub}</div>` : ""}${meta ? `<div class="meta">${meta}</div>` : ""}</div>${actions ? `<div class="actions">${actions}</div>` : ""}</header>`;
 }
@@ -473,70 +504,36 @@ function serviceStates(ap, active) {
 }
 const svcRow = s => { const a = agentOf(s.name); return `<a class="svc" href="#/agents#agent-${s.name}" style="--c:${a.color}"><span class="ic">${s.short || a.short}</span><span style="min-width:0"><b>${esc(s.label || a.ru)}</b><span class="d">${esc(s.d)}</span></span><span class="state ${s.st[0]}">${esc(s.st[1])}</span></a>`; };
 
-// ------------------------------------------------------------------ control center (home)
-async function renderHome() {
-  const [runs, datasets, ap, reqs] = await Promise.all([api("/api/runs"), api("/api/datasets"), api("/api/autopilot"), api("/api/requests")]);
-  const active = runs.find(r => r.status === "running" || r.status === "cancelling");
-  const ds = datasets.find(d => d.valid && d.id === ap.profile.dataset) || datasets.find(d => d.valid);
-  const cur = ap.current;
-  const pub = cur ? await getPublished(cur.id) : null;
-  const mt = pub && pub.version ? pubMetrics(pub, ds, ap.profile) : null;
-  const soft = (cur && cur.soft) || {};
-  const metric = (label, value, sub, icon, bar = null, cls = "") => `<div class="kpi metric ${cls}"><div class="l">${label}</div><span class="ico">${I[icon]}</span><div class="v">${value}</div>${bar != null ? `<div class="bar ${cls}"><i style="width:${Math.round(bar * 100)}%"></i></div>` : ""}<div class="d">${sub}</div></div>`;
-  // recent activity: versions, service jobs, staff requests and manual runs, newest first
-  const feed = [
-    ...ap.versions.map(x => ({ ts: x.ts, c: agentOf("publisher").color, href: "#/schedule", t: `Опубликована версия v${x.id}`, s: x.diff.first ? `первая версия · ${x.diff.total_hours} ак. ч в неделю` : `перенесено ${x.diff.hours_moved} ч · групп ${x.diff.groups_affected} · штраф ${num(x.score, 1)}` })),
-    ...ap.jobs.filter(j => j.status !== "published").map(j => ({ ts: j.finished || j.ts, c: agentOf("watcher").color, href: j.run_id ? `#/run/${encodeURIComponent(j.run_id)}` : "#/autopilot",
-      t: `Задание №${j.id}: ${JOB_RU[j.kind] || j.kind} — ${(JOB_STATUS[j.status] || [j.status])[0]}`, s: (j.outcome && j.outcome.reason) || j.reason })),
-    ...reqs.map(r => ({ ts: r.ts, c: agentOf("intake").color, href: `#/requests/${r.id}`, t: `Заявка №${r.id} от «${r.author}» — ${(REQ_STATUS[r.status] || REQ_STATUS.new).text}`, s: r.text })),
-    ...runs.filter(r => !/-auto-/.test(r.id)).map(r => ({ ts: r.started, c: "var(--a-orchestrator)", href: `#/run/${encodeURIComponent(r.id)}`, t: `Прогон ${r.id.replace(/^\d{8}-\d{6}-/, "")}: ${statusInfo(r.status, !!r.cancelled).text}`, s: r.programs && r.programs.length ? r.programs.join(", ") : "все программы" })),
-  ].sort((a, b) => b.ts - a.ts).slice(0, 8);
-  const lr = ap.last_result || {};
-  $("#main").innerHTML = page("", `
-    <header class="dash-head">
-      <div><h1>Расписание университета</h1>
-        <div class="ver">${esc(ap.profile.university)} · ${cur ? `опубликована версия ${vtag(cur.id)} <span class="muted">${fmtDate(cur.ts)} · триместр ${cur.term ?? "?"}</span>` : '<span class="badge warn">опубликованной версии нет</span>'}</div></div>
-      <div class="actions">
-        <a class="btn" href="#/new">${I.playCircle} Сгенерировать</a>
-        <a class="btn" href="#/autopilot" title="${esc(lr.reason || "")}"><span class="live-dot ${ap.enabled ? "beat" : "idle"}"></span>Автопилот: ${ap.enabled ? "работает" : "выключен"}</a>
-        <a class="btn primary" href="#/requests/new">${I.squarePen} Новая заявка</a>
-      </div>
-    </header>
-    ${active ? `<div class="active-strip"><div class="actions">${runStatusBadge(active)}<a href="#/run/${esc(active.id)}" class="mono"><b>${esc(active.id)}</b></a><span class="muted small">${fmtDur(active.elapsed_s)} · ${active.programs.length ? esc(active.programs.join(", ")) : "все программы"}</span></div><a class="btn primary sm" href="#/run/${esc(active.id)}/live">Ход выполнения ${I.arrow}</a></div>` : ""}
-    <div class="kpi-row c4">
-      ${mt ? metric("Конфликты", 0, "жёстких нарушений · проверено Критиком и Публикатором", "shield", null, "ok")
-        + metric("Окна", `${num(soft.gap_hours_per_group, 1)}<small>ч</small>`, `на группу в неделю · всего ${num(soft.gap_hours_total, 0)} ч`, "clock")
-        + metric("Покрытие групп", `${pct(mt.groups / (mt.total || 1))}`, `${mt.groups} из ${mt.total} групп профиля в расписании`, "users", mt.groups / (mt.total || 1))
-        + metric("Загрузка аудиторий", pct(mt.util), `${mt.roomHours} из ${mt.fund * mt.days * 12} ауд.-часов · ${mt.fund} ауд., ${mt.days === 6 ? "Пн–Сб" : "Пн–Пт"} 08–20`, "door", mt.util)
-        : `<div class="kpi" style="grid-column:1/-1"><div class="empty-state small">${I.cal}<p>Метрики появятся после первой опубликованной версии. ${ap.enabled ? "Автопилот уже работает над ней." : "Включите автопилот — агенты сгенерируют, проверят и опубликуют расписание сами."}</p>${ap.enabled ? "" : `<div class="actions"><button class="btn primary sm" id="h-on">${I.bot} Включить автопилот</button></div>`}</div></div>`}
-    </div>
-    <div class="grid c3">
-      <section class="card">
-        <div class="card-head"><h2>Последние события</h2><a class="btn sm ghost" href="#/autopilot">Журнал ${I.arrow}</a></div>
-        ${feed.length ? `<div class="feed">${feed.map(f => `<a class="it" href="${f.href}"><span class="tm">${fmtWhen(f.ts)}</span><span class="dt" style="--c:${f.c}"></span><span class="tx">${esc(f.t)}<small>${esc(f.s || "")}</small></span></a>`).join("")}</div>`
-          : `<div class="empty-state small">${I.clock}<p>Событий пока нет.</p></div>`}
-      </section>
-      <section class="card mini-runs">
-        <div class="card-head"><h2>Последние прогоны</h2><a class="btn sm ghost" href="#/runs">Все ${I.arrow}</a></div>
-        ${runs.length ? `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Прогон</th><th>Статус</th><th class="num" title="Жёстких нарушений">Наруш.</th><th class="num">Когда</th></tr></thead><tbody>
-          ${runs.slice(0, 7).map(r => `<tr class="link" data-id="${esc(r.id)}"><td class="id"><a href="#/run/${esc(r.id)}">${esc(r.id.replace(/^\d{8}-\d{6}-/, ""))}</a></td><td>${runStatusBadge(r)}</td><td class="num" style="color:${hvColor(r.hard_violations)}">${r.hard_violations ?? "—"}</td><td class="num muted mono">${fmtWhen(r.started)}</td></tr>`).join("")}</tbody></table></div>`
-          : `<div class="empty-state small">${I.history}<p>Прогонов пока нет.</p></div>`}
-      </section>
-      <section class="card">
-        <div class="card-head"><h2>Состояние агентов</h2><a class="btn sm ghost" href="#/agents">Все агенты ${I.arrow}</a></div>
-        <div class="svc-list">${serviceStates(ap, active).map(svcRow).join("")}</div>
-      </section>
+// ------------------------------------------------------------------ «Система»: agents, autopilot, runs (admin work, out of the operator menu)
+async function renderAdmin() {
+  const [b, runs, spec] = await Promise.all([api("/api/autopilot/brief"), api("/api/runs"), api("/api/agents")]);
+  if (currentPage !== "admin") return;
+  const n = (spec.service || []).length + spec.agents.length;
+  const tile = (href, ic, t, s) => `<a class="adm-tile" href="${href}"><span class="adm-ic">${I[ic]}</span><span class="adm-t"><b>${t}</b><small>${s}</small></span>${I.arrow}</a>`;
+  $("#main").innerHTML = page(pageHead("Система", "Агенты, автопилот и прогоны"), `
+    <section class="card adm-pilot">
+      <span class="adm-ic ${b.enabled ? "on" : ""}">${I.bot}</span>
+      <span class="adm-t"><b>Автопилот 24/7</b><small>${esc(pilotLine(b))}</small></span>
+      <span class="actions"><button class="btn sm" id="adm-tick">${I.refresh} Проверить</button>
+        <button class="big-switch ${b.enabled ? "on" : ""}" id="adm-sw" aria-pressed="${b.enabled}">${b.enabled ? "Вкл" : "Выкл"}<span class="track"></span></button></span>
+    </section>
+    <div class="adm-grid">
+      ${tile("#/autopilot", "bot", "Автопилот", "Такты, задания, профиль")}
+      ${tile("#/agents", "network", "Агенты", plural(n, "агент", "агента", "агентов"))}
+      ${tile("#/runs", "history", "Прогоны", plural(runs.length, "прогон", "прогона", "прогонов"))}
+      ${tile("#/new", "playCircle", "Новый прогон", "Ручная генерация")}
     </div>`);
-  bindRunRows($("#main"));
-  const on = $("#h-on"); if (on) on.onclick = () => setPilot(true);
+  $("#adm-sw").onclick = () => setPilot(!b.enabled);
+  $("#adm-tick").onclick = e => tickNow(e.currentTarget);
 }
+
+// ------------------------------------------------------------------ control center (home)
+document.addEventListener("click", e => { if (e.target.closest("[data-studio-edit]")) { schedState.edit = true; schedState.version = null; } });
 // The 24/7 loop: request -> watcher -> generation pipeline -> publisher -> students. `on` highlights a node.
 function serviceLoop(on = "") {
-  const nodes = [["intake", "Заявка и Приёмная", "Сотрудник пишет словами; Приёмная проверяет, что фраза понята и группа или аудитория существуют.", I.inbox],
-    ["watcher", "Наблюдатель", "Видит новую заявку, правку Excel или простой и предлагает задание: перегенерация или поиск улучшения.", I.globe],
-    ["scheduler", "Генерация: 9 агентов", "Данные → правила → ГА → CP-SAT → аудитории → критик → переговоры; тёплый старт от опубликованной версии.", I.layers],
-    ["publisher", "Публикатор", "Пропускает только 0 нарушений; улучшение — если штраф меньше на 2 %, а в семестре ещё и не больше 10 % переносов.", I.shield],
-    ["reporter", "Студенты и сотрудники", "Новая версия со штемпелем, объявление «что изменилось», Excel и календарь .ics для каждой группы.", I.calPlus]];
+  const nodes = [["intake", "Приёмная", "Разбирает заявку", I.inbox], ["watcher", "Наблюдатель", "Ставит задание", I.globe],
+    ["scheduler", "Генерация", "9 агентов строят расписание", I.layers], ["publisher", "Публикатор", "Выпускает только 0 нарушений", I.shield],
+    ["reporter", "Студенты", "Версия, Excel и .ics", I.calPlus]];
   return `<div class="loop">${nodes.map(([a, t, d, ic]) => `<div class="node ${on === a ? "on" : ""}" style="--c:${agentOf(a).color}"><div class="ic">${ic}</div><b>${t}</b><p>${d}</p></div>`).join("")}</div>`;
 }
 // mail-list rows
@@ -600,13 +597,12 @@ async function renderRuns() {
     const counts = { all: runs.length, ok: runs.filter(r => r.status === "ok").length, partial: runs.filter(r => r.status === "partial").length,
       bad: runs.filter(isBad).length, stopped: runs.filter(r => r.cancelled).length, live: runs.filter(r => ["running", "cancelling"].includes(r.status)).length };
     const cmp = runs.filter(r => runsState.compare.includes(r.id));
-    main.innerHTML = page(pageHead("Прогоны", `${plural(runs.length, "прогон", "прогона", "прогонов")} в папке runs/. Отметьте до трёх прогонов, чтобы сравнить качество.`, `<a class="btn primary" href="#/new">${I.plus} Новый прогон</a>`), `
+    main.innerHTML = page(pageHead("Прогоны", `${plural(runs.length, "прогон", "прогона", "прогонов")} · отметьте до трёх для сравнения`, `<a class="btn primary" href="#/new">${I.plus} Новый прогон</a>`, [["Прогоны"]]), `
       <section class="card">
         <div class="actions" style="justify-content:space-between;margin-bottom:12px">
           <div class="chips" id="f" role="group" aria-label="Фильтр по статусу">${[["all", "все"], ["ok", "успешные"], ["partial", "частичные"], ["stopped", "остановленные"], ["bad", "с ошибкой"], ["live", "идут сейчас"]].map(([k, l]) => `<button type="button" class="chip ${f === k ? "on" : ""}" data-f="${k}" aria-pressed="${f === k}">${l}<span class="n">${counts[k]}</span></button>`).join("")}</div>
           <div class="search">${I.search}<input type="text" id="q" placeholder="Поиск по имени или программе" aria-label="Поиск" value="${esc(runsState.q)}"></div></div>
-        ${shown.length ? runsTable(shown, true, runsState.compare) : `<div class="empty-state">${I.search}<h3>${runs.length ? "Ничего не найдено" : "Прогонов пока нет"}</h3><p>${runs.length ? "Измените фильтр или строку поиска." : "Запустите первый прогон — демо на программе IT занимает около десяти секунд."}</p><div class="actions"><a class="btn primary" href="#/new">${I.plus} Новый прогон</a></div></div>`}
-        ${runsState.compare.length === 1 ? '<p class="hint" style="margin-top:8px">Отметьте ещё хотя бы один прогон, чтобы увидеть сравнение.</p>' : ""}
+        ${shown.length ? runsTable(shown, true, runsState.compare) : `<div class="empty-state">${I.search}<h3>${runs.length ? "Ничего не найдено" : "Прогонов пока нет"}</h3><p>${runs.length ? "Измените фильтр или строку поиска." : "Запустите первый прогон."}</p><div class="actions"><a class="btn primary" href="#/new">${I.plus} Новый прогон</a></div></div>`}
       </section>
       ${cmp.length >= 2 ? `<section class="card"><div class="card-head"><h2>Сравнение ${plural(cmp.length, "прогона", "прогонов", "прогонов")}</h2><button class="btn sm subtle" id="cmp-clear">Сбросить</button></div>${compareTable(cmp)}</section>` : ""}`);
     $$("#f .chip").forEach(c => c.onclick = () => { runsState.filter = c.dataset.f; draw(); });
@@ -655,13 +651,13 @@ async function renderAgents() {
       <td>${ld ? `<div class="share"><div class="bar ${ld.share > 0.4 && !isSvc ? "bad" : ""}"><i style="width:${Math.round(ld.share * 100)}%;${ld.share > 0.4 && !isSvc ? "" : `background:${m.color}`}"></i></div><span>${pct(ld.share)}</span></div><div class="tiny muted">${plural(ld.calls, "вызов", "вызова", "вызовов")}</div>` : '<span class="muted small">—</span>'}</td></tr>`;
   };
   const head = "<tr><th>Агент</th><th>Роль</th><th>Статус</th><th class=\"num\">Инструменты</th><th>Решения</th><th>Доля вызовов</th></tr>";
-  $("#main").innerHTML = page(pageHead("Агенты", `${plural(all.length, "агент", "агента", "агентов")}: ${(spec.service || []).length} в службе 24/7 и ${spec.agents.length} в конвейере генерации. У каждого одна роль и не более пяти инструментов; нажмите на строку, чтобы открыть спецификацию.`,
-    `<a class="btn" href="#/autopilot">${I.bot} Автопилот</a><button class="btn primary" id="ag-tick">${I.refresh} Проверить сейчас</button>`), `
+  $("#main").innerHTML = page(pageHead("Агенты", `${plural(all.length, "агент", "агента", "агентов")} · одна роль, ≤ 5 инструментов`,
+    `<button class="btn primary" id="ag-tick">${I.refresh} Проверить сейчас</button>`, [["Агенты"]]), `
     <section class="card pad0 ops">
       <div class="tbl-wrap" style="border:0;border-radius:0"><table class="tbl"><thead>${head}</thead><tbody>
-        <tr class="grp"><td colspan="6">Служба 24/7 · нагрузка за 2 дня из runs/_service · норма «≤ 40 %» проверяется на прогоне генерации</td></tr>
+        <tr class="grp"><td colspan="6">Служба 24/7</td></tr>
         ${(spec.service || []).map(a => row(a, true)).join("")}
-        <tr class="grp"><td colspan="6">Конвейер генерации · ${last ? `нагрузка прогона ${esc(last.id)}: макс. доля ${pct(runLoad.max_share)} при норме ≤ 40 %` : "прогонов ещё не было"}</td></tr>
+        <tr class="grp"><td colspan="6">Конвейер генерации${last ? ` · макс. доля ${pct(runLoad.max_share)} (норма ≤ 40 %)` : ""}</td></tr>
         ${spec.agents.map(a => row(a, false)).join("")}
       </tbody></table></div>
     </section>
@@ -679,7 +675,7 @@ async function renderAgents() {
     <details class="fold" id="tz"><summary>${I.chev} Требования ТЗ и где они выполняются<span class="hint">${spec.requirements.length} требований</span></summary><div class="in">
       <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Требование</th><th>Как выполнено</th><th>Где в коде</th></tr></thead>
         <tbody>${spec.requirements.map(r => `<tr><td><span class="ok-mark">${I.check}</span>${esc(r.req)}</td><td>${esc(r.how)}</td><td><code class="key">${esc(r.where)}</code></td></tr>`).join("")}</tbody></table></div></div></details>`);
-  $("#ag-tick").onclick = () => $("#tick-btn").click();
+  $("#ag-tick").onclick = e => tickNow(e.currentTarget);
   const open = name => {
     const a = all.find(x => x.name === name); if (!a) return;
     $$(".svc-row").forEach(r => r.classList.toggle("on", r.dataset.a === name));
@@ -699,7 +695,8 @@ function agentPanel(a) {
     ${[["Что делает", a.does], ["Входы", a.inputs], ["Выходы", a.outputs]].filter(([, xs]) => (xs || []).length).map(([h, xs]) => `<div><div class="h-sm">${h}</div>${list(xs)}</div>`).join("")}
     ${(a.blackboard || []).length ? `<div><div class="h-sm">Ключи blackboard</div><div class="chips tight">${a.blackboard.map(k => `<code class="key">${esc(k)}</code>`).join("")}</div></div>` : ""}
     ${a.tools.length ? `<div><div class="h-sm">Инструменты</div><div class="tbl-wrap"><table class="tbl"><tbody>${a.tools.map(t => `<tr><td><code class="key">${esc(t.name)}</code><div class="small" style="margin-top:4px">${esc(t.ru || t.en)}</div></td></tr>`).join("")}</tbody></table></div></div>` : ""}
-    <dl><dt>LLM</dt><dd>${esc(a.llm)}</dd><dt>Готово, когда</dt><dd>${esc(a.done)}</dd><dt>Надёжность</dt><dd>${esc(a.reliability)}</dd></dl>`);
+    <dl><dt>LLM</dt><dd>${esc(a.llm)}</dd><dt>Готово, когда</dt><dd>${esc(a.done)}</dd><dt>Надёжность</dt><dd>${esc(a.reliability)}</dd></dl>`,
+    `<a class="btn sm primary" href="#/chat/${esc(a.name)}">${I.msg} Написать агенту</a>`);
 }
 // ------------------------------------------------------------------ new run
 const draft = { dataset: null, term: 1, programs: [], requirements: "", allow_saturday: false, solver_seconds: 25, chunk_groups: 60, stream: 2, llm: "auto", name: "run", warm_start: false };
@@ -736,30 +733,29 @@ async function renderNew() {
     const est = chunks * (draft.solver_seconds || 25) + 15;
     const nReq = draft.requirements.split("\n").filter(l => l.trim()).length;
     const valid = datasets.filter(d => d.valid), invalid = datasets.filter(d => !d.valid);
-    main.innerHTML = page(pageHead("Новый прогон", "Выберите данные и программы, опишите требования — агенты сделают остальное.", "", [["Новый прогон"]]), `
+    main.innerHTML = page(pageHead("Новый прогон", "", "", [["Новый прогон"]]), `
       <div class="presets">${PRESETS.map(p => `<button type="button" class="preset" data-p="${p.id}"><span class="pi">${I.bolt}</span><span><b>${p.title}</b><span class="sub">${p.sub}</span></span></button>`).join("")}</div>
       <div class="new-layout">
         <div class="new-main">
-          <section class="card"><div class="card-head"><h2><span class="num-badge">1</span>Данные вуза</h2><span class="hint">${I.db} Excel с листами программ, Groups, Rooms и Timeslots. Файлы проверяются тем же загрузчиком, что и Data-агент.</span></div>
+          <section class="card"><div class="card-head"><h2><span class="num-badge">1</span>Данные вуза</h2></div>
             <div class="grid c3" id="ds-grid">${valid.map(d => `<button type="button" class="ds-card ${d.id === draft.dataset ? "on" : ""}" data-id="${esc(d.id)}" title="${esc(d.path)}" aria-pressed="${d.id === draft.dataset}">
               <div class="actions" style="justify-content:space-between"><b>${I.db}${esc(d.name)}</b>${d.id === draft.dataset ? `<span class="ok-mark">${I.check}</span>` : ""}</div><div class="small muted">${esc(d.dir)}/ · ${d.size_kb} КБ${d.issues.warning ? ` · <span style="color:var(--warn)">${d.issues.warning} предупр.</span>` : ""}</div>
               <div class="stats"><span>${d.programs.length} прогр.</span><span>${d.groups} групп</span><span>${d.rooms} ауд.</span><span>${d.courses} курсов</span><span>${d.students} студ.</span></div></button>`).join("") || `<div class="empty-state" style="grid-column:1/-1">${I.db}<h3>Нет пригодных файлов</h3><p>Загрузите Excel вуза ниже.</p></div>`}</div>
-            ${invalid.length ? `<details style="margin-top:10px"><summary class="hint" style="cursor:pointer">Ещё ${plural(invalid.length, "файл", "файла", "файлов")} не подходят (сырые учебные планы без листов Groups / Rooms / Timeslots)</summary><div class="hint" style="margin-top:6px">${invalid.map(d => `<div>${esc(d.dir)}/${esc(d.id)} — ${esc(d.error || "")}</div>`).join("")}</div></details>` : ""}
-            <div class="dropzone" id="drop" style="margin-top:12px" tabindex="0" role="button">${I.down}Перетащите .xlsx сюда или нажмите, чтобы загрузить свой файл</div>
+            ${invalid.length ? `<details style="margin-top:10px"><summary class="hint" style="cursor:pointer">Ещё ${plural(invalid.length, "файл", "файла", "файлов")} не подходят</summary><div class="hint" style="margin-top:6px">${invalid.map(d => `<div>${esc(d.dir)}/${esc(d.id)} — ${esc(d.error || "")}</div>`).join("")}</div></details>` : ""}
+            <div class="dropzone" id="drop" style="margin-top:12px" tabindex="0" role="button">${I.down}Перетащите .xlsx или нажмите</div>
             <input type="file" id="file" accept=".xlsx" style="display:none"></section>
           <section class="card"><div class="card-head"><h2><span class="num-badge">2</span>Параметры расписания</h2></div>
             <div class="form-row" style="margin-bottom:14px">
-              <div class="field"><label>Триместр учебного года</label><div class="seg" id="term" role="group">${[1, 2, 3].map(t => `<button type="button" class="${draft.term === t ? "on" : ""}" data-t="${t}" aria-pressed="${draft.term === t}">${t}</button>`).join("")}</div><div class="hint">1-й курс учится в ${draft.term}-м триместре, 2-й — в ${draft.term + 3}-м, 3-й — в ${draft.term + 6}-м</div></div>
+              <div class="field"><label>Триместр учебного года</label><div class="seg" id="term" role="group">${[1, 2, 3].map(t => `<button type="button" class="${draft.term === t ? "on" : ""}" data-t="${t}" aria-pressed="${draft.term === t}">${t}</button>`).join("")}</div></div>
               <div class="field"><label for="secs">Время решателя на кусок, с</label><input type="number" id="secs" min="1" max="600" value="${draft.solver_seconds}"><div class="hint">больше времени → меньше окон, дольше прогон</div></div>
-              <div class="field"><label>Суббота</label><label class="switch"><input type="checkbox" id="sat" ${draft.allow_saturday ? "checked" : ""}><span class="track"></span><span>разрешить занятия с самого начала</span></label><div class="hint">иначе суббота открывается только как уступка</div></div>
+              <div class="field"><label>Суббота</label><label class="switch"><input type="checkbox" id="sat" ${draft.allow_saturday ? "checked" : ""}><span class="track"></span><span>разрешить занятия с самого начала</span></label></div>
             </div>
             <label class="switch" style="margin-bottom:14px" title="${brief.current ? "" : "нет опубликованной версии"}"><input type="checkbox" id="warm" ${draft.warm_start ? "checked" : ""} ${brief.current ? "" : "disabled"}><span class="track"></span><span><b>Тёплый старт от опубликованной версии${brief.current ? ` v${brief.current.id}` : ""}</b> — агенты двигают занятия, только если правило требует; студентам меньше изменений</span></label>
             <div class="field"><label>Программы</label>
               <div class="chips" id="progs" role="group" aria-label="Программы"><button type="button" class="chip ${draft.programs.length ? "" : "on"}" data-p="" aria-pressed="${!draft.programs.length}">Все программы</button>${ds ? ds.programs.map(p => `<button type="button" class="chip ${draft.programs.includes(p.code) ? "on" : ""}" data-p="${esc(p.code)}" aria-pressed="${draft.programs.includes(p.code)}">${esc(p.code)}<span class="n">${p.groups}</span></button>`).join("") : ""}</div></div>
             <div class="hint" style="margin-top:10px">Выбрано <b>${plural(groups, "группа", "группы", "групп")}</b> → ${plural(chunks, "кусок", "куска", "кусков")} по ~${draft.chunk_groups} групп, ожидаемое время ≈ <b>${fmtDur(est)}</b>.</div></section>
           <section class="card"><div class="card-head"><h2><span class="num-badge">3</span>Требования на естественном языке</h2><span class="muted small">${nReq ? plural(nReq, "строка", "строки", "строк") : "необязательно"}</span></div>
-            <textarea id="reqs" aria-label="Требования" placeholder="Одно требование в строке, по-русски или по-английски…">${esc(draft.requirements)}</textarea>
-            <div class="hint" style="margin-top:6px">Жёсткие правила («не ставить», «недоступна») решатель соблюдает всегда; мягкие («желательно») штрафуются. Если правило делает кусок невыполнимым, Negotiator ослабит его и объяснит почему.</div>
+            <textarea id="reqs" aria-label="Требования" placeholder="Одно требование в строке">${esc(draft.requirements)}</textarea>
             <div class="chips" style="margin-top:10px" id="examples">${EXAMPLE_REQS.map(e => `<button type="button" class="chip" data-e="${esc(e)}">+ ${esc(e)}</button>`).join("")}</div>
             <div id="preview" class="preview"></div></section>
           <details class="card adv"><summary><span class="num-badge">4</span>Дополнительные настройки</summary>
@@ -775,8 +771,7 @@ async function renderNew() {
             <table class="tbl kv"><tr><td>Данные</td><td>${ds ? esc(ds.name) : "—"}</td></tr><tr><td>Триместр</td><td>${draft.term}</td></tr>
               <tr><td>Программы</td><td>${draft.programs.length ? esc(draft.programs.join(", ")) : "все"}</td></tr><tr><td>Групп</td><td>${groups}</td></tr>
               <tr><td>Требований</td><td>${nReq}</td></tr><tr><td>Тёплый старт</td><td>${draft.warm_start ? "да" : "нет"}</td></tr><tr><td>LLM</td><td>${draft.llm}</td></tr><tr><td>Оценка времени</td><td>${fmtDur(est)}</td></tr></table>
-            <button class="btn primary lg block" id="go" style="margin-top:16px" ${ds ? "" : "disabled"}>${I.play} Сгенерировать расписание</button>
-            <div class="hint" style="margin-top:10px">Прогон идёт в фоне, страницу можно закрывать. Одновременно выполняется один прогон.</div></div>
+            <button class="btn primary lg block" id="go" style="margin-top:16px" ${ds ? "" : "disabled"}>${I.play} Сгенерировать расписание</button></div>
           <div class="card soft"><div class="l-cap">Что произойдёт</div><ol class="timeline-list">${STAGES.map(s => `<li><span class="agent-dot" style="--c:${AGENT_BY[s.agent].color}"></span>${s.label} <span class="muted small">· ${AGENT_BY[s.agent].ru}</span></li>`).join("")}</ol></div>
         </aside></div>`);
     $$(".preset").forEach(b => b.onclick = () => { const p = PRESETS.find(x => x.id === b.dataset.p); draft.programs = [...p.programs]; draft.solver_seconds = p.seconds; draft.name = p.id; render(); toast(`Применён набор «${p.title}»`); });
@@ -834,25 +829,35 @@ function bindCombo(root, opts, current, onPick) {
 }
 
 // ------------------------------------------------------------------ published timetable: data grid of all sessions + week grid of one group / room
-const schedState = { version: null };
+const schedState = { version: null, edit: false };
 let reqPrefill = ""; // text handed from the timetable to the request form
-async function renderSchedule(mode, sel) {
+async function renderSchedule(mode, sel, keepScroll = false) {
   mode = mode === "group" || mode === "room" ? mode : "table";
+  const scroll = keepScroll ? [$("#work").scrollTop, ($(".tt-wrap") || {}).scrollTop || 0] : null;
   const ap = await api("/api/autopilot");
   const pub = await getPublished(schedState.version || (ap.current && ap.current.id));
   const main = $("#main");
   if (!pub.version) {
-    main.innerHTML = page("", `<section class="card"><div class="empty-state">${I.cal}<h2>Опубликованной версии пока нет</h2>
-      <p>Расписание публикует агент «Публикатор» после проверки прогона. Включите автопилот — агенты сгенерируют первую версию по профилю вуза — или запустите прогон вручную.</p>
+    main.innerHTML = page("", `<section class="card"><div class="empty-state">${I.cal}<h2>Расписания пока нет</h2>
+      <p>Агенты опубликуют первую версию автоматически.</p>
       <div class="actions">${ap.enabled ? `<button class="btn primary" id="s-tick">${I.refresh} Проверить сейчас</button>` : `<button class="btn primary" id="s-on">${I.bot} Включить автопилот</button>`}<a class="btn" href="#/new">${I.playCircle} Новый прогон</a></div></div></section>`);
     const on = $("#s-on"); if (on) on.onclick = () => setPilot(true);
-    const tk = $("#s-tick"); if (tk) tk.onclick = () => $("#tick-btn").click();
+    const tk = $("#s-tick"); if (tk) tk.onclick = e => tickNow(e.currentTarget);
     return;
   }
   const v = pub.version, m = v.metrics || {}, d = v.diff || {};
   const latest = ap.current && ap.current.id === v.id;
   const prev = ap.versions.filter(x => x.id < v.id).sort((a, b) => b.id - a.id)[0];
   const changed = prev && !d.first ? await changedSet(pub, prev.id) : null;
+  let edit = latest ? await api("/api/edit").catch(() => null) : null;
+  const editing = !!(schedState.edit && latest && edit && edit.base != null);
+  if (editing && mode === "table") mode = "group"; // drag & drop works on the week grid
+  let view = pub, draftChanged = null;
+  if (editing) {
+    edit = await api("/api/edit?rows=1");
+    view = { ...pub, rows: edit.rows, groups: edit.groups, rooms: edit.rooms };
+    const base = new Set(pub.rows.map(rowKey)); draftChanged = new Set(edit.rows.filter(r => !base.has(rowKey(r))).map(rowKey));
+  }
   if (currentPage !== "schedule") return;
   main.innerHTML = `<div class="container wide page">
     <div class="sched-bar">
@@ -861,16 +866,36 @@ async function renderSchedule(mode, sel) {
       <div class="meta"><span>триместр ${m.term ?? "?"}</span><span>${plural(pub.groups.length, "группа", "группы", "групп")}</span><span>${pub.rows.length} ак. ч в неделю</span><span style="color:var(--ok)">0 нарушений</span>${d.first ? "" : `<span>перенесено ${d.hours_moved} ч у ${plural(d.groups_affected || 0, "группы", "групп", "групп")}</span>`}</div>
       <div class="actions right">
         <div class="seg" id="s-view" role="tablist" aria-label="Вид">${[["table", "Таблица", "table"], ["group", "Неделя группы", "calendar"], ["room", "Неделя аудитории", "door"]].map(([k, l, ic]) => `<button type="button" role="tab" aria-selected="${mode === k}" class="${mode === k ? "on" : ""}" data-m="${k}">${I[ic]}${l}</button>`).join("")}</div>
+        ${latest ? `<button class="btn sm ${editing ? "on" : ""}" id="s-edit" title="Перетаскивание занятий с проверкой правил">${I.pen} ${editing ? "Редактирование" : edit && edit.count ? `Черновик · ${edit.count}` : "Редактировать"}</button>` : ""}
         <a class="btn sm" href="/api/published/files/timetable.xlsx?version=${v.id}">${I.down} Excel</a>
         ${latest ? "" : `<button class="btn sm primary" id="s-latest">К действующей версии</button>`}
       </div>
     </div>
+    ${schedKpis(ap, v, latest, changed, edit)}
+    ${editing ? draftBar(edit, pub) : ""}
     <section class="card pad0 print-host" id="s-body"></section></div>`;
-  $$("#s-view button").forEach(b => b.onclick = () => { location.hash = b.dataset.m === "table" ? "#/schedule" : `#/schedule/${b.dataset.m}`; });
+  $$("#s-view button").forEach(b => b.onclick = () => { if (b.dataset.m === "table") schedState.edit = false; location.hash = b.dataset.m === "table" ? "#/schedule" : `#/schedule/${b.dataset.m}`; });
+  const rerender = () => renderSchedule(mode, sel, true);
+  const se = $("#s-edit"); if (se) se.onclick = () => { schedState.edit = !schedState.edit; if (schedState.edit && mode === "table") location.hash = "#/schedule/group"; else renderSchedule(mode, sel, true); };
+  if (editing) bindDraftBar(edit, rerender);
   $("#s-ver").onclick = () => versionPanel(pub, ap, mode, sel);
   const lt = $("#s-latest"); if (lt) lt.onclick = () => { schedState.version = null; renderSchedule(mode, sel); };
   if (mode === "table") scheduleGrid($("#s-body"), pub, changed);
-  else weekView($("#s-body"), pub, ap, mode, sel, changed);
+  else weekView($("#s-body"), view, ap, mode, sel, editing ? draftChanged : changed, editing ? rerender : null);
+  if (scroll) { $("#work").scrollTop = scroll[0]; const w = $(".tt-wrap"); if (w) w.scrollTop = scroll[1]; }
+}
+
+// Numbers of the version under the title: quality, changes, draft, a shortcut to propose a change.
+function schedKpis(ap, v, latest, changed, edit) {
+  const s = (latest && ap.current && ap.current.soft) || (v.metrics || {}), m = v.metrics || {};
+  const it = (val, l, cls = "", title = "") => `<div class="sk ${cls}" title="${esc(title)}"><b>${val}</b><small>${l}</small></div>`;
+  return `<div class="sched-kpis">
+    ${it(0, "конфликтов", "ok")}${it(num(s.gap_hours_per_group, 1), "ч окон на группу", "", `всего ${num(s.gap_hours_total, 0)} ч`)}
+    ${it(num(s.late_hours_18_plus, 0), "ч после 18:00")}${it(num(s.saturday_hours, 0), "ч в субботу")}
+    ${s.lectures_in_lecture_halls != null ? it(num(s.lectures_in_lecture_halls, 0), "лекций в лекц. залах") : ""}
+    ${changed ? it(changed.size, "строк изменилось", "accent") : ""}
+    ${edit && edit.count ? `<a class="sk warn" href="#/schedule/group" data-studio-edit><b>${edit.count}</b><small>в черновике</small></a>` : ""}
+    <span class="sp"></span><a class="btn sm" href="#/proposals/new">${I.msg} Предложить изменение</a></div>`;
 }
 
 // Version card in the context panel: announcement, what changed, other versions, rules.
@@ -883,8 +908,8 @@ function versionPanel(pub, ap, mode, sel) {
       : `<div class="kpi-row c3 inner">${kpi(d.hours_moved, "ч перенесено")}${kpi(d.room_changes, "ч смена ауд.")}${kpi(d.groups_affected, "групп")}</div>
       ${groupsTop.length ? `<div><div class="h-sm">Кого коснулось</div><div class="chips tight">${groupsTop.map(([g, x]) => `<a class="chip" href="#/schedule/group/${encodeURIComponent(g)}" title="перенесено ${x.moved} ч, смена аудитории ${x.rooms} ч"><span class="mono">${esc(g)}</span><span class="n">${x.moved + x.rooms}</span></a>`).join("")}</div></div>` : ""}`}
     <div><div class="h-sm">Версии</div>${ap.versions.map(x => `<a class="ver ${x.id === v.id ? "on" : ""}" href="#" data-v="${x.id}">${vtag(x.id)}<span style="min-width:0"><b class="small">${esc(JOB_RU[x.kind] || x.kind || "версия")}</b><div class="tiny muted">${x.diff.first ? "первая версия" : `перенесено ${x.diff.hours_moved} ч · штраф ${num(x.score, 1)}`}</div></span><span class="tiny mono muted">${fmtWhen(x.ts)}</span></a>`).join("")}</div>
-    <div><div class="h-sm">Правила этой версии</div>${(m.requirements || []).length ? `<ul class="nice">${m.requirements.map(r => `<li>${esc(r)}</li>`).join("")}</ul>` : '<div class="hint">Только встроенные правила вуза: одна пара у группы за раз, вместимость и тип аудиторий, не более 8 часов в день, обед.</div>'}</div>`,
-    `<a class="btn sm" href="/api/published/files/timetable.xlsx?version=${v.id}">${I.down} Excel</a><a class="btn sm primary" href="#/requests/new">${I.squarePen} Предложить изменение</a>`);
+    <div><div class="h-sm">Правила этой версии</div>${(m.requirements || []).length ? `<ul class="nice">${m.requirements.map(r => `<li>${esc(r)}</li>`).join("")}</ul>` : '<div class="hint">Только встроенные правила.</div>'}</div>`,
+    `<a class="btn sm" href="/api/published/files/timetable.xlsx?version=${v.id}">${I.down} Excel</a><a class="btn sm primary" href="#/proposals/new">${I.msg} Предложить изменение</a>`);
   $$("#ctx .ver[data-v]").forEach(a => a.onclick = e => {
     e.preventDefault(); const id = +a.dataset.v;
     schedState.version = ap.current && id === ap.current.id ? null : id; closeCtx(); renderSchedule(mode, sel);
@@ -901,14 +926,18 @@ function sessionPanel(r, pub, changed) {
     <dl><dt>Группа</dt><dd class="mono">${esc(r.group)}</dd><dt>Программа</dt><dd>${esc(r.program)}, ${r.year} курс</dd>
       <dt>Аудитория</dt><dd class="mono">${esc(room)}</dd><dt>Время</dt><dd>${DAY_RU[r.day]}, <span class="mono">${esc(r.time)}</span></dd>
       <dt>Поток</dt><dd>${mates.length > 1 ? `${plural(mates.length, "группа", "группы", "групп")}: <span class="mono">${mates.map(esc).join(", ")}</span>` : "одна группа"}</dd></dl>
-    <div class="sub-card"><div class="h-sm">Как изменить занятие</div><p class="small muted" style="margin:0">Расписание правят агенты: заявку проверит Приёмная, Наблюдатель перестроит расписание с тёплым стартом (минимум переносов), Публикатор выпустит версию только без нарушений.</p></div>`,
-    `<a class="btn sm" href="#/schedule/group/${encodeURIComponent(r.group)}">${I.calendar} Неделя группы</a>${r.room !== "online" ? `<a class="btn sm" href="#/schedule/room/${encodeURIComponent(r.room)}">${I.door} Аудитория</a>` : ""}<button class="btn sm primary" id="ctx-req">${I.squarePen} Предложить изменение</button>`);
-  $("#ctx-req").onclick = () => { reqPrefill = `Группа ${r.group}: «${r.course}», ${DAY_SHORT[r.day]} ${r.time.slice(0, 5)}, ${room} — `; closeCtx(); location.hash = "#/requests/new"; };
+    <div class="sub-card"><div class="h-sm">Изменить</div>
+      <div class="actions"><button class="btn sm" id="ctx-edit">${I.pen} Перенести вручную</button><button class="btn sm" id="ctx-ask">${I.msg} Спросить Планировщика</button></div></div>`,
+    `<a class="btn sm" href="#/schedule/group/${encodeURIComponent(r.group)}">${I.calendar} Неделя группы</a>${r.room !== "online" ? `<a class="btn sm" href="#/schedule/room/${encodeURIComponent(r.room)}">${I.door} Аудитория</a>` : ""}<button class="btn sm primary" id="ctx-req">${I.msg} Предложить изменение</button>`);
+  $("#ctx-req").onclick = () => { closeCtx(); proposeRows([r]); };
+  $("#ctx-edit").onclick = () => { schedState.edit = true; schedState.version = null; closeCtx(); const h = `#/schedule/group/${encodeURIComponent(r.group)}`; if (location.hash === h) renderSchedule("group", r.group); else location.hash = h; };
+  $("#ctx-ask").onclick = () => { chatPrefill = `Группа ${r.group}: «${r.course}» ${DAY_SHORT[r.day]} ${r.time.slice(0, 5)} — `; closeCtx(); location.hash = "#/chat/scheduler"; };
 }
 
 // Week grid of one group / room: sticky day header, frozen time column, click a session for details.
-function weekView(host, pub, ap, mode, sel, changed) {
-  const index = indexRows(pub.rows);
+function weekView(host, pub, ap, mode, sel, changed, rerender = null) {
+  const index = indexRows(pub.rows), edit = !!rerender;
+  pubTimes = (pub.times || []).map(t => String(t).split("-")[0]);
   const opts = mode === "group" ? pub.groups : pub.rooms;
   if (!opts.includes(sel)) sel = opts[0] || "";
   const what = mode === "group" ? "Группа" : "Аудитория";
@@ -917,11 +946,12 @@ function weekView(host, pub, ap, mode, sel, changed) {
   host.innerHTML = `<div class="tt-controls">
       <div class="combo inline" id="s-combo"><label for="s-sel" class="l-cap" style="margin:0">${what}</label><input type="text" id="s-sel" value="${esc(sel)}" autocomplete="off"><div class="list"></div></div>
       <div class="actions"><button class="btn sm icon" id="s-prev" aria-label="предыдущая" title="предыдущая">${I.chevL}</button><button class="btn sm icon" id="s-next" aria-label="следующая" title="следующая">${I.chev}</button></div>
-      <div class="legend"><span><i class="lecture"></i>лекция</span><span><i class="practice"></i>практика</span><span><i class="lab"></i>лаборатория</span><span><i class="online"></i>онлайн</span>${ch ? `<span><i class="changed"></i>изменилось в v${pub.version.id}${ch.size ? ` (${ch.size} ч)` : ": ничего"}</span>` : ""}</div>
+      <div class="legend"><span><i class="lecture"></i>лекция</span><span><i class="practice"></i>практика</span><span><i class="lab"></i>лаборатория</span><span><i class="online"></i>онлайн</span>${ch ? `<span><i class="changed"></i>${edit ? "изменено в черновике" : `изменилось в v${pub.version.id}`}${ch.size ? ` (${ch.size} ч)` : ": ничего"}</span>` : ""}</div>
       <div class="actions" style="margin-left:auto">
-        ${mode === "group" ? `<a class="btn sm" href="/api/published/ics?group=${encodeURIComponent(sel)}&version=${pub.version.id}" title="Повторяющиеся события на триместр для Google / Outlook / iPhone">${I.calPlus} В календарь</a>` : ""}
+        ${mode === "group" ? `<a class="btn sm" href="/api/published/ics?group=${encodeURIComponent(sel)}&version=${pub.version.id}" title="Google, Outlook, iPhone">${I.calPlus} В календарь</a>` : ""}
         <button class="btn sm subtle" id="s-print">${I.print} Печать</button></div></div>
-    <div class="print-area"><div class="print-title">${what} ${esc(sel)} · ${esc(ap.profile.university)} · версия v${pub.version.id}</div>${weekGridHtml(pub, index, mode, sel, ch)}</div>`;
+    ${edit ? '<div class="dnd-tip" id="dnd-tip" aria-live="polite"></div>' : ""}
+    <div class="print-area ${edit ? "editing" : ""}"><div class="print-title">${what} ${esc(sel)} · ${esc(ap.profile.university)} · версия v${pub.version.id}</div>${weekGridHtml(pub, index, mode, sel, ch, edit)}</div>`;
   const go = s => { location.hash = `#/schedule/${mode}/${encodeURIComponent(s)}`; };
   bindCombo($("#s-combo"), opts, sel, go);
   const step = k => go(opts[(opts.indexOf(sel) + k + opts.length) % opts.length]);
@@ -929,8 +959,9 @@ function weekView(host, pub, ap, mode, sel, changed) {
   $$(".cell[data-d]", host).forEach(c => c.onclick = () => {
     const r = mine.find(x => x.day === +c.dataset.d && x.hour === +c.dataset.h); if (!r) return;
     $$(".cell.on", host).forEach(x => x.classList.remove("on")); c.classList.add("on");
-    sessionPanel(r, pub, changed);
+    if (edit) editPanel(r, mode, sel, rerender); else sessionPanel(r, pub, changed);
   });
+  if (edit) bindDnD(host, mode, sel, rerender);
 }
 
 // ---- data grid: virtual rows, frozen columns, sort, filter, group, resize, keyboard, bulk actions
@@ -1047,7 +1078,7 @@ function scheduleGrid(host, pub, changed) {
     const groups = [...new Set([...dg.sel].map(i => rows[i].group))];
     box.innerHTML = `<span>Выбрано: ${n}</span><button class="btn sm" data-b="csv">${I.down} CSV</button><button class="btn sm" data-b="copy">${I.copy} Копировать</button>
       ${groups.length === 1 ? `<a class="btn sm" href="#/schedule/group/${encodeURIComponent(groups[0])}">${I.calendar} Неделя ${esc(groups[0])}</a>` : ""}
-      <button class="btn sm primary" data-b="req">${I.squarePen} Предложить изменение</button><button class="btn sm ghost" data-b="clear">Снять выбор</button>`;
+      <button class="btn sm primary" data-b="req">${I.msg} Обсудить с агентами</button><button class="btn sm ghost" data-b="clear">Снять выбор</button>`;
   };
   const refresh = (keepScroll = true) => { recompute(); drawHead(); if (!keepScroll) scroller.scrollTop = 0; draw(); bulk(); };
   const reset = () => { Object.assign(dg, { q: "", program: "", day: "", kind: "", onlyChanged: false, sort: null, groupBy: "", collapsed: new Set() }); scheduleGrid(host, pub, changed); };
@@ -1133,9 +1164,7 @@ function scheduleGrid(host, pub, changed) {
       const tsv = list.map(r => [r.group, DAY_SHORT[r.day], r.time, r.course, KIND_RU[r.kind] || r.kind, r.room].join("\t")).join("\n");
       try { await navigator.clipboard.writeText(tsv); toast(`Скопировано строк: ${list.length}`); } catch (_) { toast("Браузер не дал доступ к буферу обмена", true); }
     } else if (b.dataset.b === "req") {
-      const parts = list.slice(0, 6).map(r => `${r.group} ${DAY_SHORT[r.day]} ${r.time.slice(0, 5)} «${r.course}»`);
-      reqPrefill = `Перенести занятия: ${parts.join("; ")}${list.length > 6 ? ` и ещё ${list.length - 6}` : ""} — `;
-      location.hash = "#/requests/new";
+      proposeRows(list);
     } else if (b.dataset.b === "clear") { dg.sel.clear(); dg.anchor = null; drawHead(); draw(); bulk(); }
   });
 }
@@ -1163,7 +1192,7 @@ async function renderRequests(sel) {
   const reader = $("#reader");
   if (sel === "new") return composeRequest(reader, brief);
   if (!r) {
-    reader.innerHTML = `<div class="reader-empty"><div>${I.inbox}<h3>Выберите заявку</h3><p>Выберите заявку из списка — она откроется здесь вместе с вердиктом агента «Приёмная». Новую заявку можно написать кнопкой «Новая» или клавишей N.</p></div></div>`;
+    reader.innerHTML = `<div class="reader-empty"><div>${I.inbox}<h3>Выберите заявку</h3><p>Откройте заявку слева или создайте новую (N).</p></div></div>`;
   } else {
     const s = REQ_STATUS[r.status] || REQ_STATUS.new, vd = r.verdict || {};
     const can = { approve: ["new", "review", "rejected"].includes(r.status), reject: ["new", "review", "accepted"].includes(r.status), withdraw: ["new", "review", "accepted", "applied"].includes(r.status) };
@@ -1172,7 +1201,7 @@ async function renderRequests(sel) {
         <div class="actions"><span class="mi" style="padding:0;border:0;grid-template-columns:38px auto"><span class="av">${esc(initials(r.author))}</span><span><span class="who"><b>${esc(r.author)}</b></span><span class="tiny muted mono">заявка №${r.id} · ${fmtDate(r.ts)}</span></span></span></div>
         <span class="badge ${s.cls} lg">${s.text}</span></div>
       <div class="letter">${esc(r.text)}</div>
-      ${r.status === "new" ? `<div class="callout info">${brief.enabled ? '<span class="spinner"></span>' : I.info}<div>${brief.enabled ? "Приёмная разберёт заявку на ближайшем такте автопилота (раз в минуту)." : "Автопилот выключен: заявку разберут после его включения или по кнопке «Проверить сейчас»."}</div></div>`
+      ${r.status === "new" ? `<div class="callout info">${brief.enabled ? '<span class="spinner"></span>' : I.info}<div>${brief.enabled ? "Приёмная разберёт её в течение минуты." : "Автопилот выключен — заявка ждёт."}</div></div>`
       : `<div class="verdict" style="--c:${agentOf("intake").color}"><div class="i">IN</div><div><div class="actions" style="margin-bottom:4px">${agentTag("intake")}<span class="small muted">вердикт</span></div>
           ${vd.understood ? `<div style="font-weight:500">${esc(vd.understood)}${vd.hard === false ? ' <span class="badge info">мягкое</span>' : vd.hard ? ' <span class="badge accent">жёсткое</span>' : ""}</div>` : ""}
           <div class="small" style="color:var(--text-2);margin-top:4px">${esc(vd.reason || "")}</div>
@@ -1182,9 +1211,9 @@ async function renderRequests(sel) {
       <ul class="timeline-mini">
         <li style="--c:var(--primary)">Получена от «${esc(r.author)}» <span class="tm">${fmtDate(r.ts)}</span></li>
         ${r.status !== "new" ? `<li style="--c:${agentOf("intake").color}">Приёмная ${r.status === "rejected" ? "отклонила" : r.status === "review" ? "передала диспетчеру" : vd.understood ? "приняла" : "разобрала"}${vd.reason ? ` — ${esc(vd.reason)}` : ""}</li>` : ""}
-        ${r.status === "accepted" ? `<li style="--c:${agentOf("watcher").color}">Наблюдатель запустит перегенерацию с тёплым стартом на ближайшем такте</li>` : ""}
+        ${r.status === "accepted" ? `<li style="--c:${agentOf("watcher").color}">Скоро перегенерация</li>` : ""}
         ${r.status === "applied" ? `<li style="--c:${agentOf("publisher").color}">Учтена в опубликованном расписании (задание №${r.job_id}) <a href="#/schedule">открыть ${I.arrow}</a></li>` : ""}
-        ${r.status === "withdrawn" ? `<li style="--c:var(--text-4)">Отозвана — правило уберут при следующей перегенерации</li>` : ""}</ul>
+        ${r.status === "withdrawn" ? `<li style="--c:var(--text-4)">Отозвана</li>` : ""}</ul>
       <div class="actions" style="margin-top:8px">
         ${can.approve ? `<button class="btn ok" data-act="approve">${I.check} Принять</button>` : ""}
         ${can.reject ? `<button class="btn danger" data-act="reject">${I.xCircle} Отклонить</button>` : ""}
@@ -1201,7 +1230,7 @@ async function renderRequests(sel) {
 function composeRequest(reader, brief) {
   let author = ""; try { author = localStorage.getItem("req-author") || ""; } catch (_) { }
   reader.innerHTML = `<section class="card compose-card">
-    <div class="card-head"><h2>${I.pen} Новая заявка</h2><span class="hint">Пишите так же, как диспетчеру: «Аудитория C1.3.361 недоступна в среду», «У группы IT-2301 свободна пятница». Агент «Приёмная» проверит фразу и объекты, Наблюдатель запустит перегенерацию, Публикатор выпустит новую версию с минимумом переносов.</span></div>
+    <div class="card-head"><h2>${I.pen} Новая заявка</h2></div>
     <div class="form-row c2" style="margin-bottom:12px"><div class="field"><label for="rq-author">От кого</label><input type="text" id="rq-author" maxlength="60" placeholder="Деканат FIT, диспетчер, преподаватель…" value="${esc(author)}"></div>
       <div class="field"><span class="lbl">Кому</span><div class="chips tight" style="height:40px;align-items:center">${agentTag("intake")}${agentTag("watcher")}${agentTag("publisher")}</div></div></div>
     <div class="field"><label for="rq-text">Текст заявки</label><textarea id="rq-text" maxlength="300" placeholder="Одно требование, по-русски или по-английски"></textarea></div>
@@ -1215,8 +1244,8 @@ function composeRequest(reader, brief) {
     try {
       const r = await post("/api/constraints/preview", { dataset: brief.dataset, texts: [t] }); if (my !== seq) return;
       const p = r.parsed[0];
-      box.innerHTML = `<div class="l-cap">Как это поймёт Приёмная</div>` + (!p ? `<div class="prev-row"><span class="badge warn">${I.alertCircle}не распознано</span><span>${esc(t)}</span><span class="muted small">решение примет диспетчер; с LLM фразу разберёт агент «Ограничения»</span></div>`
-        : p.unknown.length ? `<div class="prev-row"><span class="badge bad">${I.xCircle}нет в данных: ${esc(p.unknown.join(", "))}</span><span>${esc(t)}</span><span class="muted small">заявка будет отклонена — проверьте код группы или аудитории</span></div>`
+      box.innerHTML = `<div class="l-cap">Как это поймёт Приёмная</div>` + (!p ? `<div class="prev-row"><span class="badge warn">${I.alertCircle}не распознано</span><span>${esc(t)}</span><span class="muted small">решит диспетчер</span></div>`
+        : p.unknown.length ? `<div class="prev-row"><span class="badge bad">${I.xCircle}нет в данных: ${esc(p.unknown.join(", "))}</span><span>${esc(t)}</span><span class="muted small">проверьте код</span></div>`
         : `<div class="prev-row"><span class="badge ${p.hard ? "accent" : "info"}">${p.hard ? "жёсткое правило" : "мягкое пожелание"}</span><span>${esc(t)}</span><span class="muted small">${esc(describeSpec(p))}</span></div>`);
     } catch (_) { box.innerHTML = ""; }
   }, 350);
@@ -1265,11 +1294,11 @@ async function renderAutopilot() {
     </section>
     ${job ? `<div class="active-strip"><div class="actions"><span class="badge accent"><span class="spinner"></span>${esc(JOB_RU[job.kind] || job.kind)}</span><b>Задание №${job.id}</b><span class="muted">${esc(job.reason)}</span></div>${job.run_id ? `<a class="btn primary sm" href="#/run/${esc(job.run_id)}/live">Смотреть агентов ${I.arrow}</a>` : ""}</div>` : ""}
     <div class="kpi-row">${kpi(ap.current ? `v${ap.current.id}` : "—", "действующая версия", "accent")}${kpi(ap.jobs.length, "заданий всего")}${kpi(ap.jobs.filter(j => j.status === "published").length, "опубликовано")}${kpi((ap.requests.new || 0) + (ap.requests.review || 0), "заявок ждут решения", (ap.requests.review || 0) ? "warn" : "")}${kpi(ap.standing.length, "постоянных правил")}${kpi((ap.load || {}).total_calls ?? 0, "вызовов агентов службы", "", "за 2 дня")}</div>
-    <section class="card"><div class="card-head"><h2>${I.refresh} Цикл службы</h2><span class="hint">Подсвечен шаг, на котором служба сейчас.</span></div>${serviceLoop(hot)}</section>
+    <section class="card"><div class="card-head"><h2>${I.refresh} Цикл службы</h2></div>${serviceLoop(hot)}</section>
     <div class="two-col">
       <div class="col">
         <section class="card">
-          <div class="card-head"><h2>${I.layers} Задания агентов</h2><span class="hint">Каждое задание — обычный многоагентный прогон, запущенный автопилотом. Публикатор решает, выпускать ли его.</span></div>
+          <div class="card-head"><h2>${I.layers} Задания агентов</h2></div>
           ${ap.jobs.length ? `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>№</th><th>Вид</th><th>Почему</th><th>Статус</th><th>Итог</th></tr></thead><tbody>${ap.jobs.map(j => {
       const st = JOB_STATUS[j.status] || [j.status, ""], o = j.outcome || {};
       return `<tr><td class="mono">${j.id}</td><td class="nowrap">${esc(JOB_RU[j.kind] || j.kind)}<div class="tiny muted">${fmtWhen(j.ts)}</div></td><td class="small">${esc(j.reason)}</td>
@@ -1278,7 +1307,7 @@ async function renderAutopilot() {
     }).join("")}</tbody></table></div>` : `<div class="empty-state small">${I.layers}<p>Заданий пока не было. ${ap.enabled ? "Первое появится на ближайшем такте." : "Включите автопилот."}</p></div>`}
         </section>
         <section class="card">
-          <div class="card-head"><h2>${I.msg} Журнал службы</h2><span class="hint">Такты автопилота: тихие проверки свёрнуты, такты с действиями раскрываются в сообщения и вызовы агентов. Источник: runs/_service/events-ГГГГММДД.jsonl.</span></div>
+          <div class="card-head"><h2>${I.msg} Журнал службы</h2></div>
           ${ap.cycles.length ? ap.cycles.map(c => {
       const o = c.outcome || {}, quiet = !c.events.length;
       const badge = { idle: ["", "тихо"], busy: ["accent", "ждёт прогон"], started: ["accent", "запуск"], reviewed: ["ok", "проверка"], deferred: ["warn", "отложено"], error: ["bad", "ошибка"] }[c.state] || ["", c.state];
@@ -1294,11 +1323,10 @@ async function renderAutopilot() {
         </section>
         <section class="card">
           <div class="card-head"><h2>${I.users} Нагрузка агентов службы</h2></div>
-          ${load.length ? `<div class="hbars">${load.map(([a, v]) => `<div class="row"><span>${agentTag(a)}</span><div class="bar"><i style="width:${v.share * 100}%;background:${agentOf(a).color}"></i></div><span class="v">${v.calls} · ${pct(v.share)}</span></div>`).join("")}</div>
-          <p class="hint" style="margin:10px 0 0">Вызовы инструментов и LLM за два дня. В простое больше всего работает Наблюдатель — он осматривает данные каждый такт; правило «≤ 40 %» проверяется на прогоне генерации (сценарий S12).</p>` : '<div class="hint">Вызовов ещё не было.</div>'}
+          ${load.length ? `<div class="hbars">${load.map(([a, v]) => `<div class="row"><span>${agentTag(a)}</span><div class="bar"><i style="width:${v.share * 100}%;background:${agentOf(a).color}"></i></div><span class="v">${v.calls} · ${pct(v.share)}</span></div>`).join("")}</div>` : '<div class="hint">Вызовов ещё не было.</div>'}
         </section>
         <section class="card" id="profile">
-          <div class="card-head"><h2>${I.shield} Профиль вуза</h2><span class="hint">По этому профилю агенты генерируют и поддерживают расписание. Изменение профиля — тоже повод для перегенерации.</span></div>
+          <div class="card-head"><h2>${I.shield} Профиль вуза</h2></div>
           <div class="field"><label for="pf-uni">Университет</label><input type="text" id="pf-uni" value="${esc(prof.university)}"></div>
           <div class="form-row c2" style="margin-top:12px">
             <div class="field"><label for="pf-ds">Данные</label><select id="pf-ds">${datasets.filter(d => d.valid).map(d => `<option value="${esc(d.id)}" ${d.id === prof.dataset ? "selected" : ""}>${esc(d.name)} · ${d.groups} групп</option>`).join("")}</select></div>
@@ -1318,7 +1346,7 @@ async function renderAutopilot() {
       </div>
     </div>`);
   $("#ap-sw").onclick = () => setPilot(!ap.enabled);
-  $("#ap-tick").onclick = () => $("#tick-btn").click();
+  $("#ap-tick").onclick = e => tickNow(e.currentTarget);
   $$("details.cycle").forEach(dt => dt.addEventListener("toggle", () => { const t = +dt.dataset.t; if (dt.open) pilotUi.open.add(t); else pilotUi.open.delete(t); }));
   let term = prof.term, progs = [...prof.programs];
   $$("#pf-term button").forEach(b => b.onclick = () => { term = +b.dataset.t; $$("#pf-term button").forEach(x => x.classList.toggle("on", x === b)); });
@@ -1544,7 +1572,7 @@ class RunView {
       <div class="hint" style="margin-top:8px" id="log-foot"></div></div>`;
   }
   logFoot() {
-    const f = $("#log-foot"); if (f) f.textContent = `${plural(this.events.length, "событие", "события", "событий")} · ${plural(sum(Object.values(this.calls)), "вызов", "вызова", "вызовов")} инструментов и LLM · ${plural(this.errors, "ошибка", "ошибки", "ошибок")} · нажмите на строку, чтобы раскрыть подробности · источник: events.jsonl`;
+    const f = $("#log-foot"); if (f) f.textContent = `${plural(this.events.length, "событие", "события", "событий")} · ${plural(sum(Object.values(this.calls)), "вызов", "вызова", "вызовов")} инструментов и LLM · ${plural(this.errors, "ошибка", "ошибки", "ошибок")}`;
     const chips = $("#log-agents"); const seen = [...new Set(this.events.map(e => e.agent))];
     if (chips && chips.querySelectorAll(".chip").length !== seen.length + 1) {
       chips.innerHTML = `<button type="button" class="chip ${this.logFilter.agent ? "" : "on"}" data-a="">все агенты</button>` + seen.map(a => `<button type="button" class="chip ${this.logFilter.agent === a ? "on" : ""}" data-a="${esc(a)}"><span class="agent-dot" style="--c:${agentOf(a).color}"></span>${esc(agentOf(a).ru)}</button>`).join("");
@@ -1705,7 +1733,7 @@ class RunView {
         ${kpi(conv.filter(c => c.task === "resolve").length, "уступок Negotiator", "", `${plural(Object.keys(rp.tried || {}).length, "кусок", "куска", "кусков")} потребовали переговоров`)}
         ${kpi((d.repairs || []).length, "локальных переносов", "", "после назначения аудиторий")}
         ${kpi((rp.relaxed || []).length, "ослабленных правил", (rp.relaxed || []).length ? "warn" : "")}</div>
-      <div class="card" style="margin-bottom:16px"><div class="card-head"><h2>Переговоры по кускам задачи</h2><span class="hint">Каждый кусок (несколько программ-курсов) решается отдельно внутри квоты аудиторий. Если решатель не справился или критик нашёл нарушения, Negotiator выбирает уступку и кусок решается заново.</span></div>
+      <div class="card" style="margin-bottom:16px"><div class="card-head"><h2>Переговоры по кускам задачи</h2></div>
         <div class="grid c2">${chunkCards || `<div class="empty-state small" style="grid-column:1/-1"><p>${this.cancelled ? "Прогон остановлен до решения кусков." : "Нет данных о кусках."}</p></div>`}</div></div>
       <div class="grid c2" style="margin-bottom:16px">
         <div class="card"><div class="card-head"><h2>Финальная проверка и ремонт</h2></div><div class="steps">${finals.map(c => { const r = c.reply || {}; const a = agentOf(c.agent); return `<div class="step" style="--c:${a.color}"><div class="i">${a.short}</div><div class="t">${c.task === "validate_all" ? `<b>${a.ru}</b> · итог${c.request.final ? " (финал)" : ""}: <span class="badge ${r.hard_violations ? "bad" : "ok"}">${r.hard_violations} нарушений</span> ${r.by_type && Object.keys(r.by_type).length ? `<span class="muted small">${esc(JSON.stringify(r.by_type))}</span>` : ""}` : `<b>${a.ru}</b> · ремонт: перенесено ${r.moved}, не удалось ${(r.failed || []).length}`}</div></div>`; }).join("") || '<div class="muted small">итоговая проверка не выполнялась</div>'}</div>
@@ -1729,7 +1757,7 @@ class RunView {
     const maxDay = Math.max(...dayHours, 1), maxHour = Math.max(...hourHist, 1);
     body.innerHTML = `
       <div class="grid c3" style="margin-top:16px">
-        <div class="card"><div class="card-head"><h2>Нагрузка агентов</h2><span class="hint">Доля вызовов инструментов и LLM. Требование ТЗ: ни один агент не делает больше 40 %.</span></div>
+        <div class="card"><div class="card-head"><h2>Нагрузка агентов</h2><span class="hint">норма ≤ 40 %</span></div>
           <div class="hbars">${Object.entries(load).map(([a, v]) => `<div class="row"><span>${agentTag(a)}</span><div class="bar ${v.share > 0.4 ? "bad" : ""}"><i style="width:${v.share * 100}%;${v.share > 0.4 ? "" : `background:${agentOf(a).color}`}"></i></div><span class="v">${v.calls} · ${pct(v.share)}</span></div>`).join("")}</div>
           <div class="hint" style="margin-top:10px">макс. доля <b>${pct((res.load || {}).max_share)}</b> · всего вызовов ${(res.load || {}).total_calls ?? "—"} · шагов оркестратора ${res.steps ?? "—"} · ${fmtDur(res.wall_s)}</div></div>
         <div class="card"><div class="card-head"><h2>Часы по дням</h2></div><div class="hbars">${dayHours.slice(0, 6).map((n, d) => n || d < 5 ? `<div class="row"><span>${DAY_RU[d]}</span><div class="bar"><i style="width:${n / maxDay * 100}%"></i></div><span class="v">${n}</span></div>` : "").join("")}</div>
@@ -1759,6 +1787,334 @@ class RunView {
   }
 }
 
+// ------------------------------------------------------------------ rules: hard / soft constraints of the university
+const KIND_RULE = { forbid_time: ["время", "calendar"], max_daily_hours: ["лимит часов", "clock"], room_unavailable: ["аудитория", "door"] };
+const rulesUi = { rules: [], requests: [], add: { text: "", mode: "auto", weight: 5, info: null } };
+const ruleMode = r => r.mode !== "auto" ? r.mode : r.info && r.info.spec ? (r.info.spec.hard ? "hard" : "soft") : "auto";
+
+async function renderRules() {
+  const data = await api("/api/rules");
+  if (currentPage !== "rules") return;
+  rulesUi.rules = data.rules.map(r => ({ text: r.clean, mode: r.mode || "auto", weight: r.weight || (r.spec && r.spec.weight) || 5, info: r }));
+  rulesUi.requests = data.requests;
+  const nb = $("#nb-rules"); nb.hidden = !rulesUi.rules.length; nb.textContent = rulesUi.rules.length;
+  $("#main").innerHTML = page(pageHead("Правила", "Жёсткие — запрет, мягкие — штраф, «Авто» — решат агенты",
+    `<button class="btn" id="r-regen">${I.refresh} Перегенерировать</button>`), `
+    <section class="card rule-add">
+      <div class="ra-row">
+        <input type="text" id="ra-text" placeholder="Новое правило: «1 курс заканчивает до 17:00»" maxlength="300" autocomplete="off" aria-label="Текст правила">
+        ${modeSeg("ra-mode", "auto")}
+        <button class="btn primary" id="ra-add" disabled>${I.plus} Добавить</button>
+      </div>
+      <div class="ra-weight" id="ra-weight" hidden><span class="lbl">Вес</span><input type="range" min="1" max="20" value="5" id="ra-w"><b id="ra-wv">5</b><span class="hint">штраф за час</span></div>
+      <div class="ra-preview" id="ra-prev"></div>
+    </section>
+    <section class="card pad0">
+      <div class="card-head pad"><h2>${I.shield} Правила вуза <span class="count-n">${rulesUi.rules.length}</span></h2></div>
+      <div id="r-list"></div>
+    </section>`);
+  drawRuleList();
+  $("#r-regen").onclick = async e => {
+    e.target.disabled = true;
+    try { await post("/api/chat/watcher", { text: "Перегенерируй расписание с учётом правил" }); toast("Наблюдатель поставил задание: расписание перегенерируется с тёплым стартом"); }
+    catch (err) { toast(err.message, true); }
+    e.target.disabled = false;
+  };
+  const add = rulesUi.add, inp = $("#ra-text");
+  const preview = debounce(async () => {
+    const text = inp.value.trim(); add.text = text; $("#ra-add").disabled = text.length < 3;
+    if (text.length < 3) { $("#ra-prev").innerHTML = '<span class="hint">Напишите правило — агент покажет, как понял</span>'; return; }
+    try { add.info = await post("/api/rules/preview", { text }); } catch (_) { add.info = null; }
+    if (inp.value.trim() !== text) return;
+    $("#ra-prev").innerHTML = ruleHow(add.info, true);
+    syncAddMode();
+  }, 250);
+  inp.addEventListener("input", preview);
+  inp.addEventListener("keydown", e => { if (e.key === "Enter" && !$("#ra-add").disabled) $("#ra-add").click(); });
+  const syncAddMode = () => {
+    const soft = add.mode === "soft"; $("#ra-weight").hidden = !soft;
+    const softBtn = $('#ra-mode [data-v="soft"]'); const ok = !add.info || add.info.softable || !add.info.spec;
+    softBtn.disabled = !ok; softBtn.title = ok ? "" : "мягкий режим действует только для окон времени";
+    if (!ok && soft) { add.mode = "auto"; bindSeg($("#ra-mode"), "auto"); $("#ra-weight").hidden = true; }
+  };
+  bindSeg($("#ra-mode"), add.mode, v => { add.mode = v; syncAddMode(); });
+  $("#ra-w").oninput = e => { add.weight = +e.target.value; $("#ra-wv").textContent = add.weight; };
+  $$("[data-ex]").forEach(b => b.onclick = () => { inp.value = b.dataset.ex; inp.focus(); preview(); });
+  $("#ra-add").onclick = async () => {
+    if (add.info && add.info.unknown && add.info.unknown.length) { toast(`В данных вуза нет: ${add.info.unknown.join(", ")}`, true); return; }
+    rulesUi.rules.push({ text: add.text, mode: add.mode, weight: add.weight, info: add.info });
+    if (await saveRules(`Правило добавлено. Наблюдатель перегенерирует расписание`)) { inp.value = ""; add.text = ""; add.info = null; $("#ra-add").disabled = true; $("#ra-prev").innerHTML = ""; }
+  };
+}
+const modeSeg = (id, v) => `<div class="seg mode-seg" id="${id}" role="radiogroup" aria-label="Режим">${[["auto", "Авто"], ["hard", "Жёсткое"], ["soft", "Мягкое"]].map(([k, l]) => `<button type="button" data-v="${k}" class="${v === k ? "on" : ""}" role="radio" aria-checked="${v === k}">${l}</button>`).join("")}</div>`;
+function bindSeg(el, v, on) {
+  $$("button", el).forEach(b => { b.classList.toggle("on", b.dataset.v === v); b.setAttribute("aria-checked", String(b.dataset.v === v)); if (on) b.onclick = () => { if (b.disabled) return; bindSeg(el, b.dataset.v); on(b.dataset.v); }; });
+}
+function ruleHow(info, live = false) {
+  if (!info) return '<span class="hint">не удалось разобрать</span>';
+  if (info.unknown && info.unknown.length) return `<span class="how bad">${I.alertCircle} В данных вуза нет: <b>${esc(info.unknown.join(", "))}</b> — правило будет отброшено</span>`;
+  if (!info.spec) return `<span class="how warn">${I.info} Не распознано офлайн — разберёт Claude${live ? ", либо уточните формулировку" : ""}</span>`;
+  const k = KIND_RULE[info.spec.kind] || ["правило", "info"];
+  return `<span class="how">${I[k[1]]}<span class="kind-tag">${k[0]}</span>${esc(describeSpec(info.spec))}</span>`;
+}
+function drawRuleList() {
+  const host = $("#r-list"); if (!host) return;
+  if (!rulesUi.rules.length) { host.innerHTML = `<div class="empty-state small">${I.shield}<h3>Своих правил пока нет</h3><p>Правил пока нет</p></div>`; return; }
+  host.innerHTML = rulesUi.rules.map((r, i) => {
+    const eff = ruleMode(r), softable = !r.info || r.info.softable;
+    return `<div class="rule ${eff}" data-i="${i}">
+      <span class="rule-n">${i + 1}</span>
+      <div class="rule-main"><b>${esc(r.text)}</b><div>${ruleHow(r.info)}</div></div>
+      <div class="rule-ctl">${modeSeg(`rm-${i}`, r.mode)}
+        <div class="rule-w" ${eff === "soft" ? "" : "hidden"}><input type="range" min="1" max="20" value="${r.weight}" aria-label="Вес"><b>${r.weight}</b></div>
+        ${r.mode === "auto" ? `<span class="tiny muted">${eff === "hard" ? "по тексту — жёсткое" : eff === "soft" ? "по тексту — мягкое" : ""}</span>` : ""}</div>
+      <button class="btn sm icon subtle" data-del title="Удалить правило" aria-label="Удалить правило">${I.trash}</button></div>`;
+  }).join("");
+  $$(".rule", host).forEach(row => {
+    const i = +row.dataset.i, r = rulesUi.rules[i];
+    const seg = $(".mode-seg", row); const soft = $('[data-v="soft"]', seg);
+    if (r.info && !r.info.softable && r.info.spec) { soft.disabled = true; soft.title = "мягкий режим действует только для окон времени"; }
+    bindSeg(seg, r.mode, v => { r.mode = v; saveRules(v === "soft" ? "Правило стало мягким" : v === "hard" ? "Правило стало жёстким" : "Режим по формулировке"); });
+    const w = $(".rule-w input", row);
+    if (w) { w.oninput = () => { r.weight = +w.value; $(".rule-w b", row).textContent = r.weight; }; w.onchange = () => saveRules(`Вес правила ${i + 1}: ${r.weight}`); }
+    $("[data-del]", row).onclick = () => { if (!confirm(`Удалить правило «${r.text}»?`)) return; rulesUi.rules.splice(i, 1); saveRules("Правило удалено"); };
+  });
+}
+async function saveRules(msg) {
+  try {
+    const data = await api("/api/rules", { method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rules: rulesUi.rules.map(r => ({ text: r.text, mode: r.mode, weight: r.mode === "soft" ? r.weight : null })) }) });
+    rulesUi.rules = data.rules.map(r => ({ text: r.clean, mode: r.mode || "auto", weight: r.weight || (r.spec && r.spec.weight) || 5, info: r }));
+    drawRuleList(); $(".count-n") && ($(".count-n").textContent = rulesUi.rules.length);
+    const nb = $("#nb-rules"); nb.hidden = !rulesUi.rules.length; nb.textContent = rulesUi.rules.length;
+    toast(msg); return true;
+  } catch (e) { toast(e.message, true); renderRules(); return false; }
+}
+
+// ------------------------------------------------------------------ chat with each agent
+const CHAT_GROUPS = [["Конвейер генерации", ["scheduler", "constraints", "rooms", "validator", "negotiator", "genetic", "data", "reporter", "orchestrator"]],
+  ["Служба 24/7", ["publisher", "intake", "watcher", "autopilot"]]];
+const CHAT_HINTS = {
+  scheduler: ["Сократи окна у IT-2301", "Покажи неделю IT-2301", "Перенеси пару IT-2301 с Пн 08:00 на лучший слот"],
+  constraints: ["Покажи все правила", "1 курс заканчивает до 17:00", "Желательно без пар после 18:00, вес 6"],
+  rooms: ["Найди свободный компьютерный класс в среду 11:00", "Покажи загрузку C1.1.141"],
+  validator: ["Проверь расписание", "У каких групп больше всего окон?"],
+  negotiator: ["Какие правила мешают сильнее всего?", "Сделай правило 1 мягким"],
+  genetic: ["Насколько хорошее расписание?", "Предложи улучшения для IT-2301", "Запусти поиск улучшения"],
+  data: ["Сводка по данным вуза", "Какие ошибки нашлись в Excel?"],
+  reporter: ["Сводка по текущей версии", "Что менялось в последних версиях?"],
+  orchestrator: ["Что сейчас происходит?", "Перегенерируй расписание"],
+  publisher: ["Что в черновике?", "Опубликуй черновик"],
+  intake: ["Аудитория C1.3.361 недоступна в среду", "Покажи заявки"],
+  watcher: ["Когда следующая генерация?", "История заданий"],
+  autopilot: ["Статус службы", "Включи автопилот"],
+};
+const TOOL_RU = {
+  overview: "обзор", data_summary: "сводка данных", group_week: "неделя группы", room_week: "неделя аудитории", free_rooms: "свободные аудитории",
+  move_options: "варианты переноса", suggest_moves: "поиск улучшений", move_session: "перенос", change_room: "смена аудитории", undo_move: "отмена правки",
+  draft_status: "черновик", publish_draft: "публикация", discard_draft: "сброс черновика", validate: "проверка", quality: "качество",
+  list_rules: "правила", preview_rule: "разбор правила", add_rule: "новое правило", update_rule: "режим правила", remove_rule: "удаление правила",
+  regenerate: "перегенерация", jobs_history: "история", submit_request: "заявка", requests_inbox: "заявки", set_autopilot: "автопилот",
+};
+const DRAFT_TOOLS = ["move_session", "change_room", "undo_move"], RULE_TOOLS = ["add_rule", "update_rule", "remove_rule"];
+const chatUi = { agent: null, busy: new Set(), meta: null };
+
+async function renderChat(agent) {
+  const meta = await api("/api/chat"); chatUi.meta = meta;
+  agent = meta.agents.some(a => a.name === agent) ? agent : (chatUi.agent || "scheduler");
+  chatUi.agent = agent;
+  const hist = await api(`/api/chat/${agent}`);
+  if (currentPage !== "chat") return;
+  const a = meta.agents.find(x => x.name === agent), m = agentOf(agent), prov = meta.provider;
+  const byName = Object.fromEntries(meta.agents.map(x => [x.name, x]));
+  const item = x => { const am = agentOf(x.name); return `<a class="ch-item ${x.name === agent ? "on" : ""}" href="#/chat/${x.name}" style="--c:${am.color}"><span class="av">${am.short}</span><span class="t"><b>${esc(x.title)}</b><small>${esc(x.last ? (x.last.role === "user" ? "Вы: " : "") + plainText(x.last.text) : am.hint)}</small></span>${x.last ? `<span class="tm">${fmtWhen(x.last.ts)}</span>` : ""}${chatUi.busy.has(x.name) ? '<span class="typing-dot"></span>' : ""}</a>`; };
+  $("#main").innerHTML = `<div class="container wide page chat-page"><section class="card pad0 chat">
+    <aside class="ch-list" aria-label="Агенты">
+      <div class="ch-list-head"><b>Агенты</b><span class="badge ${prov.name === "claude" ? "accent" : "warn"}" title="${esc(prov.reason || "")}">${I.brain}${esc(prov.name === "claude" ? "Claude" : "офлайн")}</span></div>
+      ${CHAT_GROUPS.map(([g, names]) => `<div class="ch-sec">${g}</div>${names.filter(n => byName[n]).map(n => item(byName[n])).join("")}`).join("")}
+    </aside>
+    <div class="ch-main" style="--c:${m.color}">
+      <header class="ch-head"><span class="av lg">${m.short}</span><div class="t"><h2>${esc(a.title)}</h2><small title="${esc(a.tools.map(t => TOOL_RU[t] || t).join(", "))}">${esc(m.hint)}</small></div>
+        <div class="actions"><span class="tiny muted mono">${esc(prov.label)}</span><button class="btn sm subtle icon" id="ch-clear" title="Очистить переписку" aria-label="Очистить переписку">${I.trash}</button></div></header>
+      <div class="ch-log" id="ch-log" aria-live="polite">${chatIntro(a)}${hist.messages.map(x => chatMsg(x, m)).join("")}${chatUi.busy.has(agent) ? typingHtml(m) : ""}</div>
+      <div class="ch-sugg">${(CHAT_HINTS[agent] || []).map(h => `<button class="chip" data-h="${esc(h)}">${esc(h)}</button>`).join("")}</div>
+      <form class="ch-compose" id="ch-form"><textarea id="ch-in" rows="1" placeholder="Напишите указание агенту «${esc(a.title)}»…" maxlength="2000" aria-label="Сообщение"></textarea>
+        <button class="btn primary icon" id="ch-send" type="submit" title="Отправить (Enter)" aria-label="Отправить">${I.send}</button></form>
+      <div class="ch-foot hint">Enter — отправить · Shift+Enter — новая строка</div>
+    </div></section></div>`;
+  const log = $("#ch-log"); log.scrollTop = log.scrollHeight;
+  bindChatLinks(log);
+  const inp = $("#ch-in");
+  const grow = () => { inp.style.height = "auto"; inp.style.height = Math.min(inp.scrollHeight, 180) + "px"; };
+  inp.addEventListener("input", grow);
+  inp.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#ch-form").requestSubmit(); } });
+  if (chatPrefill) { inp.value = chatPrefill; chatPrefill = ""; grow(); }
+  setTimeout(() => inp.focus(), 30);
+  $$("[data-h]").forEach(b => b.onclick = () => { inp.value = b.dataset.h; grow(); $("#ch-form").requestSubmit(); });
+  $("#ch-clear").onclick = async () => { if (!confirm(`Очистить переписку с агентом «${a.title}»?`)) return; await api(`/api/chat/${agent}`, { method: "DELETE" }); renderChat(agent); };
+  $("#ch-form").onsubmit = e => { e.preventDefault(); sendChat(agent, inp.value); };
+}
+let chatPrefill = "";
+const plainText = t => String(t || "").replace(/\*\*|__|`|^#+\s*/gm, "").replace(/(^|\s)_(\S)/g, "$1$2").replace(/\s+/g, " ").trim();
+const typingHtml = m => `<div class="msg ai typing" id="ch-typing" style="--c:${m.color}"><span class="av">${m.short}</span><div class="body"><div class="bubble"><span class="dots"><i></i><i></i><i></i></span> работает с инструментами…</div></div></div>`;
+function chatIntro(a) {
+  const m = agentOf(a.name);
+  return `<div class="ch-intro"><span class="av xl" style="--c:${m.color}">${m.short}</span><h3>${esc(a.title)}</h3><p>${esc(a.hello)}</p>
+    <div class="chips tight">${a.tools.map(t => `<span class="chip static">${esc(TOOL_RU[t] || t)}</span>`).join("")}</div></div>`;
+}
+function chatMsg(x, m) {
+  if (x.role === "user") return `<div class="msg me"><div class="body"><div class="bubble">${esc(x.text).replace(/\n/g, "<br>")}</div><div class="when">${fmtWhen(x.ts)}</div></div></div>`;
+  const acts = x.actions || [];
+  const draft = acts.find(t => t.ok && DRAFT_TOOLS.includes(t.tool)), rules = acts.some(t => t.ok && RULE_TOOLS.includes(t.tool));
+  const pub = acts.find(t => t.ok && t.tool === "publish_draft");
+  const links = [draft ? `<a href="#" class="btn sm" data-edit="${esc((draft.input || {}).group || "")}">${I.calendar} Открыть черновик</a>` : "",
+    rules ? `<a href="#/rules" class="btn sm">${I.shield} Правила</a>` : "", pub ? `<a href="#/schedule" class="btn sm">${I.table} Расписание</a>` : ""].join("");
+  return `<div class="msg ai" style="--c:${m.color}"><span class="av">${m.short}</span><div class="body">
+    ${acts.length ? `<div class="acts">${acts.map(t => `<div class="act ${t.ok ? "ok" : "bad"}" title="${esc(JSON.stringify(t.input))}">${t.ok ? I.check : I.xCircle}<b>${esc(TOOL_RU[t.tool] || t.tool)}</b><span>${esc(t.summary)}</span></div>`).join("")}</div>` : ""}
+    <div class="bubble md">${markdown(x.text)}</div>${links ? `<div class="links">${links}</div>` : ""}
+    <div class="when">${esc(x.provider || "")}${x.provider ? " · " : ""}${fmtWhen(x.ts)}</div></div></div>`;
+}
+function bindChatLinks(root) {
+  $$("[data-edit]", root).forEach(b => b.onclick = e => { e.preventDefault(); schedState.edit = true; schedState.version = null; location.hash = b.dataset.edit ? `#/schedule/group/${encodeURIComponent(b.dataset.edit)}` : "#/schedule/group"; });
+}
+async function sendChat(agent, text) {
+  text = text.trim(); if (!text || chatUi.busy.has(agent)) return;
+  const m = agentOf(agent), log = $("#ch-log"), inp = $("#ch-in");
+  chatUi.busy.add(agent); inp.value = ""; inp.style.height = "auto"; $("#ch-send").disabled = true;
+  log.insertAdjacentHTML("beforeend", chatMsg({ role: "user", text, ts: Date.now() / 1000 }, m) + typingHtml(m));
+  log.scrollTop = log.scrollHeight;
+  try {
+    const r = await post(`/api/chat/${agent}`, { text });
+    chatUi.busy.delete(agent);
+    if (currentPage === "chat" && chatUi.agent === agent) {
+      const t = $("#ch-typing"); if (t) t.remove();
+      log.insertAdjacentHTML("beforeend", chatMsg(r.message, m)); bindChatLinks(log); log.scrollTop = log.scrollHeight;
+      $("#ch-send").disabled = false;
+      const it = $(`.ch-item[href="#/chat/${agent}"] small`); if (it) it.textContent = plainText(r.message.text).slice(0, 140);
+    } else toast(`${m.ru} ответил: ${r.message.text.slice(0, 90)}…`);
+    if ((r.message.actions || []).some(t => t.ok && [...DRAFT_TOOLS, "publish_draft", "discard_draft"].includes(t.tool))) { delete pubCache[null]; pollPilot(); }
+  } catch (e) {
+    chatUi.busy.delete(agent);
+    const t = $("#ch-typing"); if (t) t.remove();
+    if (currentPage === "chat") { log.insertAdjacentHTML("beforeend", `<div class="callout bad">${I.alertCircle}<div>Агент не ответил: ${esc(e.message)}</div></div>`); $("#ch-send").disabled = false; }
+    toast(e.message, true);
+  }
+}
+
+// ------------------------------------------------------------------ manual editing of the published timetable: drag & drop into a draft
+function draftBar(st, pub) {
+  const base = pub.version, moves = st.moves || [];
+  const delta = st.score != null ? Math.round((st.score - base.score) * 10) / 10 : 0;
+  return `<section class="draft-bar ${st.stale ? "stale" : ""}">
+    <span class="db-ic">${I.pen}</span>
+    <div class="db-t"><b>Редактирование · черновик от ${vtag(st.base)}</b><small><i class="sw ok"></i>можно <i class="sw better"></i>лучше <i class="sw bad"></i>нельзя</small></div>
+    <div class="db-stats">
+      <span class="badge ${moves.length ? "accent" : ""}">${plural(moves.length, "правка", "правки", "правок")}</span>
+      <span class="badge ${st.hard ? "bad" : "ok"}">${st.hard ? `${st.hard} нарушений` : "0 нарушений"}</span>
+      ${moves.length ? `<span class="badge ${delta < 0 ? "ok" : delta > 0 ? "warn" : ""}" title="штраф: окна + 2×после 18:00 + 3×суббота">штраф ${num(base.score, 1)} → ${num(st.score, 1)}</span>` : ""}
+    </div>
+    <div class="actions">
+      <button class="btn sm" id="db-undo" ${moves.length ? "" : "disabled"}>${I.undo} Отменить</button>
+      <button class="btn sm subtle" id="db-discard" ${moves.length ? "" : "disabled"}>Сбросить</button>
+      <button class="btn sm primary" id="db-pub" ${moves.length && !st.hard && !st.stale ? "" : "disabled"}>${I.check} Опубликовать как v${(st.current || st.base) + 1}</button>
+      <button class="btn sm ghost" id="db-exit">Готово</button>
+    </div>
+    ${st.stale ? `<div class="callout warn" style="flex-basis:100%">${I.alertCircle}<div>Вышла v${st.current} — сбросьте черновик.</div></div>` : ""}
+    ${moves.length ? `<details class="db-moves" style="flex-basis:100%"><summary>${I.chev} Что изменено</summary><ol>${moves.map(x => `<li>${esc(x.label)}${x.delta ? ` <span class="tiny ${x.delta < 0 ? "ok-t" : "warn-t"}">штраф ${x.delta > 0 ? "+" : ""}${x.delta}</span>` : ""}</li>`).join("")}</ol></details>` : ""}
+  </section>`;
+}
+function bindDraftBar(st, rerender) {
+  const act = async (path, body, msg) => { try { const r = await post(path, body); toast(typeof msg === "function" ? msg(r) : msg); return r; } catch (e) { toast(e.message, true); } };
+  $("#db-undo").onclick = async () => { const r = await act("/api/edit/undo", {}, r => `Отменено: ${r.undone.label}`); if (r) rerender(); };
+  $("#db-discard").onclick = async () => { if (!confirm("Сбросить все правки черновика?")) return; if (await act("/api/edit/discard", {}, "Черновик сброшен")) rerender(); };
+  $("#db-exit").onclick = () => { schedState.edit = false; rerender(); };
+  $("#db-pub").onclick = async () => {
+    const note = prompt("Комментарий для студентов (необязательно):", "");
+    if (note === null) return;
+    const r = await act("/api/edit/publish", { note, author: "диспетчер" }, r => `Опубликована версия v${r.version}`);
+    if (r) { schedState.edit = false; schedState.version = null; await pollPilot(); rerender(); }
+  };
+}
+// Drag & drop on the week grid: options of the dragged class colour the drop targets; drop = move in the draft.
+function bindDnD(host, mode, sel, rerender) {
+  const key = (d, h) => `${d}|${h}`, tip = $("#dnd-tip", host);
+  let drag = null, pre = null;
+  const fetchOpts = (d, h) => post("/api/edit/options", { [mode]: sel, day: d, hour: h });
+  const clear = () => {
+    host.classList.remove("dragging");
+    $$(".drop-ok, .drop-bad, .drop-better, .drop-hover, .ghost", host).forEach(x => x.classList.remove("drop-ok", "drop-bad", "drop-better", "drop-hover", "ghost"));
+    if (tip) tip.innerHTML = tipIdle;
+    drag = null;
+  };
+  const tipIdle = `${I.info}<span>Перетащите занятие или нажмите на него</span>`;
+  if (tip) tip.innerHTML = tipIdle;
+  const paint = () => $$("td[data-d]", host).forEach(td => {
+    const s = drag.slots.get(key(+td.dataset.d, +td.dataset.h)), self = s && s.start === drag.start;
+    td.classList.toggle("drop-ok", !!(s && s.ok && !self)); td.classList.toggle("drop-better", !!(s && s.ok && !self && s.delta < 0));
+    td.classList.toggle("drop-bad", !!(s && !s.ok));
+  });
+  $$(".cell[data-d]", host).forEach(c => {
+    c.addEventListener("pointerdown", () => { const d = +c.dataset.d, h = +c.dataset.h; pre = { d, h, p: fetchOpts(d, h) }; pre.p.catch(() => { }); });
+    c.addEventListener("dragstart", e => {
+      const d = +c.dataset.d, h = +c.dataset.h;
+      drag = { d, h, start: d * 12 + h, slots: new Map() };
+      e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", key(d, h));
+      host.classList.add("dragging"); setTimeout(() => c.classList.add("ghost"), 0);
+      if (tip) tip.innerHTML = `<span class="spin-i">${I.refresh}</span><span>Агенты проверяют допустимые слоты…</span>`;
+      const p = pre && pre.d === d && pre.h === h ? pre.p : fetchOpts(d, h);
+      p.then(res => { if (!drag || drag.d !== d || drag.h !== h) return; drag.slots = new Map(res.slots.map(s => [key(s.day, s.hour), s])); drag.session = res.session; paint();
+        if (tip) tip.innerHTML = `${I.info}<span>«${esc(res.session.course)}»${res.session.groups.length > 1 ? ` · поток ${res.session.groups.length} гр.` : ""}: допустимых слотов ${res.slots.filter(s => s.ok && s.start !== drag.start).length}</span>`; })
+        .catch(err => { toast(err.message, true); clear(); });
+    });
+    c.addEventListener("dragend", () => setTimeout(clear, 0));
+  });
+  host.addEventListener("dragover", e => {
+    if (!drag) return;
+    const td = e.target.closest("td[data-d]"); if (!td) return;
+    const s = drag.slots.get(key(+td.dataset.d, +td.dataset.h));
+    if (!td.classList.contains("drop-hover")) {
+      $$(".drop-hover", host).forEach(x => x.classList.remove("drop-hover")); td.classList.add("drop-hover");
+      if (tip && s) tip.innerHTML = s.start === drag.start ? `${I.info}<span>Текущее место занятия</span>`
+        : s.ok ? `<span class="ok-t">${I.checkCircle}</span><span><b>${DAY_SHORT[s.day]} ${esc(pubTimes[s.hour] || "")}</b> · ${s.room === "online" ? "онлайн" : `ауд. <b class="mono">${esc(s.room || "")}</b>${s.room_change ? " (новая)" : ""}`} · штраф <b class="${s.delta < 0 ? "ok-t" : s.delta > 0 ? "warn-t" : ""}">${s.delta > 0 ? "+" : ""}${s.delta}</b>${s.soft_rule ? ` · мягкое правило +${s.soft_rule}` : ""}</span>`
+        : `<span class="bad-t">${I.xCircle}</span><span><b>${DAY_SHORT[s.day]} ${esc(pubTimes[s.hour] || "")}</b> — нельзя: ${esc(s.reason)}</span>`;
+    }
+    if (s && s.ok && s.start !== drag.start) { e.preventDefault(); e.dataTransfer.dropEffect = "move"; }
+  });
+  host.addEventListener("drop", async e => {
+    e.preventDefault();
+    const td = e.target.closest("td[data-d]"); if (!drag || !td) return;
+    const s = drag.slots.get(key(+td.dataset.d, +td.dataset.h)), from = drag;
+    clear(); if (!s || !s.ok || s.start === from.start) return;
+    await doMove({ [mode]: sel, day: from.d, hour: from.h, to_day: s.day, to_hour: s.hour }, rerender);
+  });
+}
+let pubTimes = [];
+async function doMove(body, rerender) {
+  try { const r = await post("/api/edit/move", body); toast(`В черновике: ${r.move.label}`); rerender(); return r; }
+  catch (e) { toast(e.message, true); return null; }
+}
+// Click on a class in edit mode: feasible slots and rooms as buttons (works without a mouse / on touch screens).
+async function editPanel(r, mode, sel, rerender) {
+  const body = { [mode]: sel, day: r.day, hour: r.hour };
+  openCtx(`${DAY_RU[r.day]} · ${r.time} · правка`, esc(r.course), skeleton(3));
+  let res; try { res = await post("/api/edit/options", body); } catch (e) { $("#ctx-body").innerHTML = `<div class="callout bad">${I.alertCircle}<div>${esc(e.message)}</div></div>`; return; }
+  const s = res.session, cur = s.day * 12 + s.hour;
+  const ok = res.slots.filter(x => x.ok && x.start !== cur).sort((a, b) => a.delta - b.delta || a.start - b.start);
+  const bad = {}; res.slots.filter(x => !x.ok).forEach(x => { bad[x.reason] = (bad[x.reason] || 0) + 1; });
+  $("#ctx-body").innerHTML = `
+    <div class="actions"><span class="kind ${s.online ? "online" : s.kind}">${s.online ? "онлайн" : esc(KIND_RU[s.kind] || s.kind)}</span><span class="badge">${s.duration} ак. ч</span>${s.groups.length > 1 ? `<span class="badge info">поток: ${s.groups.length} гр.</span>` : ""}</div>
+    <dl><dt>Группы</dt><dd class="mono">${esc(s.groups.join(", "))}</dd><dt>Сейчас</dt><dd>${DAY_RU[s.day]}, <span class="mono">${esc(s.time)}</span> · ${s.room === "online" ? "онлайн" : `<span class="mono">${esc(s.room)}</span>`}</dd><dt>Студентов</dt><dd>${s.size}</dd></dl>
+    <div><div class="h-sm">Перенести · ${plural(ok.length, "вариант", "варианта", "вариантов")}</div>
+      ${ok.length ? `<div class="slot-list">${ok.slice(0, 14).map(x => `<button class="slot-btn ${x.delta < 0 ? "better" : ""}" data-t="${x.day}|${x.hour}"><b>${DAY_SHORT[x.day]} ${esc(pubTimes[x.hour] || "")}</b><span class="mono">${esc(x.room === "online" ? "онлайн" : x.room || "")}</span><span class="${x.delta < 0 ? "ok-t" : x.delta > 0 ? "warn-t" : "muted"}">${x.delta > 0 ? "+" : ""}${x.delta}</span></button>`).join("")}</div>`
+        : '<div class="hint">Свободных слотов нет</div>'}</div>
+    ${!s.online && !s.gym ? `<div><div class="h-sm">Сменить аудиторию в то же время</div>${res.rooms.filter(x => x !== s.room).length ? `<div class="ra-row"><select id="ep-room">${res.rooms.filter(x => x !== s.room).slice(0, 60).map(x => `<option>${esc(x)}</option>`).join("")}</select><button class="btn sm" id="ep-room-go">${I.door} Пересадить</button></div>` : '<div class="hint">Свободных подходящих аудиторий нет.</div>'}</div>` : ""}
+    ${Object.keys(bad).length ? `<details class="db-moves"><summary>${I.chev} Почему остальные слоты недоступны</summary><div><ul class="nice small">${Object.entries(bad).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([t, n]) => `<li>${esc(t)} <span class="muted">· ${n}</span></li>`).join("")}</ul></div></details>` : ""}`;
+  $("#ctx-foot").innerHTML = `<button class="btn sm" id="ep-ask">${I.msg} Спросить Планировщика</button>`;
+  $("#ep-ask").onclick = () => { chatPrefill = `Группа ${r.group}: «${r.course}» ${DAY_SHORT[r.day]} ${pubTimes[r.hour] || ""} — `; closeCtx(); location.hash = "#/chat/scheduler"; };
+  $$(".slot-btn").forEach(b => b.onclick = async () => { const [d, h] = b.dataset.t.split("|").map(Number); closeCtx(); await doMove({ ...body, to_day: d, to_hour: h }, rerender); });
+  const go = $("#ep-room-go"); if (go) go.onclick = async () => { closeCtx(); await doMove({ ...body, to_day: s.day, to_hour: s.hour, to_room: $("#ep-room").value }, rerender); };
+}
+
 // ------------------------------------------------------------------ data helpers
 function indexRows(rows) {
   const byGroup = {}, byRoom = {}, progOf = {};
@@ -1769,7 +2125,7 @@ function indexRows(rows) {
   return { byGroup, byRoom, progOf };
 }
 // Week grid of one group or room; `changed` = Set of "day|hour" keys to outline (what moved vs the previous version).
-function weekGridHtml(tt, index, mode, sel, changed = null) {
+function weekGridHtml(tt, index, mode, sel, changed = null, edit = false) {
   const H = 12;
   const rows = mode === "group" ? (index.byGroup[sel] || []) : (index.byRoom[sel] || []);
   const useSat = tt.rows.some(r => r.day === 5); const days = useSat ? 6 : 5;
@@ -1789,11 +2145,12 @@ function weekGridHtml(tt, index, mode, sel, changed = null) {
     for (let d = 0; d < days; d++) {
       if (skip[d][h]) continue;
       const c = cell[d][h];
-      if (!c) { html += `<td class="${h === 5 ? "lunch" : ""}"></td>`; continue; }
+      const at = edit ? ` data-d="${d}" data-h="${h}"` : "";
+      if (!c) { html += `<td class="${h === 5 ? "lunch" : ""}"${at}></td>`; continue; }
       let span = 1; while (h + span < H && same(c, cell[d][h + span]) && !cell[d][h + span].clash) { skip[d][h + span] = true; span++; }
       const cls = c.online ? "online" : c.kind;
       const who = mode === "group" ? (c.online ? "онлайн" : esc(c.room)) : esc(c.groups.join(", "));
-      html += `<td rowspan="${span}"><div class="cell ${cls} ${c.clash ? "clash" : ""} ${changed && changed.has(`${d}|${h}`) ? "changed" : ""}" title="${esc(c.course)}" data-d="${d}" data-h="${h}"><b>${esc(c.course)}</b><div class="r"><span>${who}</span><span>${KIND_RU[c.kind] || c.kind}${c.stream > 1 && mode === "group" ? ` · поток ${c.stream}` : ""}</span></div></div></td>`;
+      html += `<td rowspan="${span}"${at}><div class="cell ${cls} ${c.clash ? "clash" : ""} ${changed && changed.has(`${d}|${h}`) ? "changed" : ""}" title="${esc(c.course)}" data-d="${d}" data-h="${h}"${edit ? ' draggable="true"' : ""}><b>${esc(c.course)}</b><div class="r"><span>${who}</span><span>${KIND_RU[c.kind] || c.kind}${c.stream > 1 && mode === "group" ? ` · поток ${c.stream}` : ""}</span></div></div></td>`;
     }
     html += "</tr>";
   }

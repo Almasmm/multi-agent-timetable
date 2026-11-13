@@ -1,0 +1,821 @@
+﻿group,program,year,day,day_index,hour_index,time,discipline,type,classroom,stream_size
+ITM-2101,ITM,3,Mon,0,1,09:00-09:50,Academic Writing,practice,C1.1.224P,1
+ITM-2101,ITM,3,Mon,0,2,10:00-10:50,Academic Writing,practice,C1.1.224P,1
+ITM-2101,ITM,3,Mon,0,3,11:00-11:50,Technological Entrepreneurship,lecture,online,5
+ITM-2101,ITM,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship,lecture,online,5
+ITM-2101,ITM,3,Mon,0,5,13:00-13:50,Philosophy,lecture,online,5
+ITM-2101,ITM,3,Mon,0,6,14:00-14:50,Philosophy,lecture,online,5
+ITM-2101,ITM,3,Mon,0,7,15:00-15:50,Academic Writing,lecture,C1.1.141,2
+ITM-2101,ITM,3,Mon,0,8,16:00-16:50,Academic Writing,lecture,C1.1.141,2
+ITM-2101,ITM,3,Tue,1,1,09:00-09:50,Philosophy,practice,C1.1.225P,1
+ITM-2101,ITM,3,Tue,1,2,10:00-10:50,Philosophy,practice,C1.1.225P,1
+ITM-2101,ITM,3,Tue,1,3,11:00-11:50,Convergence Technologies in Journalism,practice,C1.1.253P,1
+ITM-2101,ITM,3,Tue,1,4,12:00-12:50,Convergence Technologies in Journalism,lecture,C1.1.327P,2
+ITM-2101,ITM,3,Tue,1,5,13:00-13:50,Convergence Technologies in Journalism,lecture,C1.1.327P,2
+ITM-2101,ITM,3,Tue,1,6,14:00-14:50,Technological Entrepreneurship,practice,C1.1.222P,1
+ITM-2101,ITM,3,Tue,1,7,15:00-15:50,Technological Entrepreneurship,practice,C1.1.222P,1
+ITM-2101,ITM,3,Tue,1,8,16:00-16:50,Machine Learning,lecture,C1.1.221P,2
+ITM-2101,ITM,3,Wed,2,1,09:00-09:50,Technological Entrepreneurship,practice,C1.1.225P,1
+ITM-2101,ITM,3,Wed,2,5,13:00-13:50,Mastering Design Thinking / Multimedia Journalism,lecture,C1.1.141,2
+ITM-2101,ITM,3,Wed,2,6,14:00-14:50,Mastering Design Thinking / Multimedia Journalism,lecture,C1.1.141,2
+ITM-2101,ITM,3,Wed,2,7,15:00-15:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.227P,1
+ITM-2101,ITM,3,Wed,2,8,16:00-16:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.227P,1
+ITM-2101,ITM,3,Thu,3,4,12:00-12:50,Philosophy,lecture,online,5
+ITM-2101,ITM,3,Thu,3,5,13:00-13:50,Machine Learning,lecture,C1.1.221P,2
+ITM-2101,ITM,3,Thu,3,6,14:00-14:50,Machine Learning,lecture,C1.1.221P,2
+ITM-2101,ITM,3,Fri,4,1,09:00-09:50,Academic Writing,practice,C1.1.235P,1
+ITM-2101,ITM,3,Fri,4,2,10:00-10:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.261,1
+ITM-2101,ITM,3,Fri,4,3,11:00-11:50,Convergence Technologies in Journalism,practice,C1.1.224P,1
+ITM-2101,ITM,3,Fri,4,4,12:00-12:50,Convergence Technologies in Journalism,practice,C1.1.224P,1
+ITM-2101,ITM,3,Fri,4,5,13:00-13:50,Machine Learning,practice,C1.1.225P,1
+ITM-2101,ITM,3,Fri,4,6,14:00-14:50,Machine Learning,practice,C1.1.225P,1
+ITM-2102,ITM,3,Mon,0,1,09:00-09:50,Technological Entrepreneurship,practice,C1.1.223P,1
+ITM-2102,ITM,3,Mon,0,2,10:00-10:50,Technological Entrepreneurship,practice,C1.1.223P,1
+ITM-2102,ITM,3,Mon,0,3,11:00-11:50,Technological Entrepreneurship,lecture,online,5
+ITM-2102,ITM,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship,lecture,online,5
+ITM-2102,ITM,3,Mon,0,5,13:00-13:50,Philosophy,lecture,online,5
+ITM-2102,ITM,3,Mon,0,6,14:00-14:50,Philosophy,lecture,online,5
+ITM-2102,ITM,3,Mon,0,7,15:00-15:50,Academic Writing,lecture,C1.1.141,2
+ITM-2102,ITM,3,Mon,0,8,16:00-16:50,Academic Writing,lecture,C1.1.141,2
+ITM-2102,ITM,3,Tue,1,4,12:00-12:50,Convergence Technologies in Journalism,lecture,C1.1.327P,2
+ITM-2102,ITM,3,Tue,1,5,13:00-13:50,Convergence Technologies in Journalism,lecture,C1.1.327P,2
+ITM-2102,ITM,3,Tue,1,6,14:00-14:50,Convergence Technologies in Journalism,practice,C1.1.223P,1
+ITM-2102,ITM,3,Tue,1,7,15:00-15:50,Convergence Technologies in Journalism,practice,C1.1.223P,1
+ITM-2102,ITM,3,Tue,1,8,16:00-16:50,Machine Learning,lecture,C1.1.221P,2
+ITM-2102,ITM,3,Wed,2,3,11:00-11:50,Philosophy,practice,C1.1.222P,1
+ITM-2102,ITM,3,Wed,2,4,12:00-12:50,Philosophy,practice,C1.1.222P,1
+ITM-2102,ITM,3,Wed,2,5,13:00-13:50,Mastering Design Thinking / Multimedia Journalism,lecture,C1.1.141,2
+ITM-2102,ITM,3,Wed,2,6,14:00-14:50,Mastering Design Thinking / Multimedia Journalism,lecture,C1.1.141,2
+ITM-2102,ITM,3,Wed,2,7,15:00-15:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.256P,1
+ITM-2102,ITM,3,Wed,2,8,16:00-16:50,Convergence Technologies in Journalism,practice,C1.1.225P,1
+ITM-2102,ITM,3,Thu,3,3,11:00-11:50,Academic Writing,practice,C1.1.235P,1
+ITM-2102,ITM,3,Thu,3,4,12:00-12:50,Philosophy,lecture,online,5
+ITM-2102,ITM,3,Thu,3,5,13:00-13:50,Machine Learning,lecture,C1.1.221P,2
+ITM-2102,ITM,3,Thu,3,6,14:00-14:50,Machine Learning,lecture,C1.1.221P,2
+ITM-2102,ITM,3,Fri,4,1,09:00-09:50,Technological Entrepreneurship,practice,C1.1.234P,1
+ITM-2102,ITM,3,Fri,4,2,10:00-10:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.234P,1
+ITM-2102,ITM,3,Fri,4,3,11:00-11:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.234P,1
+ITM-2102,ITM,3,Fri,4,4,12:00-12:50,Machine Learning,practice,C1.1.233P,1
+ITM-2102,ITM,3,Fri,4,5,13:00-13:50,Machine Learning,practice,C1.1.233P,1
+ITM-2102,ITM,3,Fri,4,6,14:00-14:50,Academic Writing,practice,C1.1.234P,1
+ITM-2102,ITM,3,Fri,4,7,15:00-15:50,Academic Writing,practice,C1.1.234P,1
+ITM-2103,ITM,3,Mon,0,1,09:00-09:50,Philosophy,practice,C1.1.222P,1
+ITM-2103,ITM,3,Mon,0,2,10:00-10:50,Philosophy,practice,C1.1.222P,1
+ITM-2103,ITM,3,Mon,0,3,11:00-11:50,Technological Entrepreneurship,lecture,online,5
+ITM-2103,ITM,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship,lecture,online,5
+ITM-2103,ITM,3,Mon,0,5,13:00-13:50,Philosophy,lecture,online,5
+ITM-2103,ITM,3,Mon,0,6,14:00-14:50,Philosophy,lecture,online,5
+ITM-2103,ITM,3,Mon,0,7,15:00-15:50,Academic Writing,lecture,C1.1.221P,2
+ITM-2103,ITM,3,Mon,0,8,16:00-16:50,Academic Writing,lecture,C1.1.221P,2
+ITM-2103,ITM,3,Tue,1,2,10:00-10:50,Convergence Technologies in Journalism,lecture,C1.2.233L,2
+ITM-2103,ITM,3,Tue,1,3,11:00-11:50,Convergence Technologies in Journalism,lecture,C1.2.233L,2
+ITM-2103,ITM,3,Tue,1,7,15:00-15:50,Mastering Design Thinking / Multimedia Journalism,lecture,C1.1.141,2
+ITM-2103,ITM,3,Tue,1,8,16:00-16:50,Mastering Design Thinking / Multimedia Journalism,lecture,C1.1.141,2
+ITM-2103,ITM,3,Wed,2,1,09:00-09:50,Machine Learning,lecture,C1.1.327P,2
+ITM-2103,ITM,3,Wed,2,2,10:00-10:50,Convergence Technologies in Journalism,practice,C1.1.233P,1
+ITM-2103,ITM,3,Wed,2,3,11:00-11:50,Convergence Technologies in Journalism,practice,C1.1.233P,1
+ITM-2103,ITM,3,Wed,2,7,15:00-15:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.235P,1
+ITM-2103,ITM,3,Wed,2,8,16:00-16:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.235P,1
+ITM-2103,ITM,3,Thu,3,2,10:00-10:50,Technological Entrepreneurship,practice,C1.1.226P,1
+ITM-2103,ITM,3,Thu,3,3,11:00-11:50,Technological Entrepreneurship,practice,C1.1.226P,1
+ITM-2103,ITM,3,Thu,3,4,12:00-12:50,Philosophy,lecture,online,5
+ITM-2103,ITM,3,Thu,3,5,13:00-13:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.254P,1
+ITM-2103,ITM,3,Thu,3,6,14:00-14:50,Academic Writing,practice,C1.1.255P,1
+ITM-2103,ITM,3,Thu,3,7,15:00-15:50,Convergence Technologies in Journalism,practice,C1.1.344P,1
+ITM-2103,ITM,3,Fri,4,2,10:00-10:50,Technological Entrepreneurship,practice,C1.1.256P,1
+ITM-2103,ITM,3,Fri,4,3,11:00-11:50,Machine Learning,lecture,C1.1.141,2
+ITM-2103,ITM,3,Fri,4,4,12:00-12:50,Machine Learning,lecture,C1.1.141,2
+ITM-2103,ITM,3,Fri,4,5,13:00-13:50,Academic Writing,practice,C1.1.226P,1
+ITM-2103,ITM,3,Fri,4,6,14:00-14:50,Academic Writing,practice,C1.1.226P,1
+ITM-2103,ITM,3,Fri,4,7,15:00-15:50,Machine Learning,practice,C1.1.224P,1
+ITM-2103,ITM,3,Fri,4,8,16:00-16:50,Machine Learning,practice,C1.1.224P,1
+ITM-2104,ITM,3,Mon,0,1,09:00-09:50,Technological Entrepreneurship,practice,C1.1.226P,1
+ITM-2104,ITM,3,Mon,0,2,10:00-10:50,Academic Writing,practice,C1.1.226P,1
+ITM-2104,ITM,3,Mon,0,3,11:00-11:50,Technological Entrepreneurship,lecture,online,5
+ITM-2104,ITM,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship,lecture,online,5
+ITM-2104,ITM,3,Mon,0,5,13:00-13:50,Philosophy,lecture,online,5
+ITM-2104,ITM,3,Mon,0,6,14:00-14:50,Philosophy,lecture,online,5
+ITM-2104,ITM,3,Mon,0,7,15:00-15:50,Academic Writing,lecture,C1.1.221P,2
+ITM-2104,ITM,3,Mon,0,8,16:00-16:50,Academic Writing,lecture,C1.1.221P,2
+ITM-2104,ITM,3,Tue,1,2,10:00-10:50,Convergence Technologies in Journalism,lecture,C1.2.233L,2
+ITM-2104,ITM,3,Tue,1,3,11:00-11:50,Convergence Technologies in Journalism,lecture,C1.2.233L,2
+ITM-2104,ITM,3,Tue,1,4,12:00-12:50,Convergence Technologies in Journalism,practice,C1.1.234P,1
+ITM-2104,ITM,3,Tue,1,5,13:00-13:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.234P,1
+ITM-2104,ITM,3,Tue,1,6,14:00-14:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.234P,1
+ITM-2104,ITM,3,Tue,1,7,15:00-15:50,Mastering Design Thinking / Multimedia Journalism,lecture,C1.1.141,2
+ITM-2104,ITM,3,Tue,1,8,16:00-16:50,Mastering Design Thinking / Multimedia Journalism,lecture,C1.1.141,2
+ITM-2104,ITM,3,Wed,2,1,09:00-09:50,Machine Learning,lecture,C1.1.327P,2
+ITM-2104,ITM,3,Wed,2,2,10:00-10:50,Convergence Technologies in Journalism,practice,C1.1.234P,1
+ITM-2104,ITM,3,Wed,2,3,11:00-11:50,Convergence Technologies in Journalism,practice,C1.1.234P,1
+ITM-2104,ITM,3,Wed,2,4,12:00-12:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.227P,1
+ITM-2104,ITM,3,Wed,2,5,13:00-13:50,Academic Writing,practice,C1.1.223P,1
+ITM-2104,ITM,3,Wed,2,6,14:00-14:50,Academic Writing,practice,C1.1.223P,1
+ITM-2104,ITM,3,Wed,2,7,15:00-15:50,Machine Learning,practice,C1.1.223P,1
+ITM-2104,ITM,3,Wed,2,8,16:00-16:50,Machine Learning,practice,C1.1.223P,1
+ITM-2104,ITM,3,Thu,3,4,12:00-12:50,Philosophy,lecture,online,5
+ITM-2104,ITM,3,Thu,3,5,13:00-13:50,Philosophy,practice,C1.1.224P,1
+ITM-2104,ITM,3,Thu,3,6,14:00-14:50,Philosophy,practice,C1.1.224P,1
+ITM-2104,ITM,3,Thu,3,7,15:00-15:50,Technological Entrepreneurship,practice,C1.1.234P,1
+ITM-2104,ITM,3,Thu,3,8,16:00-16:50,Technological Entrepreneurship,practice,C1.1.234P,1
+ITM-2104,ITM,3,Fri,4,3,11:00-11:50,Machine Learning,lecture,C1.1.141,2
+ITM-2104,ITM,3,Fri,4,4,12:00-12:50,Machine Learning,lecture,C1.1.141,2
+ITM-2105,ITM,3,Mon,0,3,11:00-11:50,Technological Entrepreneurship,lecture,online,5
+ITM-2105,ITM,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship,lecture,online,5
+ITM-2105,ITM,3,Mon,0,5,13:00-13:50,Philosophy,lecture,online,5
+ITM-2105,ITM,3,Mon,0,6,14:00-14:50,Philosophy,lecture,online,5
+ITM-2105,ITM,3,Mon,0,7,15:00-15:50,Machine Learning,lecture,C1.2.249L,1
+ITM-2105,ITM,3,Tue,1,1,09:00-09:50,Machine Learning,practice,C1.1.226P,1
+ITM-2105,ITM,3,Tue,1,2,10:00-10:50,Machine Learning,practice,C1.1.226P,1
+ITM-2105,ITM,3,Tue,1,3,11:00-11:50,Academic Writing,lecture,C1.1.141,1
+ITM-2105,ITM,3,Tue,1,4,12:00-12:50,Academic Writing,lecture,C1.1.141,1
+ITM-2105,ITM,3,Tue,1,5,13:00-13:50,Convergence Technologies in Journalism,practice,C1.1.225P,1
+ITM-2105,ITM,3,Tue,1,6,14:00-14:50,Convergence Technologies in Journalism,practice,C1.1.225P,1
+ITM-2105,ITM,3,Tue,1,7,15:00-15:50,Convergence Technologies in Journalism,lecture,C1.2.249L,1
+ITM-2105,ITM,3,Tue,1,8,16:00-16:50,Convergence Technologies in Journalism,lecture,C1.2.249L,1
+ITM-2105,ITM,3,Wed,2,2,10:00-10:50,Mastering Design Thinking / Multimedia Journalism,lecture,C1.1.327P,1
+ITM-2105,ITM,3,Wed,2,3,11:00-11:50,Mastering Design Thinking / Multimedia Journalism,lecture,C1.1.327P,1
+ITM-2105,ITM,3,Wed,2,4,12:00-12:50,Machine Learning,lecture,C1.2.233L,1
+ITM-2105,ITM,3,Wed,2,5,13:00-13:50,Machine Learning,lecture,C1.2.233L,1
+ITM-2105,ITM,3,Wed,2,6,14:00-14:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.253P,1
+ITM-2105,ITM,3,Wed,2,7,15:00-15:50,Academic Writing,practice,C1.1.226P,1
+ITM-2105,ITM,3,Wed,2,8,16:00-16:50,Academic Writing,practice,C1.1.226P,1
+ITM-2105,ITM,3,Thu,3,1,09:00-09:50,Convergence Technologies in Journalism,practice,C1.1.227P,1
+ITM-2105,ITM,3,Thu,3,2,10:00-10:50,Technological Entrepreneurship,practice,C1.1.227P,1
+ITM-2105,ITM,3,Thu,3,3,11:00-11:50,Technological Entrepreneurship,practice,C1.1.227P,1
+ITM-2105,ITM,3,Thu,3,4,12:00-12:50,Philosophy,lecture,online,5
+ITM-2105,ITM,3,Thu,3,5,13:00-13:50,Philosophy,practice,C1.1.225P,1
+ITM-2105,ITM,3,Thu,3,6,14:00-14:50,Philosophy,practice,C1.1.225P,1
+ITM-2105,ITM,3,Thu,3,7,15:00-15:50,Academic Writing,practice,C1.1.326L,1
+ITM-2105,ITM,3,Fri,4,1,09:00-09:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.225P,1
+ITM-2105,ITM,3,Fri,4,2,10:00-10:50,Mastering Design Thinking / Multimedia Journalism,practice,C1.1.225P,1
+ITM-2105,ITM,3,Fri,4,8,16:00-16:50,Technological Entrepreneurship,practice,C1.1.235P,1
+ITM-2201,ITM,2,Mon,0,2,10:00-10:50,Psychology,lecture,online,5
+ITM-2201,ITM,2,Mon,0,3,11:00-11:50,Political Science,lecture,online,5
+ITM-2201,ITM,2,Mon,0,9,17:00-17:50,Introduction to Python,lecture,C1.1.141,2
+ITM-2201,ITM,2,Mon,0,10,18:00-18:50,Photo Journalism and Basics of Design,lecture,C1.1.141,2
+ITM-2201,ITM,2,Mon,0,11,19:00-19:50,Photo Journalism and Basics of Design,lecture,C1.1.141,2
+ITM-2201,ITM,2,Tue,1,3,11:00-11:50,Political Science,practice,C1.1.227P,1
+ITM-2201,ITM,2,Tue,1,4,12:00-12:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+ITM-2201,ITM,2,Tue,1,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+ITM-2201,ITM,2,Tue,1,6,14:00-14:50,Psychology,practice,C1.1.226P,1
+ITM-2201,ITM,2,Wed,2,2,10:00-10:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.227P,1
+ITM-2201,ITM,2,Wed,2,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.227P,1
+ITM-2201,ITM,2,Thu,3,3,11:00-11:50,Introduction to Python,lecture,C1.1.141,2
+ITM-2201,ITM,2,Thu,3,4,12:00-12:50,Introduction to Python,lecture,C1.1.141,2
+ITM-2201,ITM,2,Thu,3,5,13:00-13:50,Information and Digital Literacy,lecture,C1.1.141,2
+ITM-2201,ITM,2,Thu,3,6,14:00-14:50,Information and Digital Literacy,lecture,C1.1.141,2
+ITM-2201,ITM,2,Thu,3,10,18:00-18:50,Information and Digital Literacy,practice,C1.1.222P,1
+ITM-2201,ITM,2,Thu,3,11,19:00-19:50,Information and Digital Literacy,practice,C1.1.222P,1
+ITM-2201,ITM,2,Fri,4,2,10:00-10:50,Introduction to Python,practice,C1.1.233P,1
+ITM-2201,ITM,2,Fri,4,3,11:00-11:50,Introduction to Python,practice,C1.1.233P,1
+ITM-2201,ITM,2,Fri,4,4,12:00-12:50,Information and Digital Literacy,practice,C1.1.253P,1
+ITM-2201,ITM,2,Fri,4,5,13:00-13:50,Physical Education,practice,GYM-1,1
+ITM-2201,ITM,2,Fri,4,6,14:00-14:50,Physical Education,practice,GYM-1,1
+ITM-2201,ITM,2,Fri,4,7,15:00-15:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.253P,1
+ITM-2201,ITM,2,Fri,4,8,16:00-16:50,Photo Journalism and Basics of Design,practice,C1.1.233P,1
+ITM-2201,ITM,2,Fri,4,9,17:00-17:50,Photo Journalism and Basics of Design,practice,C1.1.233P,1
+ITM-2202,ITM,2,Mon,0,2,10:00-10:50,Psychology,lecture,online,5
+ITM-2202,ITM,2,Mon,0,3,11:00-11:50,Political Science,lecture,online,5
+ITM-2202,ITM,2,Mon,0,9,17:00-17:50,Introduction to Python,lecture,C1.1.141,2
+ITM-2202,ITM,2,Mon,0,10,18:00-18:50,Photo Journalism and Basics of Design,lecture,C1.1.141,2
+ITM-2202,ITM,2,Mon,0,11,19:00-19:50,Photo Journalism and Basics of Design,lecture,C1.1.141,2
+ITM-2202,ITM,2,Tue,1,2,10:00-10:50,Introduction to Python,practice,C1.1.223P,1
+ITM-2202,ITM,2,Tue,1,3,11:00-11:50,Introduction to Python,practice,C1.1.223P,1
+ITM-2202,ITM,2,Tue,1,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.255P,1
+ITM-2202,ITM,2,Wed,2,2,10:00-10:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.228P,1
+ITM-2202,ITM,2,Wed,2,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.228P,1
+ITM-2202,ITM,2,Wed,2,4,12:00-12:50,Information and Digital Literacy,practice,C1.1.226P,1
+ITM-2202,ITM,2,Thu,3,1,09:00-09:50,Information and Digital Literacy,practice,C1.1.223P,1
+ITM-2202,ITM,2,Thu,3,2,10:00-10:50,Information and Digital Literacy,practice,C1.1.223P,1
+ITM-2202,ITM,2,Thu,3,3,11:00-11:50,Introduction to Python,lecture,C1.1.141,2
+ITM-2202,ITM,2,Thu,3,4,12:00-12:50,Introduction to Python,lecture,C1.1.141,2
+ITM-2202,ITM,2,Thu,3,5,13:00-13:50,Information and Digital Literacy,lecture,C1.1.141,2
+ITM-2202,ITM,2,Thu,3,6,14:00-14:50,Information and Digital Literacy,lecture,C1.1.141,2
+ITM-2202,ITM,2,Thu,3,7,15:00-15:50,Photo Journalism and Basics of Design,practice,C1.1.225P,1
+ITM-2202,ITM,2,Thu,3,8,16:00-16:50,Photo Journalism and Basics of Design,practice,C1.1.225P,1
+ITM-2202,ITM,2,Fri,4,1,09:00-09:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.223P,1
+ITM-2202,ITM,2,Fri,4,2,10:00-10:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.223P,1
+ITM-2202,ITM,2,Fri,4,3,11:00-11:50,Physical Education,practice,GYM-1,1
+ITM-2202,ITM,2,Fri,4,4,12:00-12:50,Physical Education,practice,GYM-1,1
+ITM-2202,ITM,2,Fri,4,6,14:00-14:50,Political Science,practice,C1.1.261,1
+ITM-2202,ITM,2,Fri,4,7,15:00-15:50,Psychology,practice,C1.1.261,1
+ITM-2203,ITM,2,Mon,0,0,08:00-08:50,Introduction to Python,lecture,C1.1.141,2
+ITM-2203,ITM,2,Mon,0,1,09:00-09:50,Introduction to Python,lecture,C1.1.141,2
+ITM-2203,ITM,2,Mon,0,2,10:00-10:50,Psychology,lecture,online,5
+ITM-2203,ITM,2,Mon,0,3,11:00-11:50,Political Science,lecture,online,5
+ITM-2203,ITM,2,Mon,0,4,12:00-12:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.227P,1
+ITM-2203,ITM,2,Mon,0,5,13:00-13:50,Psychology,practice,C1.1.227P,1
+ITM-2203,ITM,2,Tue,1,1,09:00-09:50,Photo Journalism and Basics of Design,lecture,C1.1.141,2
+ITM-2203,ITM,2,Tue,1,2,10:00-10:50,Photo Journalism and Basics of Design,lecture,C1.1.141,2
+ITM-2203,ITM,2,Tue,1,3,11:00-11:50,Information and Digital Literacy,practice,C1.1.235P,1
+ITM-2203,ITM,2,Tue,1,4,12:00-12:50,Information and Digital Literacy,lecture,C1.1.221P,2
+ITM-2203,ITM,2,Tue,1,5,13:00-13:50,Information and Digital Literacy,lecture,C1.1.221P,2
+ITM-2203,ITM,2,Tue,1,6,14:00-14:50,Political Science,practice,C1.1.224P,1
+ITM-2203,ITM,2,Tue,1,7,15:00-15:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.225P,1
+ITM-2203,ITM,2,Tue,1,8,16:00-16:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.225P,1
+ITM-2203,ITM,2,Wed,2,2,10:00-10:50,Physical Education,practice,GYM-1,1
+ITM-2203,ITM,2,Wed,2,3,11:00-11:50,Physical Education,practice,GYM-1,1
+ITM-2203,ITM,2,Thu,3,6,14:00-14:50,Photo Journalism and Basics of Design,practice,C1.1.222P,1
+ITM-2203,ITM,2,Thu,3,7,15:00-15:50,Photo Journalism and Basics of Design,practice,C1.1.222P,1
+ITM-2203,ITM,2,Fri,4,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+ITM-2203,ITM,2,Fri,4,4,12:00-12:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+ITM-2203,ITM,2,Fri,4,5,13:00-13:50,Introduction to Python,practice,C1.1.224P,1
+ITM-2203,ITM,2,Fri,4,6,14:00-14:50,Introduction to Python,practice,C1.1.224P,1
+ITM-2203,ITM,2,Fri,4,7,15:00-15:50,Information and Digital Literacy,practice,C1.1.223P,1
+ITM-2203,ITM,2,Fri,4,8,16:00-16:50,Information and Digital Literacy,practice,C1.1.223P,1
+ITM-2203,ITM,2,Fri,4,9,17:00-17:50,Introduction to Python,lecture,C1.1.221P,2
+ITM-2204,ITM,2,Mon,0,0,08:00-08:50,Introduction to Python,lecture,C1.1.141,2
+ITM-2204,ITM,2,Mon,0,1,09:00-09:50,Introduction to Python,lecture,C1.1.141,2
+ITM-2204,ITM,2,Mon,0,2,10:00-10:50,Psychology,lecture,online,5
+ITM-2204,ITM,2,Mon,0,3,11:00-11:50,Political Science,lecture,online,5
+ITM-2204,ITM,2,Mon,0,8,16:00-16:50,Introduction to Python,practice,C1.1.222P,1
+ITM-2204,ITM,2,Mon,0,9,17:00-17:50,Introduction to Python,practice,C1.1.222P,1
+ITM-2204,ITM,2,Tue,1,1,09:00-09:50,Photo Journalism and Basics of Design,lecture,C1.1.141,2
+ITM-2204,ITM,2,Tue,1,2,10:00-10:50,Photo Journalism and Basics of Design,lecture,C1.1.141,2
+ITM-2204,ITM,2,Tue,1,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.234P,1
+ITM-2204,ITM,2,Tue,1,4,12:00-12:50,Information and Digital Literacy,lecture,C1.1.221P,2
+ITM-2204,ITM,2,Tue,1,5,13:00-13:50,Information and Digital Literacy,lecture,C1.1.221P,2
+ITM-2204,ITM,2,Wed,2,4,12:00-12:50,Physical Education,practice,GYM-1,1
+ITM-2204,ITM,2,Wed,2,5,13:00-13:50,Physical Education,practice,GYM-1,1
+ITM-2204,ITM,2,Wed,2,6,14:00-14:50,Photo Journalism and Basics of Design,practice,C1.1.225P,1
+ITM-2204,ITM,2,Wed,2,7,15:00-15:50,Photo Journalism and Basics of Design,practice,C1.1.225P,1
+ITM-2204,ITM,2,Thu,3,0,08:00-08:50,Psychology,practice,C1.1.223P,1
+ITM-2204,ITM,2,Thu,3,5,13:00-13:50,Information and Digital Literacy,practice,C1.1.223P,1
+ITM-2204,ITM,2,Thu,3,6,14:00-14:50,Information and Digital Literacy,practice,C1.1.223P,1
+ITM-2204,ITM,2,Thu,3,7,15:00-15:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+ITM-2204,ITM,2,Thu,3,8,16:00-16:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+ITM-2204,ITM,2,Fri,4,1,09:00-09:50,Information and Digital Literacy,practice,C1.1.233P,1
+ITM-2204,ITM,2,Fri,4,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.233P,1
+ITM-2204,ITM,2,Fri,4,7,15:00-15:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.233P,1
+ITM-2204,ITM,2,Fri,4,8,16:00-16:50,Political Science,practice,C1.1.234P,1
+ITM-2204,ITM,2,Fri,4,9,17:00-17:50,Introduction to Python,lecture,C1.1.221P,2
+ITM-2205,ITM,2,Mon,0,2,10:00-10:50,Psychology,lecture,online,5
+ITM-2205,ITM,2,Mon,0,3,11:00-11:50,Political Science,lecture,online,5
+ITM-2205,ITM,2,Mon,0,4,12:00-12:50,Information and Digital Literacy,practice,C1.1.228P,1
+ITM-2205,ITM,2,Mon,0,5,13:00-13:50,Introduction to Python,lecture,C1.1.327P,1
+ITM-2205,ITM,2,Mon,0,6,14:00-14:50,Political Science,practice,C1.1.233P,1
+ITM-2205,ITM,2,Tue,1,2,10:00-10:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+ITM-2205,ITM,2,Tue,1,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+ITM-2205,ITM,2,Tue,1,4,12:00-12:50,Physical Education,practice,GYM-1,1
+ITM-2205,ITM,2,Tue,1,5,13:00-13:50,Physical Education,practice,GYM-1,1
+ITM-2205,ITM,2,Wed,2,5,13:00-13:50,Information and Digital Literacy,practice,C1.1.222P,1
+ITM-2205,ITM,2,Wed,2,6,14:00-14:50,Information and Digital Literacy,practice,C1.1.222P,1
+ITM-2205,ITM,2,Wed,2,7,15:00-15:50,Introduction to Python,lecture,C1.1.141,1
+ITM-2205,ITM,2,Wed,2,8,16:00-16:50,Introduction to Python,lecture,C1.1.141,1
+ITM-2205,ITM,2,Wed,2,9,17:00-17:50,Psychology,practice,C1.1.222P,1
+ITM-2205,ITM,2,Thu,3,1,09:00-09:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.226P,1
+ITM-2205,ITM,2,Thu,3,2,10:00-10:50,Information and Digital Literacy,lecture,C1.2.233L,1
+ITM-2205,ITM,2,Thu,3,3,11:00-11:50,Information and Digital Literacy,lecture,C1.2.233L,1
+ITM-2205,ITM,2,Thu,3,4,12:00-12:50,Photo Journalism and Basics of Design,practice,C1.1.226P,1
+ITM-2205,ITM,2,Thu,3,5,13:00-13:50,Photo Journalism and Basics of Design,practice,C1.1.226P,1
+ITM-2205,ITM,2,Thu,3,6,14:00-14:50,Photo Journalism and Basics of Design,lecture,C1.1.327P,1
+ITM-2205,ITM,2,Thu,3,7,15:00-15:50,Photo Journalism and Basics of Design,lecture,C1.1.327P,1
+ITM-2205,ITM,2,Fri,4,1,09:00-09:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+ITM-2205,ITM,2,Fri,4,2,10:00-10:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+ITM-2205,ITM,2,Fri,4,3,11:00-11:50,Introduction to Python,practice,C1.1.223P,1
+ITM-2205,ITM,2,Fri,4,4,12:00-12:50,Introduction to Python,practice,C1.1.223P,1
+ITM-2301,ITM,1,Mon,0,1,09:00-09:50,Foundations of Journalism,lecture,C1.2.233L,2
+ITM-2301,ITM,1,Mon,0,2,10:00-10:50,Foundations of Journalism,lecture,C1.2.233L,2
+ITM-2301,ITM,1,Mon,0,3,11:00-11:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.223P,1
+ITM-2301,ITM,1,Mon,0,4,12:00-12:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.223P,1
+ITM-2301,ITM,1,Mon,0,5,13:00-13:50,Information and Communication Technologies,lecture,online,2
+ITM-2301,ITM,1,Mon,0,6,14:00-14:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.221P,2
+ITM-2301,ITM,1,Mon,0,7,15:00-15:50,Modern history of Kazakhstan,lecture,online,2
+ITM-2301,ITM,1,Mon,0,8,16:00-16:50,Modern history of Kazakhstan,lecture,online,2
+ITM-2301,ITM,1,Tue,1,1,09:00-09:50,Foundations of Journalism,practice,C1.1.228P,1
+ITM-2301,ITM,1,Tue,1,2,10:00-10:50,Physical Education,practice,GYM-1,1
+ITM-2301,ITM,1,Tue,1,3,11:00-11:50,Physical Education,practice,GYM-1,1
+ITM-2301,ITM,1,Tue,1,4,12:00-12:50,Educational Practice,practice,C1.1.222P,1
+ITM-2301,ITM,1,Tue,1,5,13:00-13:50,Educational Practice,practice,C1.1.222P,1
+ITM-2301,ITM,1,Tue,1,6,14:00-14:50,Modern history of Kazakhstan,lecture,online,2
+ITM-2301,ITM,1,Tue,1,7,15:00-15:50,Foreign Language 1,practice,C1.1.224P,1
+ITM-2301,ITM,1,Tue,1,8,16:00-16:50,Foreign Language 1,practice,C1.1.224P,1
+ITM-2301,ITM,1,Wed,2,2,10:00-10:50,Modern history of Kazakhstan,practice,C1.1.225P,1
+ITM-2301,ITM,1,Wed,2,3,11:00-11:50,Modern history of Kazakhstan,practice,C1.1.225P,1
+ITM-2301,ITM,1,Wed,2,4,12:00-12:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+ITM-2301,ITM,1,Wed,2,5,13:00-13:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+ITM-2301,ITM,1,Wed,2,6,14:00-14:50,Foreign Language 1,practice,C1.1.235P,1
+ITM-2301,ITM,1,Wed,2,7,15:00-15:50,Information and Communication Technologies,practice,C1.1.222P,1
+ITM-2301,ITM,1,Wed,2,8,16:00-16:50,Information and Communication Technologies,practice,C1.1.222P,1
+ITM-2301,ITM,1,Thu,3,2,10:00-10:50,Foreign Language 1,practice,C1.1.222P,1
+ITM-2301,ITM,1,Thu,3,3,11:00-11:50,Foreign Language 1,practice,C1.1.222P,1
+ITM-2301,ITM,1,Thu,3,4,12:00-12:50,Educational Practice,practice,C1.1.222P,1
+ITM-2301,ITM,1,Thu,3,5,13:00-13:50,Educational Practice,practice,C1.1.222P,1
+ITM-2301,ITM,1,Fri,4,1,09:00-09:50,Foundations of Journalism,practice,C1.1.222P,1
+ITM-2301,ITM,1,Fri,4,2,10:00-10:50,Foundations of Journalism,practice,C1.1.222P,1
+ITM-2301,ITM,1,Fri,4,3,11:00-11:50,Information and Communication Technologies,lecture,online,2
+ITM-2301,ITM,1,Fri,4,4,12:00-12:50,Information and Communication Technologies,lecture,online,2
+ITM-2301,ITM,1,Fri,4,5,13:00-13:50,Educational Practice,practice,C1.1.222P,1
+ITM-2301,ITM,1,Fri,4,6,14:00-14:50,Educational Practice,practice,C1.1.222P,1
+ITM-2302,ITM,1,Mon,0,1,09:00-09:50,Foundations of Journalism,lecture,C1.2.233L,2
+ITM-2302,ITM,1,Mon,0,2,10:00-10:50,Foundations of Journalism,lecture,C1.2.233L,2
+ITM-2302,ITM,1,Mon,0,3,11:00-11:50,Foundations of Journalism,practice,C1.1.222P,1
+ITM-2302,ITM,1,Mon,0,4,12:00-12:50,Foundations of Journalism,practice,C1.1.222P,1
+ITM-2302,ITM,1,Mon,0,5,13:00-13:50,Information and Communication Technologies,lecture,online,2
+ITM-2302,ITM,1,Mon,0,6,14:00-14:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.221P,2
+ITM-2302,ITM,1,Mon,0,7,15:00-15:50,Modern history of Kazakhstan,lecture,online,2
+ITM-2302,ITM,1,Mon,0,8,16:00-16:50,Modern history of Kazakhstan,lecture,online,2
+ITM-2302,ITM,1,Tue,1,0,08:00-08:50,Information and Communication Technologies,practice,C1.1.222P,1
+ITM-2302,ITM,1,Tue,1,1,09:00-09:50,Information and Communication Technologies,practice,C1.1.222P,1
+ITM-2302,ITM,1,Tue,1,2,10:00-10:50,Foundations of Journalism,practice,C1.1.234P,1
+ITM-2302,ITM,1,Tue,1,3,11:00-11:50,Foreign Language 1,practice,C1.1.226P,1
+ITM-2302,ITM,1,Tue,1,4,12:00-12:50,Educational Practice,practice,C1.1.223P,1
+ITM-2302,ITM,1,Tue,1,5,13:00-13:50,Educational Practice,practice,C1.1.223P,1
+ITM-2302,ITM,1,Tue,1,6,14:00-14:50,Modern history of Kazakhstan,lecture,online,2
+ITM-2302,ITM,1,Wed,2,2,10:00-10:50,Foreign Language 1,practice,C1.1.226P,1
+ITM-2302,ITM,1,Wed,2,3,11:00-11:50,Foreign Language 1,practice,C1.1.226P,1
+ITM-2302,ITM,1,Wed,2,4,12:00-12:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+ITM-2302,ITM,1,Wed,2,5,13:00-13:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+ITM-2302,ITM,1,Wed,2,6,14:00-14:50,Modern history of Kazakhstan,practice,C1.1.224P,1
+ITM-2302,ITM,1,Wed,2,7,15:00-15:50,Modern history of Kazakhstan,practice,C1.1.224P,1
+ITM-2302,ITM,1,Thu,3,2,10:00-10:50,Physical Education,practice,GYM-1,1
+ITM-2302,ITM,1,Thu,3,3,11:00-11:50,Physical Education,practice,GYM-1,1
+ITM-2302,ITM,1,Thu,3,7,15:00-15:50,Educational Practice,practice,C1.1.223P,1
+ITM-2302,ITM,1,Thu,3,8,16:00-16:50,Educational Practice,practice,C1.1.223P,1
+ITM-2302,ITM,1,Fri,4,3,11:00-11:50,Information and Communication Technologies,lecture,online,2
+ITM-2302,ITM,1,Fri,4,4,12:00-12:50,Information and Communication Technologies,lecture,online,2
+ITM-2302,ITM,1,Fri,4,5,13:00-13:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.223P,1
+ITM-2302,ITM,1,Fri,4,6,14:00-14:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.223P,1
+ITM-2302,ITM,1,Fri,4,7,15:00-15:50,Educational Practice,practice,C1.1.222P,1
+ITM-2302,ITM,1,Fri,4,8,16:00-16:50,Educational Practice,practice,C1.1.222P,1
+ITM-2302,ITM,1,Fri,4,9,17:00-17:50,Foreign Language 1,practice,C1.1.222P,1
+ITM-2302,ITM,1,Fri,4,10,18:00-18:50,Foreign Language 1,practice,C1.1.222P,1
+MT-2101,MT,3,Mon,0,1,09:00-09:50,Business Intelligence,practice,C1.1.233P,1
+MT-2101,MT,3,Mon,0,2,10:00-10:50,Business Intelligence,lecture,C1.1.141,2
+MT-2101,MT,3,Mon,0,3,11:00-11:50,Business Intelligence,lecture,C1.1.141,2
+MT-2101,MT,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship,lecture,online,5
+MT-2101,MT,3,Mon,0,5,13:00-13:50,Technological Entrepreneurship,lecture,online,5
+MT-2101,MT,3,Mon,0,6,14:00-14:50,Technological Entrepreneurship,practice,C1.1.225P,1
+MT-2101,MT,3,Mon,0,7,15:00-15:50,Technological Entrepreneurship,practice,C1.1.225P,1
+MT-2101,MT,3,Mon,0,8,16:00-16:50,Psychology,lecture,online,5
+MT-2101,MT,3,Tue,1,1,09:00-09:50,Directing for Media Projects,lecture,C1.1.327P,2
+MT-2101,MT,3,Tue,1,2,10:00-10:50,Directing for Media Projects,lecture,C1.1.327P,2
+MT-2101,MT,3,Tue,1,3,11:00-11:50,Technological Entrepreneurship,practice,C1.1.255P,1
+MT-2101,MT,3,Tue,1,4,12:00-12:50,Academic Writing,practice,C1.1.233P,1
+MT-2101,MT,3,Tue,1,5,13:00-13:50,Academic Writing,practice,C1.1.233P,1
+MT-2101,MT,3,Tue,1,6,14:00-14:50,Directing for Media Projects,practice,C1.1.256P,1
+MT-2101,MT,3,Tue,1,7,15:00-15:50,Academic Writing,lecture,C1.1.327P,2
+MT-2101,MT,3,Tue,1,8,16:00-16:50,Academic Writing,lecture,C1.1.327P,2
+MT-2101,MT,3,Wed,2,1,09:00-09:50,Cinema Studies,lecture,C1.1.221P,2
+MT-2101,MT,3,Wed,2,2,10:00-10:50,Cinema Studies,lecture,C1.1.221P,2
+MT-2101,MT,3,Wed,2,3,11:00-11:50,3D Modelling,lecture,C1.1.141,2
+MT-2101,MT,3,Wed,2,4,12:00-12:50,3D Modelling,lecture,C1.1.141,2
+MT-2101,MT,3,Thu,3,2,10:00-10:50,Academic Writing,practice,C1.1.235P,1
+MT-2101,MT,3,Thu,3,6,14:00-14:50,3D Modelling,practice,C1.1.233P,1
+MT-2101,MT,3,Thu,3,7,15:00-15:50,3D Modelling,practice,C1.1.233P,1
+MT-2101,MT,3,Fri,4,1,09:00-09:50,3D Modelling,practice,C1.1.254P,1
+MT-2101,MT,3,Fri,4,2,10:00-10:50,Psychology,practice,C1.1.324L,1
+MT-2101,MT,3,Fri,4,3,11:00-11:50,Directing for Media Projects,practice,C1.1.261,1
+MT-2101,MT,3,Fri,4,4,12:00-12:50,Directing for Media Projects,practice,C1.1.261,1
+MT-2101,MT,3,Fri,4,5,13:00-13:50,Business Intelligence,practice,C1.1.253P,1
+MT-2101,MT,3,Fri,4,6,14:00-14:50,Business Intelligence,practice,C1.1.253P,1
+MT-2101,MT,3,Fri,4,7,15:00-15:50,Cinema Studies,practice,C1.1.228P,1
+MT-2101,MT,3,Fri,4,8,16:00-16:50,Cinema Studies,practice,C1.1.228P,1
+MT-2102,MT,3,Mon,0,1,09:00-09:50,Technological Entrepreneurship,practice,C1.1.228P,1
+MT-2102,MT,3,Mon,0,2,10:00-10:50,Business Intelligence,lecture,C1.1.141,2
+MT-2102,MT,3,Mon,0,3,11:00-11:50,Business Intelligence,lecture,C1.1.141,2
+MT-2102,MT,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship,lecture,online,5
+MT-2102,MT,3,Mon,0,5,13:00-13:50,Technological Entrepreneurship,lecture,online,5
+MT-2102,MT,3,Mon,0,6,14:00-14:50,Business Intelligence,practice,C1.1.227P,1
+MT-2102,MT,3,Mon,0,7,15:00-15:50,Business Intelligence,practice,C1.1.227P,1
+MT-2102,MT,3,Mon,0,8,16:00-16:50,Psychology,lecture,online,5
+MT-2102,MT,3,Tue,1,1,09:00-09:50,Directing for Media Projects,lecture,C1.1.327P,2
+MT-2102,MT,3,Tue,1,2,10:00-10:50,Directing for Media Projects,lecture,C1.1.327P,2
+MT-2102,MT,3,Tue,1,6,14:00-14:50,Business Intelligence,practice,C1.1.233P,1
+MT-2102,MT,3,Tue,1,7,15:00-15:50,Academic Writing,lecture,C1.1.327P,2
+MT-2102,MT,3,Tue,1,8,16:00-16:50,Academic Writing,lecture,C1.1.327P,2
+MT-2102,MT,3,Wed,2,1,09:00-09:50,Cinema Studies,lecture,C1.1.221P,2
+MT-2102,MT,3,Wed,2,2,10:00-10:50,Cinema Studies,lecture,C1.1.221P,2
+MT-2102,MT,3,Wed,2,3,11:00-11:50,3D Modelling,lecture,C1.1.141,2
+MT-2102,MT,3,Wed,2,4,12:00-12:50,3D Modelling,lecture,C1.1.141,2
+MT-2102,MT,3,Wed,2,5,13:00-13:50,3D Modelling,practice,C1.1.227P,1
+MT-2102,MT,3,Wed,2,6,14:00-14:50,3D Modelling,practice,C1.1.227P,1
+MT-2102,MT,3,Wed,2,7,15:00-15:50,Directing for Media Projects,practice,C1.1.261,1
+MT-2102,MT,3,Thu,3,1,09:00-09:50,Academic Writing,practice,C1.1.225P,1
+MT-2102,MT,3,Thu,3,2,10:00-10:50,Academic Writing,practice,C1.1.225P,1
+MT-2102,MT,3,Thu,3,3,11:00-11:50,Directing for Media Projects,practice,C1.1.225P,1
+MT-2102,MT,3,Thu,3,4,12:00-12:50,Directing for Media Projects,practice,C1.1.225P,1
+MT-2102,MT,3,Thu,3,5,13:00-13:50,Cinema Studies,practice,C1.1.253P,1
+MT-2102,MT,3,Thu,3,6,14:00-14:50,Cinema Studies,practice,C1.1.253P,1
+MT-2102,MT,3,Thu,3,7,15:00-15:50,Psychology,practice,C1.1.346P,1
+MT-2102,MT,3,Fri,4,1,09:00-09:50,3D Modelling,practice,C1.1.255P,1
+MT-2102,MT,3,Fri,4,6,14:00-14:50,Academic Writing,practice,C1.1.324L,1
+MT-2102,MT,3,Fri,4,7,15:00-15:50,Technological Entrepreneurship,practice,C1.1.227P,1
+MT-2102,MT,3,Fri,4,8,16:00-16:50,Technological Entrepreneurship,practice,C1.1.227P,1
+MT-2103,MT,3,Mon,0,2,10:00-10:50,Academic Writing,lecture,C1.1.221P,2
+MT-2103,MT,3,Mon,0,3,11:00-11:50,Academic Writing,lecture,C1.1.221P,2
+MT-2103,MT,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship,lecture,online,5
+MT-2103,MT,3,Mon,0,5,13:00-13:50,Technological Entrepreneurship,lecture,online,5
+MT-2103,MT,3,Mon,0,6,14:00-14:50,Technological Entrepreneurship,practice,C1.1.226P,1
+MT-2103,MT,3,Mon,0,7,15:00-15:50,Technological Entrepreneurship,practice,C1.1.226P,1
+MT-2103,MT,3,Mon,0,8,16:00-16:50,Psychology,lecture,online,5
+MT-2103,MT,3,Tue,1,1,09:00-09:50,Business Intelligence,lecture,C1.1.221P,2
+MT-2103,MT,3,Tue,1,2,10:00-10:50,Business Intelligence,lecture,C1.1.221P,2
+MT-2103,MT,3,Tue,1,3,11:00-11:50,Directing for Media Projects,practice,C1.1.261,1
+MT-2103,MT,3,Tue,1,4,12:00-12:50,3D Modelling,lecture,C1.2.233L,2
+MT-2103,MT,3,Tue,1,5,13:00-13:50,3D Modelling,lecture,C1.2.233L,2
+MT-2103,MT,3,Tue,1,6,14:00-14:50,Business Intelligence,practice,C1.1.255P,1
+MT-2103,MT,3,Tue,1,7,15:00-15:50,Directing for Media Projects,lecture,C1.2.233L,2
+MT-2103,MT,3,Tue,1,8,16:00-16:50,Directing for Media Projects,lecture,C1.2.233L,2
+MT-2103,MT,3,Wed,2,4,12:00-12:50,3D Modelling,practice,C1.1.224P,1
+MT-2103,MT,3,Wed,2,5,13:00-13:50,3D Modelling,practice,C1.1.224P,1
+MT-2103,MT,3,Wed,2,6,14:00-14:50,Cinema Studies,lecture,C1.1.221P,2
+MT-2103,MT,3,Wed,2,7,15:00-15:50,Cinema Studies,lecture,C1.1.221P,2
+MT-2103,MT,3,Thu,3,2,10:00-10:50,Cinema Studies,practice,C1.1.234P,1
+MT-2103,MT,3,Thu,3,3,11:00-11:50,Cinema Studies,practice,C1.1.234P,1
+MT-2103,MT,3,Thu,3,4,12:00-12:50,Technological Entrepreneurship,practice,C1.1.234P,1
+MT-2103,MT,3,Thu,3,5,13:00-13:50,Academic Writing,practice,C1.1.255P,1
+MT-2103,MT,3,Thu,3,6,14:00-14:50,Business Intelligence,practice,C1.1.228P,1
+MT-2103,MT,3,Thu,3,7,15:00-15:50,Business Intelligence,practice,C1.1.228P,1
+MT-2103,MT,3,Fri,4,2,10:00-10:50,Academic Writing,practice,C1.1.255P,1
+MT-2103,MT,3,Fri,4,3,11:00-11:50,Academic Writing,practice,C1.1.255P,1
+MT-2103,MT,3,Fri,4,4,12:00-12:50,3D Modelling,practice,C1.1.255P,1
+MT-2103,MT,3,Fri,4,5,13:00-13:50,Psychology,practice,C1.1.255P,1
+MT-2103,MT,3,Fri,4,6,14:00-14:50,Directing for Media Projects,practice,C1.1.256P,1
+MT-2103,MT,3,Fri,4,7,15:00-15:50,Directing for Media Projects,practice,C1.1.256P,1
+MT-2104,MT,3,Mon,0,2,10:00-10:50,Academic Writing,lecture,C1.1.221P,2
+MT-2104,MT,3,Mon,0,3,11:00-11:50,Academic Writing,lecture,C1.1.221P,2
+MT-2104,MT,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship,lecture,online,5
+MT-2104,MT,3,Mon,0,5,13:00-13:50,Technological Entrepreneurship,lecture,online,5
+MT-2104,MT,3,Mon,0,6,14:00-14:50,Academic Writing,practice,C1.1.228P,1
+MT-2104,MT,3,Mon,0,7,15:00-15:50,Academic Writing,practice,C1.1.228P,1
+MT-2104,MT,3,Mon,0,8,16:00-16:50,Psychology,lecture,online,5
+MT-2104,MT,3,Tue,1,1,09:00-09:50,Business Intelligence,lecture,C1.1.221P,2
+MT-2104,MT,3,Tue,1,2,10:00-10:50,Business Intelligence,lecture,C1.1.221P,2
+MT-2104,MT,3,Tue,1,3,11:00-11:50,3D Modelling,practice,C1.1.256P,1
+MT-2104,MT,3,Tue,1,4,12:00-12:50,3D Modelling,lecture,C1.2.233L,2
+MT-2104,MT,3,Tue,1,5,13:00-13:50,3D Modelling,lecture,C1.2.233L,2
+MT-2104,MT,3,Tue,1,6,14:00-14:50,Technological Entrepreneurship,practice,C1.1.228P,1
+MT-2104,MT,3,Tue,1,7,15:00-15:50,Directing for Media Projects,lecture,C1.2.233L,2
+MT-2104,MT,3,Tue,1,8,16:00-16:50,Directing for Media Projects,lecture,C1.2.233L,2
+MT-2104,MT,3,Wed,2,2,10:00-10:50,3D Modelling,practice,C1.1.254P,1
+MT-2104,MT,3,Wed,2,3,11:00-11:50,3D Modelling,practice,C1.1.254P,1
+MT-2104,MT,3,Wed,2,4,12:00-12:50,Cinema Studies,practice,C1.1.225P,1
+MT-2104,MT,3,Wed,2,5,13:00-13:50,Cinema Studies,practice,C1.1.225P,1
+MT-2104,MT,3,Wed,2,6,14:00-14:50,Cinema Studies,lecture,C1.1.221P,2
+MT-2104,MT,3,Wed,2,7,15:00-15:50,Cinema Studies,lecture,C1.1.221P,2
+MT-2104,MT,3,Wed,2,8,16:00-16:50,Business Intelligence,practice,C1.1.224P,1
+MT-2104,MT,3,Wed,2,9,17:00-17:50,Business Intelligence,practice,C1.1.224P,1
+MT-2104,MT,3,Thu,3,1,09:00-09:50,Business Intelligence,practice,C1.1.235P,1
+MT-2104,MT,3,Thu,3,2,10:00-10:50,Academic Writing,practice,C1.1.253P,1
+MT-2104,MT,3,Thu,3,6,14:00-14:50,Directing for Media Projects,practice,C1.1.254P,1
+MT-2104,MT,3,Thu,3,7,15:00-15:50,Directing for Media Projects,practice,C1.1.254P,1
+MT-2104,MT,3,Fri,4,1,09:00-09:50,Psychology,practice,C1.1.253P,1
+MT-2104,MT,3,Fri,4,2,10:00-10:50,Directing for Media Projects,practice,C1.1.326L,1
+MT-2104,MT,3,Fri,4,6,14:00-14:50,Technological Entrepreneurship,practice,C1.1.254P,1
+MT-2104,MT,3,Fri,4,7,15:00-15:50,Technological Entrepreneurship,practice,C1.1.254P,1
+MT-2105,MT,3,Mon,0,3,11:00-11:50,Technological Entrepreneurship,practice,C1.1.224P,1
+MT-2105,MT,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship,lecture,online,5
+MT-2105,MT,3,Mon,0,5,13:00-13:50,Technological Entrepreneurship,lecture,online,5
+MT-2105,MT,3,Mon,0,6,14:00-14:50,Cinema Studies,lecture,C1.2.245L,1
+MT-2105,MT,3,Mon,0,7,15:00-15:50,Cinema Studies,lecture,C1.2.245L,1
+MT-2105,MT,3,Mon,0,8,16:00-16:50,Psychology,lecture,online,5
+MT-2105,MT,3,Tue,1,2,10:00-10:50,Cinema Studies,practice,C1.1.233P,1
+MT-2105,MT,3,Tue,1,3,11:00-11:50,Cinema Studies,practice,C1.1.233P,1
+MT-2105,MT,3,Tue,1,4,12:00-12:50,Academic Writing,lecture,C1.2.245L,1
+MT-2105,MT,3,Tue,1,5,13:00-13:50,Academic Writing,lecture,C1.2.245L,1
+MT-2105,MT,3,Tue,1,6,14:00-14:50,3D Modelling,lecture,C1.1.221P,1
+MT-2105,MT,3,Tue,1,7,15:00-15:50,3D Modelling,lecture,C1.1.221P,1
+MT-2105,MT,3,Wed,2,1,09:00-09:50,Academic Writing,practice,C1.1.224P,1
+MT-2105,MT,3,Wed,2,2,10:00-10:50,Academic Writing,practice,C1.1.224P,1
+MT-2105,MT,3,Wed,2,3,11:00-11:50,Directing for Media Projects,lecture,C1.1.221P,1
+MT-2105,MT,3,Wed,2,4,12:00-12:50,Directing for Media Projects,lecture,C1.1.221P,1
+MT-2105,MT,3,Wed,2,5,13:00-13:50,Technological Entrepreneurship,practice,C1.1.226P,1
+MT-2105,MT,3,Wed,2,6,14:00-14:50,Technological Entrepreneurship,practice,C1.1.226P,1
+MT-2105,MT,3,Wed,2,7,15:00-15:50,Directing for Media Projects,practice,C1.1.255P,1
+MT-2105,MT,3,Wed,2,8,16:00-16:50,Directing for Media Projects,practice,C1.1.255P,1
+MT-2105,MT,3,Thu,3,1,09:00-09:50,Business Intelligence,lecture,C1.1.221P,1
+MT-2105,MT,3,Thu,3,2,10:00-10:50,Business Intelligence,lecture,C1.1.221P,1
+MT-2105,MT,3,Thu,3,3,11:00-11:50,Psychology,practice,C1.1.253P,1
+MT-2105,MT,3,Thu,3,7,15:00-15:50,3D Modelling,practice,C1.1.347P,1
+MT-2105,MT,3,Thu,3,8,16:00-16:50,Business Intelligence,practice,C1.1.227P,1
+MT-2105,MT,3,Fri,4,2,10:00-10:50,3D Modelling,practice,C1.1.254P,1
+MT-2105,MT,3,Fri,4,3,11:00-11:50,3D Modelling,practice,C1.1.254P,1
+MT-2105,MT,3,Fri,4,4,12:00-12:50,Directing for Media Projects,practice,C1.1.324L,1
+MT-2105,MT,3,Fri,4,5,13:00-13:50,Academic Writing,practice,C1.1.256P,1
+MT-2105,MT,3,Fri,4,6,14:00-14:50,Business Intelligence,practice,C1.1.255P,1
+MT-2105,MT,3,Fri,4,7,15:00-15:50,Business Intelligence,practice,C1.1.255P,1
+MT-2201,MT,2,Mon,0,0,08:00-08:50,Introduction to Python / Native Mobile Development,lecture,C1.1.327P,2
+MT-2201,MT,2,Mon,0,1,09:00-09:50,Introduction to Python / Native Mobile Development,lecture,C1.1.327P,2
+MT-2201,MT,2,Mon,0,5,13:00-13:50,Cinematography & Digital Editing,lecture,C1.1.141,2
+MT-2201,MT,2,Mon,0,6,14:00-14:50,Cinematography & Digital Editing,lecture,C1.1.141,2
+MT-2201,MT,2,Mon,0,7,15:00-15:50,Cinematography & Digital Editing,practice,C1.1.222P,1
+MT-2201,MT,2,Mon,0,8,16:00-16:50,Computer Organisation and Architecture,lecture,online,5
+MT-2201,MT,2,Mon,0,9,17:00-17:50,Computer Organisation and Architecture,lecture,online,5
+MT-2201,MT,2,Tue,1,1,09:00-09:50,Cinematography & Digital Editing,practice,C1.1.227P,1
+MT-2201,MT,2,Tue,1,2,10:00-10:50,Cinematography & Digital Editing,practice,C1.1.227P,1
+MT-2201,MT,2,Tue,1,7,15:00-15:50,Computer Organisation and Architecture,practice,C1.1.227P,1
+MT-2201,MT,2,Tue,1,8,16:00-16:50,Computer Organisation and Architecture,practice,C1.1.227P,1
+MT-2201,MT,2,Wed,2,2,10:00-10:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.235P,1
+MT-2201,MT,2,Wed,2,3,11:00-11:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.235P,1
+MT-2201,MT,2,Wed,2,4,12:00-12:50,Producing,lecture,online,5
+MT-2201,MT,2,Wed,2,5,13:00-13:50,Producing,lecture,online,5
+MT-2201,MT,2,Wed,2,6,14:00-14:50,Introduction to Python / Native Mobile Development,practice,C1.1.234P,1
+MT-2201,MT,2,Wed,2,7,15:00-15:50,Introduction to Python / Native Mobile Development,practice,C1.1.234P,1
+MT-2201,MT,2,Wed,2,8,16:00-16:50,Computer Organisation and Architecture,practice,C1.1.228P,1
+MT-2201,MT,2,Thu,3,1,09:00-09:50,Producing,practice,C1.1.234P,1
+MT-2201,MT,2,Thu,3,5,13:00-13:50,Physical Education,practice,GYM-1,1
+MT-2201,MT,2,Thu,3,6,14:00-14:50,Physical Education,practice,GYM-1,1
+MT-2201,MT,2,Thu,3,8,16:00-16:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.222P,1
+MT-2201,MT,2,Thu,3,9,17:00-17:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.222P,1
+MT-2201,MT,2,Fri,4,3,11:00-11:50,Producing,practice,C1.1.256P,1
+MT-2201,MT,2,Fri,4,4,12:00-12:50,Producing,practice,C1.1.256P,1
+MT-2201,MT,2,Fri,4,5,13:00-13:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.254P,1
+MT-2201,MT,2,Fri,4,9,17:00-17:50,Introduction to Python / Native Mobile Development,lecture,C1.1.327P,2
+MT-2202,MT,2,Mon,0,0,08:00-08:50,Introduction to Python / Native Mobile Development,lecture,C1.1.327P,2
+MT-2202,MT,2,Mon,0,1,09:00-09:50,Introduction to Python / Native Mobile Development,lecture,C1.1.327P,2
+MT-2202,MT,2,Mon,0,5,13:00-13:50,Cinematography & Digital Editing,lecture,C1.1.141,2
+MT-2202,MT,2,Mon,0,6,14:00-14:50,Cinematography & Digital Editing,lecture,C1.1.141,2
+MT-2202,MT,2,Mon,0,7,15:00-15:50,Cinematography & Digital Editing,practice,C1.1.223P,1
+MT-2202,MT,2,Mon,0,8,16:00-16:50,Computer Organisation and Architecture,lecture,online,5
+MT-2202,MT,2,Mon,0,9,17:00-17:50,Computer Organisation and Architecture,lecture,online,5
+MT-2202,MT,2,Tue,1,2,10:00-10:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.235P,1
+MT-2202,MT,2,Tue,1,3,11:00-11:50,Producing,practice,C1.1.254P,1
+MT-2202,MT,2,Tue,1,10,18:00-18:50,Physical Education,practice,GYM-1,1
+MT-2202,MT,2,Tue,1,11,19:00-19:50,Physical Education,practice,GYM-1,1
+MT-2202,MT,2,Wed,2,2,10:00-10:50,Producing,practice,C1.1.253P,1
+MT-2202,MT,2,Wed,2,3,11:00-11:50,Producing,practice,C1.1.253P,1
+MT-2202,MT,2,Wed,2,4,12:00-12:50,Producing,lecture,online,5
+MT-2202,MT,2,Wed,2,5,13:00-13:50,Producing,lecture,online,5
+MT-2202,MT,2,Wed,2,6,14:00-14:50,Computer Organisation and Architecture,practice,C1.1.228P,1
+MT-2202,MT,2,Wed,2,7,15:00-15:50,Computer Organisation and Architecture,practice,C1.1.228P,1
+MT-2202,MT,2,Thu,3,4,12:00-12:50,Introduction to Python / Native Mobile Development,practice,C1.1.228P,1
+MT-2202,MT,2,Thu,3,5,13:00-13:50,Introduction to Python / Native Mobile Development,practice,C1.1.228P,1
+MT-2202,MT,2,Thu,3,6,14:00-14:50,Computer Organisation and Architecture,practice,C1.1.256P,1
+MT-2202,MT,2,Thu,3,7,15:00-15:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.261,1
+MT-2202,MT,2,Thu,3,8,16:00-16:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.261,1
+MT-2202,MT,2,Fri,4,3,11:00-11:50,Cinematography & Digital Editing,practice,C1.1.228P,1
+MT-2202,MT,2,Fri,4,4,12:00-12:50,Cinematography & Digital Editing,practice,C1.1.228P,1
+MT-2202,MT,2,Fri,4,9,17:00-17:50,Introduction to Python / Native Mobile Development,lecture,C1.1.327P,2
+MT-2202,MT,2,Fri,4,10,18:00-18:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.223P,1
+MT-2202,MT,2,Fri,4,11,19:00-19:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.223P,1
+MT-2203,MT,2,Mon,0,1,09:00-09:50,Cinematography & Digital Editing,practice,C1.1.225P,1
+MT-2203,MT,2,Mon,0,2,10:00-10:50,Cinematography & Digital Editing,practice,C1.1.225P,1
+MT-2203,MT,2,Mon,0,3,11:00-11:50,Cinematography & Digital Editing,lecture,C1.1.327P,2
+MT-2203,MT,2,Mon,0,4,12:00-12:50,Cinematography & Digital Editing,lecture,C1.1.327P,2
+MT-2203,MT,2,Mon,0,8,16:00-16:50,Computer Organisation and Architecture,lecture,online,5
+MT-2203,MT,2,Mon,0,9,17:00-17:50,Computer Organisation and Architecture,lecture,online,5
+MT-2203,MT,2,Tue,1,5,13:00-13:50,Introduction to Python / Native Mobile Development,lecture,C1.1.141,2
+MT-2203,MT,2,Tue,1,6,14:00-14:50,Introduction to Python / Native Mobile Development,lecture,C1.1.141,2
+MT-2203,MT,2,Tue,1,10,18:00-18:50,Producing,practice,C1.1.222P,1
+MT-2203,MT,2,Wed,2,1,09:00-09:50,Introduction to Python / Native Mobile Development,lecture,C1.2.233L,2
+MT-2203,MT,2,Wed,2,2,10:00-10:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.255P,1
+MT-2203,MT,2,Wed,2,3,11:00-11:50,Cinematography & Digital Editing,practice,C1.1.224P,1
+MT-2203,MT,2,Wed,2,4,12:00-12:50,Producing,lecture,online,5
+MT-2203,MT,2,Wed,2,5,13:00-13:50,Producing,lecture,online,5
+MT-2203,MT,2,Wed,2,9,17:00-17:50,Physical Education,practice,GYM-1,1
+MT-2203,MT,2,Wed,2,10,18:00-18:50,Physical Education,practice,GYM-1,1
+MT-2203,MT,2,Thu,3,1,09:00-09:50,Computer Organisation and Architecture,practice,C1.1.228P,1
+MT-2203,MT,2,Thu,3,2,10:00-10:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.233P,1
+MT-2203,MT,2,Thu,3,3,11:00-11:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.233P,1
+MT-2203,MT,2,Thu,3,7,15:00-15:50,Producing,practice,C1.1.324L,1
+MT-2203,MT,2,Thu,3,8,16:00-16:50,Producing,practice,C1.1.324L,1
+MT-2203,MT,2,Fri,4,2,10:00-10:50,Computer Organisation and Architecture,practice,C1.1.253P,1
+MT-2203,MT,2,Fri,4,3,11:00-11:50,Computer Organisation and Architecture,practice,C1.1.253P,1
+MT-2203,MT,2,Fri,4,4,12:00-12:50,Introduction to Python / Native Mobile Development,practice,C1.1.235P,1
+MT-2203,MT,2,Fri,4,5,13:00-13:50,Introduction to Python / Native Mobile Development,practice,C1.1.235P,1
+MT-2203,MT,2,Fri,4,7,15:00-15:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.226P,1
+MT-2203,MT,2,Fri,4,8,16:00-16:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.226P,1
+MT-2204,MT,2,Mon,0,1,09:00-09:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.227P,1
+MT-2204,MT,2,Mon,0,3,11:00-11:50,Cinematography & Digital Editing,lecture,C1.1.327P,2
+MT-2204,MT,2,Mon,0,4,12:00-12:50,Cinematography & Digital Editing,lecture,C1.1.327P,2
+MT-2204,MT,2,Mon,0,8,16:00-16:50,Computer Organisation and Architecture,lecture,online,5
+MT-2204,MT,2,Mon,0,9,17:00-17:50,Computer Organisation and Architecture,lecture,online,5
+MT-2204,MT,2,Tue,1,3,11:00-11:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.225P,1
+MT-2204,MT,2,Tue,1,4,12:00-12:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.225P,1
+MT-2204,MT,2,Tue,1,5,13:00-13:50,Introduction to Python / Native Mobile Development,lecture,C1.1.141,2
+MT-2204,MT,2,Tue,1,6,14:00-14:50,Introduction to Python / Native Mobile Development,lecture,C1.1.141,2
+MT-2204,MT,2,Tue,1,7,15:00-15:50,Introduction to Python / Native Mobile Development,practice,C1.1.228P,1
+MT-2204,MT,2,Tue,1,8,16:00-16:50,Introduction to Python / Native Mobile Development,practice,C1.1.228P,1
+MT-2204,MT,2,Wed,2,1,09:00-09:50,Introduction to Python / Native Mobile Development,lecture,C1.2.233L,2
+MT-2204,MT,2,Wed,2,4,12:00-12:50,Producing,lecture,online,5
+MT-2204,MT,2,Wed,2,5,13:00-13:50,Producing,lecture,online,5
+MT-2204,MT,2,Wed,2,6,14:00-14:50,Cinematography & Digital Editing,practice,C1.1.233P,1
+MT-2204,MT,2,Wed,2,7,15:00-15:50,Cinematography & Digital Editing,practice,C1.1.233P,1
+MT-2204,MT,2,Wed,2,8,16:00-16:50,Producing,practice,C1.1.233P,1
+MT-2204,MT,2,Thu,3,1,09:00-09:50,Producing,practice,C1.1.224P,1
+MT-2204,MT,2,Thu,3,2,10:00-10:50,Producing,practice,C1.1.224P,1
+MT-2204,MT,2,Thu,3,6,14:00-14:50,Computer Organisation and Architecture,practice,C1.1.261,1
+MT-2204,MT,2,Thu,3,7,15:00-15:50,Physical Education,practice,GYM-1,1
+MT-2204,MT,2,Thu,3,8,16:00-16:50,Physical Education,practice,GYM-1,1
+MT-2204,MT,2,Fri,4,3,11:00-11:50,Computer Organisation and Architecture,practice,C1.1.227P,1
+MT-2204,MT,2,Fri,4,4,12:00-12:50,Computer Organisation and Architecture,practice,C1.1.227P,1
+MT-2204,MT,2,Fri,4,5,13:00-13:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.228P,1
+MT-2204,MT,2,Fri,4,6,14:00-14:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.228P,1
+MT-2204,MT,2,Fri,4,7,15:00-15:50,Cinematography & Digital Editing,practice,C1.1.324L,1
+MT-2205,MT,2,Mon,0,0,08:00-08:50,Introduction to Python / Native Mobile Development,lecture,C1.2.233L,1
+MT-2205,MT,2,Mon,0,1,09:00-09:50,Physical Education,practice,GYM-1,1
+MT-2205,MT,2,Mon,0,2,10:00-10:50,Physical Education,practice,GYM-1,1
+MT-2205,MT,2,Mon,0,3,11:00-11:50,Cinematography & Digital Editing,lecture,C1.2.233L,1
+MT-2205,MT,2,Mon,0,4,12:00-12:50,Cinematography & Digital Editing,lecture,C1.2.233L,1
+MT-2205,MT,2,Mon,0,8,16:00-16:50,Computer Organisation and Architecture,lecture,online,5
+MT-2205,MT,2,Mon,0,9,17:00-17:50,Computer Organisation and Architecture,lecture,online,5
+MT-2205,MT,2,Tue,1,2,10:00-10:50,Cinematography & Digital Editing,practice,C1.1.228P,1
+MT-2205,MT,2,Tue,1,3,11:00-11:50,Cinematography & Digital Editing,practice,C1.1.228P,1
+MT-2205,MT,2,Tue,1,4,12:00-12:50,Computer Organisation and Architecture,practice,C1.1.228P,1
+MT-2205,MT,2,Tue,1,5,13:00-13:50,Computer Organisation and Architecture,practice,C1.1.228P,1
+MT-2205,MT,2,Wed,2,3,11:00-11:50,Producing,practice,C1.1.255P,1
+MT-2205,MT,2,Wed,2,4,12:00-12:50,Producing,lecture,online,5
+MT-2205,MT,2,Wed,2,5,13:00-13:50,Producing,lecture,online,5
+MT-2205,MT,2,Wed,2,6,14:00-14:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.255P,1
+MT-2205,MT,2,Thu,3,1,09:00-09:50,Computer Organisation and Architecture,practice,C1.1.233P,1
+MT-2205,MT,2,Thu,3,2,10:00-10:50,Introduction to Python / Native Mobile Development,lecture,C1.2.245L,1
+MT-2205,MT,2,Thu,3,3,11:00-11:50,Introduction to Python / Native Mobile Development,lecture,C1.2.245L,1
+MT-2205,MT,2,Thu,3,4,12:00-12:50,Introduction to Python / Native Mobile Development,practice,C1.1.233P,1
+MT-2205,MT,2,Thu,3,5,13:00-13:50,Introduction to Python / Native Mobile Development,practice,C1.1.233P,1
+MT-2205,MT,2,Thu,3,6,14:00-14:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.227P,1
+MT-2205,MT,2,Thu,3,7,15:00-15:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.227P,1
+MT-2205,MT,2,Thu,3,8,16:00-16:50,Cinematography & Digital Editing,practice,C1.1.226P,1
+MT-2205,MT,2,Fri,4,4,12:00-12:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.234P,1
+MT-2205,MT,2,Fri,4,5,13:00-13:50,Kazakh Language 1 / Russian Language 1,practice,C1.1.234P,1
+MT-2205,MT,2,Fri,4,6,14:00-14:50,Producing,practice,C1.1.235P,1
+MT-2205,MT,2,Fri,4,7,15:00-15:50,Producing,practice,C1.1.235P,1
+MT-2301,MT,1,Mon,0,0,08:00-08:50,Linear Algebra,lecture,C1.1.221P,2
+MT-2301,MT,1,Mon,0,1,09:00-09:50,Linear Algebra,lecture,C1.1.221P,2
+MT-2301,MT,1,Mon,0,2,10:00-10:50,Information and Communication Technologies,lecture,online,7
+MT-2301,MT,1,Mon,0,3,11:00-11:50,Information and Communication Technologies,lecture,online,7
+MT-2301,MT,1,Mon,0,4,12:00-12:50,Foreign Language 1,practice,C1.1.224P,1
+MT-2301,MT,1,Mon,0,5,13:00-13:50,Foreign Language 1,practice,C1.1.224P,1
+MT-2301,MT,1,Mon,0,6,14:00-14:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+MT-2301,MT,1,Mon,0,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2301,MT,1,Tue,1,5,13:00-13:50,Linear Algebra,practice,C1.1.253P,1
+MT-2301,MT,1,Tue,1,6,14:00-14:50,Linear Algebra,practice,C1.1.253P,1
+MT-2301,MT,1,Tue,1,7,15:00-15:50,Linear Algebra,lecture,C1.2.245L,2
+MT-2301,MT,1,Tue,1,8,16:00-16:50,Foreign Language 1,practice,C1.1.222P,1
+MT-2301,MT,1,Tue,1,9,17:00-17:50,Information and Communication Technologies,lecture,online,7
+MT-2301,MT,1,Tue,1,10,18:00-18:50,Modern history of Kazakhstan,lecture,online,7
+MT-2301,MT,1,Tue,1,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2301,MT,1,Thu,3,3,11:00-11:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.224P,1
+MT-2301,MT,1,Thu,3,4,12:00-12:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.224P,1
+MT-2301,MT,1,Thu,3,5,13:00-13:50,Foreign Language 1,practice,C1.1.234P,1
+MT-2301,MT,1,Thu,3,6,14:00-14:50,Foreign Language 1,practice,C1.1.234P,1
+MT-2301,MT,1,Thu,3,7,15:00-15:50,Modern history of Kazakhstan,practice,C1.1.235P,1
+MT-2301,MT,1,Thu,3,8,16:00-16:50,Modern history of Kazakhstan,practice,C1.1.235P,1
+MT-2301,MT,1,Fri,4,0,08:00-08:50,Physical Education,practice,GYM-1,1
+MT-2301,MT,1,Fri,4,1,09:00-09:50,Physical Education,practice,GYM-1,1
+MT-2301,MT,1,Fri,4,2,10:00-10:50,Information and Communication Technologies,practice,C1.1.235P,1
+MT-2301,MT,1,Fri,4,3,11:00-11:50,Information and Communication Technologies,practice,C1.1.235P,1
+MT-2301,MT,1,Fri,4,6,14:00-14:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.141,2
+MT-2301,MT,1,Fri,4,7,15:00-15:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.141,2
+MT-2302,MT,1,Mon,0,0,08:00-08:50,Linear Algebra,lecture,C1.1.221P,2
+MT-2302,MT,1,Mon,0,1,09:00-09:50,Linear Algebra,lecture,C1.1.221P,2
+MT-2302,MT,1,Mon,0,2,10:00-10:50,Information and Communication Technologies,lecture,online,7
+MT-2302,MT,1,Mon,0,3,11:00-11:50,Information and Communication Technologies,lecture,online,7
+MT-2302,MT,1,Mon,0,4,12:00-12:50,Foreign Language 1,practice,C1.1.225P,1
+MT-2302,MT,1,Mon,0,5,13:00-13:50,Foreign Language 1,practice,C1.1.225P,1
+MT-2302,MT,1,Mon,0,6,14:00-14:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+MT-2302,MT,1,Mon,0,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2302,MT,1,Tue,1,0,08:00-08:50,Foreign Language 1,practice,C1.1.224P,1
+MT-2302,MT,1,Tue,1,1,09:00-09:50,Foreign Language 1,practice,C1.1.224P,1
+MT-2302,MT,1,Tue,1,5,13:00-13:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.254P,1
+MT-2302,MT,1,Tue,1,6,14:00-14:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.254P,1
+MT-2302,MT,1,Tue,1,7,15:00-15:50,Linear Algebra,lecture,C1.2.245L,2
+MT-2302,MT,1,Tue,1,9,17:00-17:50,Information and Communication Technologies,lecture,online,7
+MT-2302,MT,1,Tue,1,10,18:00-18:50,Modern history of Kazakhstan,lecture,online,7
+MT-2302,MT,1,Tue,1,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2302,MT,1,Wed,2,1,09:00-09:50,Linear Algebra,practice,C1.1.222P,1
+MT-2302,MT,1,Wed,2,2,10:00-10:50,Linear Algebra,practice,C1.1.222P,1
+MT-2302,MT,1,Thu,3,2,10:00-10:50,Information and Communication Technologies,practice,C1.1.228P,1
+MT-2302,MT,1,Thu,3,3,11:00-11:50,Information and Communication Technologies,practice,C1.1.228P,1
+MT-2302,MT,1,Thu,3,10,18:00-18:50,Physical Education,practice,GYM-1,1
+MT-2302,MT,1,Thu,3,11,19:00-19:50,Physical Education,practice,GYM-1,1
+MT-2302,MT,1,Fri,4,1,09:00-09:50,Modern history of Kazakhstan,practice,C1.1.226P,1
+MT-2302,MT,1,Fri,4,2,10:00-10:50,Modern history of Kazakhstan,practice,C1.1.226P,1
+MT-2302,MT,1,Fri,4,4,12:00-12:50,Foreign Language 1,practice,C1.1.254P,1
+MT-2302,MT,1,Fri,4,6,14:00-14:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.141,2
+MT-2302,MT,1,Fri,4,7,15:00-15:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.141,2
+MT-2303,MT,1,Mon,0,2,10:00-10:50,Information and Communication Technologies,lecture,online,7
+MT-2303,MT,1,Mon,0,3,11:00-11:50,Information and Communication Technologies,lecture,online,7
+MT-2303,MT,1,Mon,0,4,12:00-12:50,Foreign Language 1,practice,C1.1.233P,1
+MT-2303,MT,1,Mon,0,5,13:00-13:50,Linear Algebra,lecture,C1.1.221P,2
+MT-2303,MT,1,Mon,0,6,14:00-14:50,Physical Education,practice,GYM-1,1
+MT-2303,MT,1,Mon,0,7,15:00-15:50,Physical Education,practice,GYM-1,1
+MT-2303,MT,1,Mon,0,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2303,MT,1,Tue,1,4,12:00-12:50,Foreign Language 1,practice,C1.1.226P,1
+MT-2303,MT,1,Tue,1,5,13:00-13:50,Foreign Language 1,practice,C1.1.226P,1
+MT-2303,MT,1,Tue,1,9,17:00-17:50,Information and Communication Technologies,lecture,online,7
+MT-2303,MT,1,Tue,1,10,18:00-18:50,Modern history of Kazakhstan,lecture,online,7
+MT-2303,MT,1,Tue,1,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2303,MT,1,Wed,2,1,09:00-09:50,Linear Algebra,lecture,C1.1.141,2
+MT-2303,MT,1,Wed,2,2,10:00-10:50,Linear Algebra,lecture,C1.1.141,2
+MT-2303,MT,1,Wed,2,9,17:00-17:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.141,2
+MT-2303,MT,1,Thu,3,1,09:00-09:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.141,2
+MT-2303,MT,1,Thu,3,2,10:00-10:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.141,2
+MT-2303,MT,1,Thu,3,7,15:00-15:50,Information and Communication Technologies,practice,C1.1.256P,1
+MT-2303,MT,1,Thu,3,8,16:00-16:50,Information and Communication Technologies,practice,C1.1.256P,1
+MT-2303,MT,1,Thu,3,9,17:00-17:50,Linear Algebra,practice,C1.1.223P,1
+MT-2303,MT,1,Thu,3,10,18:00-18:50,Linear Algebra,practice,C1.1.223P,1
+MT-2303,MT,1,Fri,4,1,09:00-09:50,Modern history of Kazakhstan,practice,C1.1.227P,1
+MT-2303,MT,1,Fri,4,2,10:00-10:50,Modern history of Kazakhstan,practice,C1.1.227P,1
+MT-2303,MT,1,Fri,4,3,11:00-11:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.226P,1
+MT-2303,MT,1,Fri,4,4,12:00-12:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.226P,1
+MT-2303,MT,1,Fri,4,5,13:00-13:50,Foreign Language 1,practice,C1.1.227P,1
+MT-2303,MT,1,Fri,4,6,14:00-14:50,Foreign Language 1,practice,C1.1.227P,1
+MT-2304,MT,1,Mon,0,2,10:00-10:50,Information and Communication Technologies,lecture,online,7
+MT-2304,MT,1,Mon,0,3,11:00-11:50,Information and Communication Technologies,lecture,online,7
+MT-2304,MT,1,Mon,0,5,13:00-13:50,Linear Algebra,lecture,C1.1.221P,2
+MT-2304,MT,1,Mon,0,6,14:00-14:50,Information and Communication Technologies,practice,C1.1.224P,1
+MT-2304,MT,1,Mon,0,7,15:00-15:50,Information and Communication Technologies,practice,C1.1.224P,1
+MT-2304,MT,1,Mon,0,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2304,MT,1,Tue,1,0,08:00-08:50,Modern history of Kazakhstan,practice,C1.1.223P,1
+MT-2304,MT,1,Tue,1,1,09:00-09:50,Modern history of Kazakhstan,practice,C1.1.223P,1
+MT-2304,MT,1,Tue,1,6,14:00-14:50,Foreign Language 1,practice,C1.1.227P,1
+MT-2304,MT,1,Tue,1,7,15:00-15:50,Physical Education,practice,GYM-1,1
+MT-2304,MT,1,Tue,1,8,16:00-16:50,Physical Education,practice,GYM-1,1
+MT-2304,MT,1,Tue,1,9,17:00-17:50,Information and Communication Technologies,lecture,online,7
+MT-2304,MT,1,Tue,1,10,18:00-18:50,Modern history of Kazakhstan,lecture,online,7
+MT-2304,MT,1,Tue,1,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2304,MT,1,Wed,2,1,09:00-09:50,Linear Algebra,lecture,C1.1.141,2
+MT-2304,MT,1,Wed,2,2,10:00-10:50,Linear Algebra,lecture,C1.1.141,2
+MT-2304,MT,1,Wed,2,9,17:00-17:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.141,2
+MT-2304,MT,1,Thu,3,1,09:00-09:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.141,2
+MT-2304,MT,1,Thu,3,2,10:00-10:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.141,2
+MT-2304,MT,1,Thu,3,3,11:00-11:50,Foreign Language 1,practice,C1.1.223P,1
+MT-2304,MT,1,Thu,3,4,12:00-12:50,Foreign Language 1,practice,C1.1.223P,1
+MT-2304,MT,1,Thu,3,10,18:00-18:50,Linear Algebra,practice,C1.1.224P,1
+MT-2304,MT,1,Thu,3,11,19:00-19:50,Linear Algebra,practice,C1.1.224P,1
+MT-2304,MT,1,Fri,4,1,09:00-09:50,Foreign Language 1,practice,C1.1.228P,1
+MT-2304,MT,1,Fri,4,2,10:00-10:50,Foreign Language 1,practice,C1.1.228P,1
+MT-2304,MT,1,Fri,4,7,15:00-15:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.225P,1
+MT-2304,MT,1,Fri,4,8,16:00-16:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.225P,1
+MT-2305,MT,1,Mon,0,2,10:00-10:50,Information and Communication Technologies,lecture,online,7
+MT-2305,MT,1,Mon,0,3,11:00-11:50,Information and Communication Technologies,lecture,online,7
+MT-2305,MT,1,Mon,0,4,12:00-12:50,Linear Algebra,lecture,C1.1.141,2
+MT-2305,MT,1,Mon,0,5,13:00-13:50,Information and Communication Technologies,practice,C1.1.223P,1
+MT-2305,MT,1,Mon,0,6,14:00-14:50,Information and Communication Technologies,practice,C1.1.223P,1
+MT-2305,MT,1,Mon,0,7,15:00-15:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+MT-2305,MT,1,Mon,0,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2305,MT,1,Tue,1,2,10:00-10:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.224P,1
+MT-2305,MT,1,Tue,1,3,11:00-11:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.224P,1
+MT-2305,MT,1,Tue,1,4,12:00-12:50,Linear Algebra,practice,C1.1.227P,1
+MT-2305,MT,1,Tue,1,5,13:00-13:50,Linear Algebra,practice,C1.1.227P,1
+MT-2305,MT,1,Tue,1,9,17:00-17:50,Information and Communication Technologies,lecture,online,7
+MT-2305,MT,1,Tue,1,10,18:00-18:50,Modern history of Kazakhstan,lecture,online,7
+MT-2305,MT,1,Tue,1,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2305,MT,1,Wed,2,0,08:00-08:50,Physical Education,practice,GYM-1,1
+MT-2305,MT,1,Wed,2,1,09:00-09:50,Physical Education,practice,GYM-1,1
+MT-2305,MT,1,Wed,2,5,13:00-13:50,Foreign Language 1,practice,C1.1.228P,1
+MT-2305,MT,1,Wed,2,7,15:00-15:50,Modern history of Kazakhstan,practice,C1.1.253P,1
+MT-2305,MT,1,Wed,2,8,16:00-16:50,Modern history of Kazakhstan,practice,C1.1.253P,1
+MT-2305,MT,1,Thu,3,2,10:00-10:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+MT-2305,MT,1,Thu,3,3,11:00-11:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+MT-2305,MT,1,Thu,3,7,15:00-15:50,Foreign Language 1,practice,C1.1.255P,1
+MT-2305,MT,1,Thu,3,8,16:00-16:50,Foreign Language 1,practice,C1.1.255P,1
+MT-2305,MT,1,Fri,4,3,11:00-11:50,Foreign Language 1,practice,C1.1.225P,1
+MT-2305,MT,1,Fri,4,4,12:00-12:50,Foreign Language 1,practice,C1.1.225P,1
+MT-2305,MT,1,Fri,4,8,16:00-16:50,Linear Algebra,lecture,C1.1.141,2
+MT-2305,MT,1,Fri,4,9,17:00-17:50,Linear Algebra,lecture,C1.1.141,2
+MT-2306,MT,1,Mon,0,0,08:00-08:50,Foreign Language 1,practice,C1.1.222P,1
+MT-2306,MT,1,Mon,0,2,10:00-10:50,Information and Communication Technologies,lecture,online,7
+MT-2306,MT,1,Mon,0,3,11:00-11:50,Information and Communication Technologies,lecture,online,7
+MT-2306,MT,1,Mon,0,4,12:00-12:50,Linear Algebra,lecture,C1.1.141,2
+MT-2306,MT,1,Mon,0,5,13:00-13:50,Modern history of Kazakhstan,practice,C1.1.222P,1
+MT-2306,MT,1,Mon,0,6,14:00-14:50,Modern history of Kazakhstan,practice,C1.1.222P,1
+MT-2306,MT,1,Mon,0,7,15:00-15:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+MT-2306,MT,1,Mon,0,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2306,MT,1,Tue,1,0,08:00-08:50,Physical Education,practice,GYM-1,1
+MT-2306,MT,1,Tue,1,1,09:00-09:50,Physical Education,practice,GYM-1,1
+MT-2306,MT,1,Tue,1,9,17:00-17:50,Information and Communication Technologies,lecture,online,7
+MT-2306,MT,1,Tue,1,10,18:00-18:50,Modern history of Kazakhstan,lecture,online,7
+MT-2306,MT,1,Tue,1,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2306,MT,1,Wed,2,1,09:00-09:50,Linear Algebra,practice,C1.1.223P,1
+MT-2306,MT,1,Wed,2,2,10:00-10:50,Linear Algebra,practice,C1.1.223P,1
+MT-2306,MT,1,Wed,2,7,15:00-15:50,Foreign Language 1,practice,C1.1.254P,1
+MT-2306,MT,1,Wed,2,8,16:00-16:50,Foreign Language 1,practice,C1.1.254P,1
+MT-2306,MT,1,Thu,3,0,08:00-08:50,Information and Communication Technologies,practice,C1.1.222P,1
+MT-2306,MT,1,Thu,3,1,09:00-09:50,Information and Communication Technologies,practice,C1.1.222P,1
+MT-2306,MT,1,Thu,3,2,10:00-10:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+MT-2306,MT,1,Thu,3,3,11:00-11:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.327P,2
+MT-2306,MT,1,Thu,3,4,12:00-12:50,Foreign Language 1,practice,C1.1.227P,1
+MT-2306,MT,1,Thu,3,5,13:00-13:50,Foreign Language 1,practice,C1.1.227P,1
+MT-2306,MT,1,Thu,3,6,14:00-14:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.226P,1
+MT-2306,MT,1,Thu,3,7,15:00-15:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.226P,1
+MT-2306,MT,1,Fri,4,8,16:00-16:50,Linear Algebra,lecture,C1.1.141,2
+MT-2306,MT,1,Fri,4,9,17:00-17:50,Linear Algebra,lecture,C1.1.141,2
+MT-2307,MT,1,Mon,0,1,09:00-09:50,Linear Algebra,lecture,C1.2.245L,1
+MT-2307,MT,1,Mon,0,2,10:00-10:50,Information and Communication Technologies,lecture,online,7
+MT-2307,MT,1,Mon,0,3,11:00-11:50,Information and Communication Technologies,lecture,online,7
+MT-2307,MT,1,Mon,0,4,12:00-12:50,Foreign Language 1,practice,C1.1.226P,1
+MT-2307,MT,1,Mon,0,5,13:00-13:50,Foreign Language 1,practice,C1.1.226P,1
+MT-2307,MT,1,Mon,0,6,14:00-14:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.2.233L,1
+MT-2307,MT,1,Mon,0,7,15:00-15:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.2.233L,1
+MT-2307,MT,1,Mon,0,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2307,MT,1,Tue,1,5,13:00-13:50,Foreign Language 1,practice,C1.1.235P,1
+MT-2307,MT,1,Tue,1,6,14:00-14:50,Foreign Language 1,practice,C1.1.235P,1
+MT-2307,MT,1,Tue,1,7,15:00-15:50,Linear Algebra,practice,C1.1.226P,1
+MT-2307,MT,1,Tue,1,8,16:00-16:50,Linear Algebra,practice,C1.1.226P,1
+MT-2307,MT,1,Tue,1,9,17:00-17:50,Information and Communication Technologies,lecture,online,7
+MT-2307,MT,1,Tue,1,10,18:00-18:50,Modern history of Kazakhstan,lecture,online,7
+MT-2307,MT,1,Tue,1,11,19:00-19:50,Modern history of Kazakhstan,lecture,online,7
+MT-2307,MT,1,Wed,2,1,09:00-09:50,Linear Algebra,lecture,C1.2.245L,1
+MT-2307,MT,1,Wed,2,2,10:00-10:50,Linear Algebra,lecture,C1.2.245L,1
+MT-2307,MT,1,Wed,2,3,11:00-11:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.223P,1
+MT-2307,MT,1,Wed,2,4,12:00-12:50,Introduction to Programming Python / Introduction to Programming (C++),practice,C1.1.223P,1
+MT-2307,MT,1,Wed,2,6,14:00-14:50,Foreign Language 1,practice,C1.1.254P,1
+MT-2307,MT,1,Thu,3,0,08:00-08:50,Physical Education,practice,GYM-1,1
+MT-2307,MT,1,Thu,3,1,09:00-09:50,Physical Education,practice,GYM-1,1
+MT-2307,MT,1,Thu,3,5,13:00-13:50,Information and Communication Technologies,practice,C1.1.235P,1
+MT-2307,MT,1,Thu,3,6,14:00-14:50,Information and Communication Technologies,practice,C1.1.235P,1
+MT-2307,MT,1,Thu,3,7,15:00-15:50,Modern history of Kazakhstan,practice,C1.1.253P,1
+MT-2307,MT,1,Thu,3,8,16:00-16:50,Modern history of Kazakhstan,practice,C1.1.253P,1
+MT-2307,MT,1,Fri,4,3,11:00-11:50,Introduction to Programming Python / Introduction to Programming (C++),lecture,C1.1.221P,1

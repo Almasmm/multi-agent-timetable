@@ -161,6 +161,17 @@ def test_autopilot_improvement_gate(pilot):
     assert ap.tick()["status"] == "published" and ap.store.current_version()["score"] == 20
 
 
+def test_watcher_takes_a_job_asked_for_in_the_chat(pilot):
+    ap, mgr = pilot
+    ap.tick(), ap.tick()  # v1
+    ap.store.set("profile", {**ap.store.profile(), "improve_every_min": 999})
+    assert ap.tick()["state"] == "idle"  # nothing to do on its own
+    ap.store.set("force_job", {"kind": "regenerate", "reason": "кафедра просит"})
+    r = ap.tick()
+    assert r["state"] == "started" and r["kind"] == "regenerate" and "по указанию в чате: кафедра просит" in r["reason"]
+    assert mgr.started[-1]["warm_start_path"].endswith("starts.json") and ap.store.get("force_job") is None
+
+
 def test_autopilot_rejects_failed_runs_and_pauses_after_three_failures(pilot):
     ap, mgr = pilot
     mgr.next_status = "partial"

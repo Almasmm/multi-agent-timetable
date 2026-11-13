@@ -9,15 +9,23 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Literal
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from ..app import agent_table
 from ..config import Settings
+from ..domain.constraints import with_mode
+from ..domain.preview import describe_rules
+from ..service import datasets as D
+from ..service.agents import describe_spec
 from ..service.autopilot import Autopilot
+from ..service.chat import AgentChat
+from ..service.editor import ScheduleEditor
+from ..service.proposals import ProposalDesk
 from ..service.versions import read_rows, to_ics
+from . import live as L
 from . import runs as R
 from .agents_ru import localized_agent_table, service_agent_table
 
@@ -74,6 +82,78 @@ class ProfileIn(BaseModel):
     max_moved_share: float = Field(0.1, ge=0, le=1)
 
 
+class RuleIn(BaseModel):
+    text: str = Field(min_length=3, max_length=300)
+    mode: Literal["auto", "hard", "soft"] = "auto"
+    weight: int | None = Field(None, ge=1, le=20)
+
+
+class RulesIn(BaseModel):
+    rules: list[RuleIn] = Field(default_factory=list, max_length=100)
+
+
+class RuleText(BaseModel):
+    text: str = Field(min_length=1, max_length=300)
+
+
+class CellIn(BaseModel):
+    group: str | None = Field(None, max_length=40)
+    room: str | None = Field(None, max_length=40)
+    day: int = Field(ge=0, le=5)
+    hour: int = Field(ge=0, le=11)
+
+
+class MoveIn(CellIn):
+    to_day: int = Field(ge=0, le=5)
+    to_hour: int = Field(ge=0, le=11)
+    to_room: str | None = Field(None, max_length=40)
+
+
+class PublishIn(BaseModel):
+    note: str = Field("", max_length=300)
+    author: str = Field("диспетчер", min_length=1, max_length=60)
+
+
+class ChatIn(BaseModel):
+    text: str = Field(min_length=1, max_length=2000)
+
+
+Cell = str | int | float | bool | None
+
+
+class TablesIn(BaseModel):
+    tables: dict[Literal["rooms", "groups", "courses", "timeslots"], list[dict[str, Cell]]]
+    extra: dict[str, list[list[Cell]]] | None = None  # extra sheets of a full upload (teachers, load...)
+    base_mtime: float | None = None
+    note: str = Field("", max_length=200)
+
+
+class ContextItem(BaseModel):
+    group: str = Field(max_length=40)
+    course: str = Field("", max_length=200)
+    day: int = Field(0, ge=0, le=5)
+    time: str = Field("", max_length=20)
+    room: str = Field("", max_length=40)
+    kind: str = Field("", max_length=20)
+
+
+class ProposalIn(BaseModel):
+    text: str = Field(min_length=3, max_length=1500)
+    context: list[ContextItem] = Field(default_factory=list, max_length=40)
+
+
+class ProposalReply(BaseModel):
+    text: str = Field(min_length=1, max_length=1500)
+
+
+class AcceptIn(BaseModel):
+    mode: Literal["auto", "hard", "soft"] | None = None
+
+
+class StampIn(BaseModel):
+    stamp: str = Field(pattern=r"^[0-9-]{8,30}$")
+
+
 # which statuses a dispatcher decision may change (the Intake agent sets new -> accepted / rejected / review)
 DECISIONS = {"approve": ({"new", "review", "rejected"}, "accepted"),
              "reject": ({"new", "review", "accepted"}, "rejected"),
@@ -84,6 +164,9 @@ def create_app(autopilot: bool | None = None) -> FastAPI:
     """``autopilot=None`` follows TT_AUTOPILOT (auto = resume the saved on/off state); tests pass False."""
     manager = R.RunManager()
     pilot = Autopilot(manager, Settings())
+    editor = ScheduleEditor(pilot.store, pilot.settings)
+    chat = AgentChat(pilot.store, editor, pilot, pilot.settings)
+    desk = ProposalDesk(pilot.store, chat)
 
     @asynccontextmanager
     async def lifespan(_app):
@@ -105,6 +188,10 @@ def create_app(autopilot: bool | None = None) -> FastAPI:
     async def _bad_request(_, exc):
         return JSONResponse({"error": str(exc)}, status_code=400)
 
+    @app.exception_handler(KeyError)
+    async def _missing(_, exc):
+        return JSONResponse({"error": str(exc).strip("'\"")}, status_code=400)
+
     @app.exception_handler(RuntimeError)
     async def _conflict(_, exc):
         return JSONResponse({"error": str(exc)}, status_code=409)
@@ -124,8 +211,174 @@ def create_app(autopilot: bool | None = None) -> FastAPI:
     async def upload(file: UploadFile = File(...)):
         content = await file.read()
         if len(content) > MAX_UPLOAD:
-            raise HTTPException(413, "file too large (max 20 MB)")
-        return R.save_upload(file.filename or "upload.xlsx", content)
+            raise HTTPException(413, "файл больше 20 МБ")
+        return data_item(R.dataset_info(D.store_upload(file.filename or "upload.xlsx", content)))
+
+    # --- operator proposals discussed by the agents ---
+    @app.get("/api/proposals")
+    def proposals_list():
+        return desk.list()
+
+    @app.post("/api/proposals", status_code=201)
+    def proposals_create(req: ProposalIn):
+        return desk.create(req.text, [c.model_dump() for c in req.context])
+
+    @app.get("/api/proposals/{pid}")
+    def proposals_get(pid: int):
+        return desk.get(pid)
+
+    @app.post("/api/proposals/{pid}/reply")
+    def proposals_reply(pid: int, req: ProposalReply):
+        return desk.reply(pid, req.text)
+
+    @app.post("/api/proposals/{pid}/accept")
+    def proposals_accept(pid: int, req: AcceptIn):
+        return desk.accept(pid, req.mode)
+
+    @app.post("/api/proposals/{pid}/reject")
+    def proposals_reject(pid: int):
+        return desk.reject(pid)
+
+    # --- real time: what the agents do, how a run builds the timetable, the one-button generation ---
+    def current_run() -> str | None:
+        h = manager.active()
+        if h is not None:
+            return h.run_id
+        job = pilot.store.active_job()
+        return job["run_id"] if job and job.get("run_id") else None
+
+    def last_run() -> str | None:
+        cur = current_run()
+        if cur:
+            return cur
+        runs = manager.list()
+        return runs[0]["id"] if runs else None
+
+    @app.get("/api/live")
+    def live(run: str | None = None, svc: str = "", chat_: str = Query("", alias="chat"), run_c: str = ""):
+        rid = run or last_run()
+        if rid:
+            R.run_dir(rid)  # validates the id
+        return {**L.live_feed(R.runs_root(), rid, {"svc": svc, "chat": chat_, "run": run_c}), "active": current_run()}
+
+    @app.get("/api/runs/{run_id}/board")
+    def run_board(run_id: str, group: str | None = None):
+        return {**L.run_board(R.run_dir(run_id), group), "status": manager.status(run_id)}
+
+    @app.get("/api/generate")
+    def generate_state():
+        prof = pilot.store.profile()
+        return {"active": current_run(), "last": last_run(), "brief": pilot.brief(),
+                "profile": {k: prof[k] for k in ("dataset", "term", "programs", "requirements", "solver_seconds", "llm")}}
+
+    @app.post("/api/generate")
+    def generate_now():
+        rid = current_run()
+        if rid:
+            return {"state": "busy", "run_id": rid}
+        cur = pilot.store.current_version()
+        pilot.store.set("force_job", {"kind": "regenerate", "reason": "кнопка «Сгенерировать»"})
+        res = pilot.tick()
+        if res.get("state") != "started":
+            pilot.store.set("force_job", None)
+        return {**res, "first": cur is None}
+
+    # --- university data desk: the workbook as editable tables ---
+    def data_item(d: dict) -> dict:
+        p = Path(d["path"])
+        return {**d, "editable": D.editable(p), "active": d["id"] == pilot.store.profile()["dataset"],
+                "mtime": p.stat().st_mtime if p.exists() else None}
+
+    @app.get("/api/data")
+    def data_list():
+        return [data_item(d) for d in R.list_datasets()]
+
+    @app.get("/api/data/template")
+    def data_template():
+        return Response(D.template(), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        headers={"Content-Disposition": 'attachment; filename="timetable-data-template.xlsx"'})
+
+    @app.get("/api/data/working")
+    def data_working():
+        """The workbook the agents use: what the «Данные вуза» page edits. If that file is gone (deleted by
+        hand), the agents are pointed back to the default workbook so neither they nor the page break."""
+        name = pilot.store.profile()["dataset"]
+        try:
+            D.find(name)
+        except FileNotFoundError:
+            name = Settings().data_path.name
+            pilot.store.set("profile", {**pilot.store.profile(), "dataset": name})
+        return data_open(name)
+
+    @app.get("/api/data/{dataset_id}")
+    def data_open(dataset_id: str):
+        p = D.find(dataset_id)
+        tables = D.read_tables(p)
+        return {"dataset": data_item(R.dataset_info(p)), "tables": tables, "spec": D.TABLES,
+                "check": D.check(p, tables), "history": D.history(p), "extra": D.extra_counts(p)}
+
+    @app.post("/api/data/{dataset_id}/check")
+    def data_check(dataset_id: str, req: TablesIn):
+        return D.check(D.find(dataset_id), req.tables)
+
+    @app.post("/api/data/{dataset_id}/autofix")
+    def data_autofix(dataset_id: str, req: TablesIn):
+        D.find(dataset_id)
+        return D.autofix(req.tables)
+
+    @app.put("/api/data/{dataset_id}")
+    def data_save(dataset_id: str, req: TablesIn):
+        p, base = D.find(dataset_id), req.base_mtime
+        if not D.editable(p):  # an original: the first save becomes the working copy the agents switch to
+            D.same_version(p, base)
+            copy = D.copy(p, "university")
+            try:
+                res = D.save(copy, req.tables, None, req.note or "исходный файл до первой правки", req.extra)
+            except Exception:
+                D.delete(copy)
+                raise
+            if dataset_id == pilot.store.profile()["dataset"]:
+                pilot.store.set("profile", {**pilot.store.profile(), "dataset": copy.name})
+            return {**res, "dataset": data_item(R.dataset_info(copy)), "history": D.history(copy), "extra": D.extra_counts(copy)}
+        res = D.save(p, req.tables, base, req.note, req.extra)
+        return {**res, "dataset": data_item(R.dataset_info(p)), "history": D.history(p), "extra": D.extra_counts(p)}
+
+    @app.post("/api/data/{dataset_id}/import")
+    async def data_import(dataset_id: str, file: UploadFile = File(...), table: str | None = None):
+        p = D.find(dataset_id)
+        content = await file.read()
+        if len(content) > MAX_UPLOAD:
+            raise HTTPException(413, "файл больше 20 МБ")
+        return D.import_file(file.filename or "upload.xlsx", content, table or None, D.import_context(p))
+
+    @app.post("/api/data/{dataset_id}/copy", status_code=201)
+    def data_copy(dataset_id: str):
+        return data_item(R.dataset_info(D.copy(D.find(dataset_id))))
+
+    @app.post("/api/data/{dataset_id}/activate")
+    def data_activate(dataset_id: str):
+        info = R.dataset_info(D.find(dataset_id))
+        if not info["valid"]:
+            raise ValueError("этот файл не проходит проверку загрузчика — агенты не смогут по нему работать")
+        pilot.store.set("profile", {**pilot.store.profile(), "dataset": dataset_id})
+        return data_item(info)
+
+    @app.get("/api/data/{dataset_id}/download")
+    def data_download(dataset_id: str):
+        return FileResponse(D.find(dataset_id), filename=dataset_id)
+
+    @app.post("/api/data/{dataset_id}/restore")
+    def data_restore(dataset_id: str, req: StampIn):
+        p = D.find(dataset_id)
+        D.restore(p, req.stamp)
+        return {"dataset": data_item(R.dataset_info(p)), "history": D.history(p)}
+
+    @app.delete("/api/data/{dataset_id}")
+    def data_delete(dataset_id: str):
+        if dataset_id == pilot.store.profile()["dataset"]:
+            raise ValueError("это рабочий набор агентов — сначала сделайте рабочим другой")
+        D.delete(D.find(dataset_id))
+        return {"deleted": dataset_id}
 
     @app.post("/api/constraints/preview")
     def preview(req: PreviewRequest):
@@ -282,6 +535,79 @@ def create_app(autopilot: bool | None = None) -> FastAPI:
         if not p.exists():
             raise HTTPException(404, f"{name} not found")
         return FileResponse(p, filename=f"v{v['id']}-{name}")
+
+    # --- university rules: hard / soft (stored as profile requirements, "[soft:7] ..." tags) ---
+    def _rule_rows(texts: list[str]) -> list[dict]:
+        out = describe_rules(R.resolve_dataset(pilot.store.profile()["dataset"]), texts)
+        for r in out:
+            r["understood"] = describe_spec(r["spec"]) if r["spec"] else None
+        return out
+
+    @app.get("/api/rules")
+    def rules():
+        prof = pilot.store.profile()
+        accepted = [{"id": r["id"], "text": r["text"], "status": r["status"], "author": r["author"],
+                     "understood": (r["verdict"] or {}).get("understood")} for r in pilot.store.requests(("accepted", "applied"))]
+        return {"rules": _rule_rows(prof["requirements"]), "requests": accepted,
+                "version": (pilot.store.current_version() or {}).get("id")}
+
+    @app.put("/api/rules")
+    def save_rules(req: RulesIn):
+        texts = [with_mode(r.text, None if r.mode == "auto" else r.mode == "hard", r.weight) for r in req.rules]
+        pilot.store.set("profile", {**pilot.store.profile(), "requirements": texts})
+        return rules()
+
+    @app.post("/api/rules/preview")
+    def preview_rule(req: RuleText):
+        return _rule_rows([req.text])[0]
+
+    # --- manual editing: draft on top of the published version (drag & drop) ---
+    @app.get("/api/edit")
+    def edit_state(rows: bool = False):
+        if pilot.store.current_version() is None:
+            return {"base": None, "count": 0, "moves": []}
+        st = editor.state(with_rows=rows)
+        if rows:
+            st.update({k: v for k, v in R.timetable_payload(st.pop("rows")).items()})
+        return st
+
+    @app.post("/api/edit/options")
+    def edit_options(req: CellIn):
+        return editor.options(req.group, req.room, req.day, req.hour)
+
+    @app.post("/api/edit/move")
+    def edit_move(req: MoveIn):
+        return editor.move(req.group, req.room, req.day, req.hour, req.to_day, req.to_hour, req.to_room)
+
+    @app.post("/api/edit/undo")
+    def edit_undo():
+        return editor.undo()
+
+    @app.post("/api/edit/discard")
+    def edit_discard():
+        return editor.discard()
+
+    @app.post("/api/edit/publish")
+    def edit_publish(req: PublishIn):
+        return editor.publish(req.note, req.author)
+
+    # --- chat with each agent ---
+    @app.get("/api/chat")
+    def chat_agents():
+        return {"agents": chat.agents(), "provider": chat.provider()}
+
+    @app.get("/api/chat/{agent}")
+    def chat_history(agent: str):
+        return {"messages": chat.history(agent)}
+
+    @app.post("/api/chat/{agent}")
+    def chat_send(agent: str, req: ChatIn):
+        return chat.send(agent, req.text)
+
+    @app.delete("/api/chat/{agent}")
+    def chat_clear(agent: str):
+        chat.clear(agent)
+        return {"cleared": agent}
 
     @app.get("/api/search")
     def search(q: str = ""):

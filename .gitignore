@@ -16,3 +16,5 @@ reports/
 build/
 .coverage
 .ruff_cache/
+# Office temporary owner files are local locks, not datasets or documents.
+~$*

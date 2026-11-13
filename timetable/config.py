@@ -15,7 +15,8 @@ except ImportError:  # pragma: no cover
 
 ROOT = Path(__file__).resolve().parent.parent
 DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-DATASET_DIRS = [ROOT / "data", ROOT / "dataset-archive", ROOT / "data" / "uploads"]  # where workbooks are looked up
+# where workbooks are looked up; the platform writes only to the last one (data/uploads)
+DATASET_DIRS = [ROOT / "data", ROOT / "master-dataset", ROOT / "data" / "uploads"]
 
 
 def _env(name: str, default, cast=str):

@@ -1,13 +1,18 @@
 """Durable state of the 24/7 service in ``runs/_service/service.sqlite``.
 
-Four tables, all readable by the web UI:
+Five tables, all readable by the web UI:
 
 * ``settings``  - the service profile (dataset, term, programmes, base requirements, cadence) and the
   on/off switch, so the autopilot resumes after a restart;
 * ``requests``  - change requests from university staff ("room C1.3.361 is closed on Wednesday") and
   the Intake agent's verdict;
 * ``jobs``      - every generation the service started (why, with which run, what came out);
-* ``versions``  - published timetables (immutable snapshots under ``versions/v<N>/``).
+* ``versions``  - published timetables (immutable snapshots under ``versions/v<N>/``);
+* ``chat``      - the dispatcher's conversations with each agent (``service/chat.py``);
+* ``proposals`` + ``proposal_msgs`` - the operator's change proposals and the agents' discussion of each one
+  (``service/proposals.py``).
+
+The draft of manual changes (``service/editor.py``) lives in ``settings`` under the key ``draft``.
 """
 from __future__ import annotations
 
@@ -52,6 +57,14 @@ class ServiceStore:
                     status TEXT, run_id TEXT, params TEXT, outcome TEXT, finished REAL);
                 CREATE TABLE IF NOT EXISTS versions(id INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL, run_id TEXT,
                     job_id INTEGER, score REAL, metrics TEXT, diff TEXT, announcement TEXT);
+                CREATE TABLE IF NOT EXISTS chat(id INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL, agent TEXT, role TEXT,
+                    text TEXT, actions TEXT, provider TEXT);
+                CREATE INDEX IF NOT EXISTS chat_agent ON chat(agent, id);
+                CREATE TABLE IF NOT EXISTS proposals(id INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL, text TEXT, context TEXT,
+                    kind TEXT, status TEXT, outcome TEXT, updated REAL);
+                CREATE TABLE IF NOT EXISTS proposal_msgs(id INTEGER PRIMARY KEY AUTOINCREMENT, pid INTEGER, ts REAL,
+                    agent TEXT, role TEXT, text TEXT, actions TEXT, provider TEXT);
+                CREATE INDEX IF NOT EXISTS pmsg_pid ON proposal_msgs(pid, id);
             """)
 
     # --- helpers ---
@@ -65,7 +78,7 @@ class ServiceStore:
         out = []
         for r in rows:
             d = dict(r)
-            for k in ("verdict", "params", "outcome", "metrics", "diff"):
+            for k in ("verdict", "params", "outcome", "metrics", "diff", "actions", "context"):
                 if k in d:
                     d[k] = json.loads(d[k]) if d[k] else None
             out.append(d)
@@ -157,5 +170,59 @@ class ServiceStore:
     def version_dir(self, vid: int) -> Path:
         return self.root / "versions" / f"v{vid}"
 
+    # --- agent chat ---
+    def add_chat(self, agent: str, role: str, text: str, actions: list | None = None, provider: str = "") -> dict:
+        rid = self._exec("INSERT INTO chat(ts, agent, role, text, actions, provider) VALUES (?,?,?,?,?,?)",
+                         (time.time(), agent, role, text, json.dumps(actions or [], ensure_ascii=False, default=str),
+                          provider)).lastrowid
+        return self._rows("SELECT * FROM chat WHERE id=?", (rid,))[0]
+
+    def chat_messages(self, agent: str, limit: int = 200) -> list[dict]:
+        rows = self._rows("SELECT * FROM chat WHERE agent=? ORDER BY id DESC LIMIT ?", (agent, limit))
+        return list(reversed(rows))
+
+    def chat_last(self) -> dict[str, dict]:
+        rows = self._rows("SELECT * FROM chat WHERE id IN (SELECT MAX(id) FROM chat GROUP BY agent)")
+        return {r["agent"]: {"ts": r["ts"], "role": r["role"], "text": r["text"][:140]} for r in rows}
+
+    def clear_chat(self, agent: str) -> None:
+        self._exec("DELETE FROM chat WHERE agent=?", (agent,))
+
     def close(self) -> None:
         self._db.close()
+
+    # --- proposals (operator -> agents discussion) ---
+    def add_proposal(self, text: str, context: list | None) -> int:
+        now = time.time()
+        return self._exec("INSERT INTO proposals(ts, text, context, kind, status, outcome, updated) VALUES (?,?,?,?,?,?,?)",
+                          (now, text, json.dumps(context or [], ensure_ascii=False), None, "discussing",
+                           json.dumps({}), now)).lastrowid
+
+    def proposal(self, pid: int) -> dict | None:
+        rows = self._rows("SELECT * FROM proposals WHERE id=?", (pid,))
+        return rows[0] if rows else None
+
+    def proposals(self, limit: int = 100) -> list[dict]:
+        rows = self._rows("SELECT * FROM proposals ORDER BY id DESC LIMIT ?", (limit,))
+        last = {r["pid"]: r for r in self._rows(
+            "SELECT * FROM proposal_msgs WHERE id IN (SELECT MAX(id) FROM proposal_msgs GROUP BY pid)")}
+        for r in rows:
+            r["last"] = last.get(r["id"])
+        return rows
+
+    def update_proposal(self, pid: int, **fields: Any) -> None:
+        for k in ("outcome", "context"):
+            if k in fields:
+                fields[k] = json.dumps(fields[k], ensure_ascii=False)
+        sets = ", ".join(f"{k}=?" for k in fields)
+        self._exec(f"UPDATE proposals SET {sets}, updated=? WHERE id=?", (*fields.values(), time.time(), pid))
+
+    def add_proposal_msg(self, pid: int, agent: str, role: str, text: str, actions: list | None = None,
+                         provider: str | None = None) -> dict:
+        mid = self._exec("INSERT INTO proposal_msgs(pid, ts, agent, role, text, actions, provider) VALUES (?,?,?,?,?,?,?)",
+                         (pid, time.time(), agent, role, text, json.dumps(actions or [], ensure_ascii=False), provider)).lastrowid
+        self._exec("UPDATE proposals SET updated=? WHERE id=?", (time.time(), pid))
+        return self._rows("SELECT * FROM proposal_msgs WHERE id=?", (mid,))[0]
+
+    def proposal_msgs(self, pid: int) -> list[dict]:
+        return self._rows("SELECT * FROM proposal_msgs WHERE pid=? ORDER BY id", (pid,))

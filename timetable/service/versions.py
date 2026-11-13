@@ -53,7 +53,8 @@ def diff_rows(old: list[dict], new: list[dict]) -> dict:
 
 def snapshot(run_dir: Path, target: Path) -> list[str]:
     """Copy the run's deliverables into an immutable version folder; starts.json / rooms.json
-    (session id -> start slot / room, from the run's blackboard) make the next re-generation a warm start."""
+    (session id -> start slot / room, from the run's blackboard) make the next re-generation a warm start,
+    specs.json (the grounded constraints) lets the manual editor check moves against the same rules."""
     target.mkdir(parents=True, exist_ok=True)
     copied = []
     for name in SNAPSHOT_FILES:
@@ -62,10 +63,10 @@ def snapshot(run_dir: Path, target: Path) -> list[str]:
             copied.append(name)
     con = sqlite3.connect(f"file:{(run_dir / 'state.sqlite').as_posix()}?mode=ro", uri=True)
     try:
-        for key in ("starts", "rooms_of"):
+        for key, name, empty in (("starts", "starts.json", "{}"), ("rooms_of", "rooms.json", "{}"),
+                                 ("constraint_specs", "specs.json", "[]")):
             row = con.execute("SELECT value FROM kv WHERE key=?", (key,)).fetchone()
-            name = "starts.json" if key == "starts" else "rooms.json"
-            (target / name).write_text(row[0] if row else "{}", encoding="utf-8")
+            (target / name).write_text(row[0] if row else empty, encoding="utf-8")
             copied.append(name)
     finally:
         con.close()

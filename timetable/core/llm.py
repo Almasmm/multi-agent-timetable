@@ -1,7 +1,8 @@
 """LLM access with graceful degradation.
 
+* ``ClaudeLLM`` - Claude via the official Anthropic SDK: structured JSON outputs for the pipeline agents and
+  tool-use turns for the agent chat (``service/chat.py``).
 * ``OpenAILLM`` - OpenAI models via the official SDK (chat completions, strict JSON schema).
-* ``ClaudeLLM`` - Claude via the official Anthropic SDK, structured JSON outputs.
 * ``OfflineLLM`` - deterministic rule-based fallback, so the system (and all tests) run
   without an API key or network.
 
@@ -129,6 +130,28 @@ class ClaudeLLM:
     def text(self, system: str, user: str, effort: str) -> tuple[str, dict]:
         return self._create(system, user, effort, None)
 
+    def turn(self, system: str, messages: list[dict], tools: list[dict], effort: str = "low",
+             final: bool = False) -> Any:
+        """One model call of a tool-use conversation (the agent chat). The caller runs the loop:
+        executes the ``tool_use`` blocks and appends the full ``response.content`` plus the tool results.
+        ``final=True`` forbids further tool calls (the loop guard asks for the answer)."""
+        resp = self.client.beta.messages.create(
+            **({"tool_choice": {"type": "none"}} if final else {}),
+            model=self.model,
+            max_tokens=16000,
+            betas=self._BETAS,
+            fallbacks="default",
+            output_config={"effort": effort},
+            system=[{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}],
+            tools=tools,
+            messages=messages,
+        )
+        if resp.stop_reason == "refusal":
+            raise RuntimeError("model refused the request")
+        if resp.stop_reason == "max_tokens":
+            raise RuntimeError("response truncated (max_tokens)")
+        return resp
+
 
 class OfflineLLM:
     name = "offline-rules"
@@ -146,16 +169,18 @@ def _has_claude_credentials() -> bool:
 
 
 def resolve_provider(provider: str) -> tuple[str, str]:
-    """``auto`` -> the first provider with credentials (OpenAI, then Claude, else offline).
+    """``auto`` -> the first provider with credentials (Claude, then OpenAI, else offline).
     Returns (resolved provider, reason when it is not the requested one)."""
     if provider == "auto":
-        if _has_openai_credentials():
-            return "openai", ""
         if _has_claude_credentials():
             return "claude", ""
+        if _has_openai_credentials():
+            return "openai", ""
         return "offline", "no OPENAI_API_KEY / Anthropic credentials found - using offline rules"
     if provider == "openai" and not _has_openai_credentials():
         return "offline", "OPENAI_API_KEY is not set - using offline rules"
+    if provider == "claude" and not _has_claude_credentials():
+        return "offline", "ANTHROPIC_API_KEY is not set - using offline rules"
     if provider in ("openai", "claude"):
         return provider, ""
     return "offline", "offline mode requested"

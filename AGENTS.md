@@ -82,7 +82,7 @@ tests/                 test_units.py (быстрые), test_scenarios.py (скв
 файлы `runs/<id>/` (events.jsonl — живой журнал по байтовому смещению, state.sqlite — полные
 payload сообщений и blackboard, timetable.csv, report.md). Отмена прогона — `RunContext.cancel`
 (threading.Event), проверяется в `check_deadline`. Одновременно идёт один прогон (409 на второй).
-Датасеты берутся из `data/`, `dataset-archive/`, `data/uploads/` и проверяются загрузчиком Data-агента.
+Датасеты берутся из `data/`, `master-dataset/`, `data/uploads/` и проверяются загрузчиком Data-агента.
 Скриншоты для проверки UI: headless Chrome, `--screenshot` + `--virtual-time-budget`; адреса вкладок
 `#/run/<id>/<tab>[/<mode>/<sel>]`, тема — `?theme=light|dark`.
 

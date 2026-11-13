@@ -1,0 +1,511 @@
+{
+  "run_id": "20261113-184325-auto-regenerate-8",
+  "started_at": "2026-11-13T18:43:25.443000+05:00",
+  "status": "ok",
+  "wall_s": 260.3,
+  "settings": {
+    "data_path": "C:\\dev\\multi-agent-timetable\\data\\input.xlsx",
+    "term": 1,
+    "programs": [],
+    "allow_saturday": false,
+    "solver_time_limit": 25.0,
+    "llm_provider": "auto",
+    "chunk_target_groups": 60,
+    "ga_enabled": true,
+    "ga_seconds": 4.0,
+    "seed": 7,
+    "warm_start": "C:\\dev\\multi-agent-timetable\\runs\\_service\\versions\\v2\\starts.json"
+  },
+  "programs": 13,
+  "groups": 270,
+  "sessions": 3330,
+  "scheduled_sessions": 3330,
+  "group_academic_hours": 7452,
+  "physical_rooms": 104,
+  "independent_validation": {
+    "hard_violations": 0,
+    "by_type": {},
+    "violations": [],
+    "soft": {
+      "gap_hours_total": 3374,
+      "gap_hours_per_group": 12.5,
+      "late_hours_18_plus": 245,
+      "saturday_hours": 0,
+      "precedence_violations": 36,
+      "lectures_in_lecture_halls": "388/418"
+    }
+  },
+  "llm_events": [
+    {
+      "agent": "data",
+      "name": "explain_data_issues",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "status": "ok",
+      "attempt": null
+    },
+    {
+      "agent": "constraints",
+      "name": "parse_constraints",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "status": "ok",
+      "attempt": null
+    },
+    {
+      "agent": "negotiator",
+      "name": "choose_concession",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "status": "ok",
+      "attempt": null
+    },
+    {
+      "agent": "validator",
+      "name": "critique",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "status": "ok",
+      "attempt": null
+    },
+    {
+      "agent": "reporter",
+      "name": "executive_summary",
+      "provider": "claude",
+      "model": "claude-opus-5-5",
+      "status": "ok",
+      "attempt": null
+    }
+  ],
+  "room_usage": {
+    "teaching_days": 5,
+    "hours_per_day": 12,
+    "resource_fund": 112,
+    "occupied_resource_hours": 5334,
+    "ui_utilization": 0.79375,
+    "occupied_physical_room_hours": 4930,
+    "physical_utilization": 0.7900641025641025
+  },
+  "load": {
+    "calls": {
+      "data": 5,
+      "constraints": 3,
+      "scheduler": 7,
+      "rooms": 8,
+      "genetic": 5,
+      "validator": 9,
+      "negotiator": 4,
+      "reporter": 4
+    },
+    "total_calls": 45,
+    "shares": {
+      "data": 0.1111111111111111,
+      "constraints": 0.06666666666666667,
+      "scheduler": 0.15555555555555556,
+      "rooms": 0.17777777777777778,
+      "genetic": 0.1111111111111111,
+      "validator": 0.2,
+      "negotiator": 0.08888888888888889,
+      "reporter": 0.08888888888888889
+    },
+    "max_share": 0.2
+  },
+  "data_issues": [
+    {
+      "level": "fixed",
+      "where": "BDH!3",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!4",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!11",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!15",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!18",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!20",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!21",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!24",
+      "issue": "Fundamentals of Anatomy / Molecular biology / Fundamentals of Physiology: lecture_slots=15 is not a multiple of 10 weeks, rounded to 2 h/week"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!24",
+      "issue": "Fundamentals of Anatomy / Molecular biology / Fundamentals of Physiology: lab_slots=15 is not a multiple of 10 weeks, rounded to 2 h/week"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!28",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!33",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!34",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "fixed",
+      "where": "BDH!38",
+      "issue": "delivery_mode 'onlline' -> 'online'"
+    },
+    {
+      "level": "warning",
+      "where": "BDH!49",
+      "issue": "Medical Imaging Techniques / Digital Image Processing: no lecture/practice/lab slots - course skipped"
+    },
+    {
+      "level": "warning",
+      "where": "Groups!247",
+      "issue": "group TS-2101: no curriculum sheet 'TS' - group skipped"
+    },
+    {
+      "level": "fixed",
+      "where": "Rooms!68",
+      "issue": "room code 'С1.3.248' contained Cyrillic letters -> 'C1.3.248'"
+    },
+    {
+      "level": "fixed",
+      "where": "Rooms!68",
+      "issue": "duplicate room C1.3.248: kept capacity 20"
+    }
+  ],
+  "run_params": {
+    "allow_saturday": false,
+    "gym_capacity": 8,
+    "quota_mode": {},
+    "time_factor": {
+      "2": 2
+    },
+    "tried": {
+      "2": [
+        "extend_time"
+      ]
+    },
+    "saturday_chunks": []
+  },
+  "diff_from_previous": {
+    "first": false,
+    "hours_moved": 124,
+    "room_changes": 40,
+    "groups_affected": 72,
+    "total_hours": 7452,
+    "groups": {
+      "SE-2118": {
+        "moved": 3,
+        "rooms": 3
+      },
+      "BDA-2202": {
+        "moved": 3,
+        "rooms": 2
+      },
+      "BDA-2301": {
+        "moved": 5,
+        "rooms": 0
+      },
+      "BDA-2305": {
+        "moved": 5,
+        "rooms": 0
+      },
+      "IT-2204": {
+        "moved": 4,
+        "rooms": 1
+      },
+      "IT-2208": {
+        "moved": 5,
+        "rooms": 0
+      },
+      "SE-2221": {
+        "moved": 2,
+        "rooms": 3
+      },
+      "BDA-2105": {
+        "moved": 4,
+        "rooms": 0
+      },
+      "BDA-2306": {
+        "moved": 4,
+        "rooms": 0
+      },
+      "IT-2203": {
+        "moved": 3,
+        "rooms": 1
+      },
+      "IT-2205": {
+        "moved": 4,
+        "rooms": 0
+      },
+      "IT-2207": {
+        "moved": 2,
+        "rooms": 2
+      },
+      "SE-2215": {
+        "moved": 4,
+        "rooms": 0
+      },
+      "BDA-2103": {
+        "moved": 3,
+        "rooms": 0
+      },
+      "BDA-2203": {
+        "moved": 3,
+        "rooms": 0
+      },
+      "CS-2301": {
+        "moved": 3,
+        "rooms": 0
+      },
+      "SE-2206": {
+        "moved": 2,
+        "rooms": 1
+      },
+      "BDA-2102": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "BDA-2205": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "BDA-2206": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "BDA-2207": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "BDH-2301": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "CS-2103": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "CS-2110": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "CS-2202": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "CS-2219": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "CS-2234": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "CS-2316": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "IT-2202": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "ITE-2101": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "ITM-2103": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "MT-2205": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "MT-2302": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "MT-2303": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "MT-2304": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "SE-2113": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "SE-2205": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "SE-2216": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "SE-2311": {
+        "moved": 1,
+        "rooms": 1
+      },
+      "SE-2312": {
+        "moved": 1,
+        "rooms": 1
+      },
+      "SE-2315": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "SE-2316": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "ST-2202": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "ST-2305": {
+        "moved": 2,
+        "rooms": 0
+      },
+      "IT-2101": {
+        "moved": 0,
+        "rooms": 2
+      },
+      "IT-2102": {
+        "moved": 0,
+        "rooms": 2
+      },
+      "IT-2309": {
+        "moved": 0,
+        "rooms": 2
+      },
+      "ITM-2201": {
+        "moved": 0,
+        "rooms": 2
+      },
+      "ITM-2205": {
+        "moved": 0,
+        "rooms": 2
+      },
+      "MT-2306": {
+        "moved": 0,
+        "rooms": 2
+      },
+      "MT-2307": {
+        "moved": 0,
+        "rooms": 2
+      },
+      "SE-2117": {
+        "moved": 0,
+        "rooms": 2
+      },
+      "SE-2328": {
+        "moved": 0,
+        "rooms": 2
+      },
+      "SE-2337": {
+        "moved": 0,
+        "rooms": 2
+      },
+      "BDA-2101": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "BDA-2208": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "BDA-2302": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "CS-2239": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "CS-2304": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "CS-2308": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "IT-2201": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "IT-2206": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "IT-2209": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "IT-2306": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "ITE-2202": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "SE-2107": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "SE-2108": {
+        "moved": 1,
+        "rooms": 0
+      },
+      "MT-2105": {
+        "moved": 0,
+        "rooms": 1
+      },
+      "SE-2102": {
+        "moved": 0,
+        "rooms": 1
+      },
+      "SE-2212": {
+        "moved": 0,
+        "rooms": 1
+      },
+      "SE-2218": {
+        "moved": 0,
+        "rooms": 1
+      },
+      "SE-2220": {
+        "moved": 0,
+        "rooms": 1
+      }
+    }
+  }
+}

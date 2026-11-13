@@ -20,27 +20,30 @@
       </a>
       <button class="side-collapse" id="side-collapse" title="Свернуть панель" aria-label="Свернуть панель" data-ic="panel"></button>
     </div>
-    <div class="compose-row">
-      <a class="compose" href="#/requests/new" title="Новая заявка (N)"><i data-ic="squarePen"></i><span>Новая заявка</span><kbd>N</kbd></a>
-      <button class="side-icon" id="tick-btn" title="Агенты: проверить сейчас" aria-label="Проверить сейчас" data-ic="refresh"></button>
-    </div>
     <nav class="side-nav" id="nav">
       <div class="side-label">Расписание</div>
-      <a href="#/" data-route="home"><i data-ic="dashboard"></i><span>Центр управления</span></a>
+      <a href="#/" data-route="home"><i data-ic="dashboard"></i><span>Главная</span></a>
       <a href="#/schedule" data-route="schedule"><i data-ic="calendar"></i><span>Расписание</span><em class="pill" id="nb-version" hidden></em></a>
-      <a href="#/requests" data-route="requests"><i data-ic="inbox"></i><span>Заявки</span><em class="count" id="nb-requests" hidden></em></a>
-      <div class="side-label">Агенты 24/7</div>
-      <a href="#/autopilot" data-route="autopilot"><i data-ic="bot"></i><span>Автопилот</span><em class="live-dot" id="nb-pilot" hidden></em></a>
-      <a href="#/agents" data-route="agents"><i data-ic="network"></i><span>Агенты</span></a>
-      <a href="#/runs" data-route="runs"><i data-ic="history"></i><span>Прогоны</span><em class="count" id="nb-runs" hidden></em></a>
-      <a href="#/new" data-route="new"><i data-ic="playCircle"></i><span>Новый прогон</span></a>
+      <a href="#/generate" data-route="generate"><i data-ic="playCircle"></i><span>Генерация</span><em class="live-dot beat" id="nb-gen" hidden></em></a>
+      <a href="#/proposals" data-route="proposals"><i data-ic="msg"></i><span>Предложения</span><em class="count" id="nb-props" hidden></em></a>
+      <div class="side-label">Данные</div>
+      <div class="nav-group">
+        <button class="nav-toggle" id="nav-data" aria-expanded="true"><i data-ic="db"></i><span>Данные вуза</span><i class="chev" data-ic="chev"></i></button>
+        <div class="nav-sub">
+          <a href="#/data/overview" data-route="data" data-tab="overview"><span>Сводка</span></a>
+          <a href="#/data/rooms" data-route="data" data-tab="rooms"><span>Аудитории</span><em class="dot" id="nd-rooms" hidden></em></a>
+          <a href="#/data/groups" data-route="data" data-tab="groups"><span>Группы</span><em class="dot" id="nd-groups" hidden></em></a>
+          <a href="#/data/courses" data-route="data" data-tab="courses"><span>Учебный план</span><em class="dot" id="nd-courses" hidden></em></a>
+          <a href="#/data/timeslots" data-route="data" data-tab="timeslots"><span>Сетка времени</span><em class="dot" id="nd-timeslots" hidden></em></a>
+        </div>
+      </div>
+      <div class="side-label">Агенты</div>
+      <a href="#/live" data-route="live"><i data-ic="pulse"></i><span>Работа агентов</span></a>
+      <a href="#/chat" data-route="chat"><i data-ic="bot"></i><span>Чат с агентами</span></a>
+      <a href="#/rules" data-route="rules"><i data-ic="shield"></i><span>Правила</span><em class="count" id="nb-rules" hidden></em></a>
     </nav>
     <div class="side-bottom">
-      <a class="pilot-card" href="#/autopilot" id="pilot-card">
-        <i class="pc-ic" data-ic="bot"></i>
-        <span class="pc-t"><b>Автопилот 24/7</b><small id="pilot-text">подключение…</small></span>
-        <span class="pc-sw" id="pilot-sw" role="switch" aria-checked="false" tabindex="0" title="Включить или выключить автопилот"><i></i></span>
-      </a>
+      <a class="side-row" href="#/admin" data-route="admin" id="nav-admin"><i data-ic="gear"></i><span>Система</span><em class="live-dot" id="nb-pilot" hidden></em></a>
       <button class="side-row" id="prefs-btn" aria-haspopup="dialog"><i data-ic="sliders"></i><span id="theme-text">Вид</span></button>
     </div>
   </aside>
@@ -80,6 +83,8 @@
   <div class="field"><span class="lbl">Размер текста</span><div class="seg" id="pf-scale"><button data-v="s">93 %</button><button data-v="m">100 %</button><button data-v="l">113 %</button></div></div>
 </div>
 <div class="toast" id="toast" aria-live="polite"></div>
+<script src="data.js"></script>
+<script src="studio.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

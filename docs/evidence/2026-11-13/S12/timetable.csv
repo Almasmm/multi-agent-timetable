@@ -1,0 +1,625 @@
+﻿group,program,year,day,day_index,hour_index,time,discipline,type,classroom,stream_size
+IT-2101,IT,3,Mon,0,1,09:00-09:50,Blockchain Technologies,lecture,C1.1.141,2
+IT-2101,IT,3,Mon,0,2,10:00-10:50,Blockchain Technologies,lecture,C1.1.141,2
+IT-2101,IT,3,Mon,0,3,11:00-11:50,Technological Entrepreneurship / Entrepreneurship,lecture,online,4
+IT-2101,IT,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship / Entrepreneurship,lecture,online,4
+IT-2101,IT,3,Mon,0,5,13:00-13:50,Data Visualization / Computer Graphics Fundamentals,lecture,C1.1.141,2
+IT-2101,IT,3,Mon,0,6,14:00-14:50,Data Visualization / Computer Graphics Fundamentals,lecture,C1.1.141,2
+IT-2101,IT,3,Mon,0,7,15:00-15:50,Computer Networks,lecture,C1.1.141,2
+IT-2101,IT,3,Mon,0,8,16:00-16:50,Computer Networks,lecture,C1.1.141,2
+IT-2101,IT,3,Tue,1,1,09:00-09:50,Blockchain Technologies,practice,C1.1.225P,1
+IT-2101,IT,3,Tue,1,2,10:00-10:50,Blockchain Technologies,practice,C1.1.225P,1
+IT-2101,IT,3,Tue,1,3,11:00-11:50,Machine Learning Algorithms,lecture,C1.1.327P,2
+IT-2101,IT,3,Tue,1,4,12:00-12:50,Machine Learning Algorithms,lecture,C1.1.327P,2
+IT-2101,IT,3,Tue,1,5,13:00-13:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.224P,1
+IT-2101,IT,3,Tue,1,6,14:00-14:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.224P,1
+IT-2101,IT,3,Tue,1,7,15:00-15:50,Computer Networks,practice,C1.1.227P,1
+IT-2101,IT,3,Wed,2,1,09:00-09:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.253P,1
+IT-2101,IT,3,Wed,2,2,10:00-10:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.324L,1
+IT-2101,IT,3,Wed,2,3,11:00-11:50,Philosophy,lecture,online,4
+IT-2101,IT,3,Wed,2,4,12:00-12:50,Philosophy,lecture,online,4
+IT-2101,IT,3,Wed,2,5,13:00-13:50,Machine Learning Algorithms,practice,C1.1.235P,1
+IT-2101,IT,3,Wed,2,6,14:00-14:50,Machine Learning Algorithms,practice,C1.1.235P,1
+IT-2101,IT,3,Thu,3,3,11:00-11:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.227P,1
+IT-2101,IT,3,Thu,3,4,12:00-12:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.227P,1
+IT-2101,IT,3,Thu,3,5,13:00-13:50,Computer Networks,practice,C1.1.256P,1
+IT-2101,IT,3,Thu,3,6,14:00-14:50,Computer Networks,practice,C1.1.256P,1
+IT-2101,IT,3,Thu,3,7,15:00-15:50,Machine Learning Algorithms,practice,C1.1.226P,1
+IT-2101,IT,3,Thu,3,8,16:00-16:50,Philosophy,lecture,online,4
+IT-2101,IT,3,Fri,4,5,13:00-13:50,Blockchain Technologies,practice,C1.1.254P,1
+IT-2101,IT,3,Fri,4,6,14:00-14:50,Philosophy,practice,C1.1.253P,1
+IT-2101,IT,3,Fri,4,7,15:00-15:50,Philosophy,practice,C1.1.253P,1
+IT-2102,IT,3,Mon,0,1,09:00-09:50,Blockchain Technologies,lecture,C1.1.141,2
+IT-2102,IT,3,Mon,0,2,10:00-10:50,Blockchain Technologies,lecture,C1.1.141,2
+IT-2102,IT,3,Mon,0,3,11:00-11:50,Technological Entrepreneurship / Entrepreneurship,lecture,online,4
+IT-2102,IT,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship / Entrepreneurship,lecture,online,4
+IT-2102,IT,3,Mon,0,5,13:00-13:50,Data Visualization / Computer Graphics Fundamentals,lecture,C1.1.141,2
+IT-2102,IT,3,Mon,0,6,14:00-14:50,Data Visualization / Computer Graphics Fundamentals,lecture,C1.1.141,2
+IT-2102,IT,3,Mon,0,7,15:00-15:50,Computer Networks,lecture,C1.1.141,2
+IT-2102,IT,3,Mon,0,8,16:00-16:50,Computer Networks,lecture,C1.1.141,2
+IT-2102,IT,3,Tue,1,1,09:00-09:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.226P,1
+IT-2102,IT,3,Tue,1,2,10:00-10:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.226P,1
+IT-2102,IT,3,Tue,1,3,11:00-11:50,Machine Learning Algorithms,lecture,C1.1.327P,2
+IT-2102,IT,3,Tue,1,4,12:00-12:50,Machine Learning Algorithms,lecture,C1.1.327P,2
+IT-2102,IT,3,Tue,1,5,13:00-13:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.228P,1
+IT-2102,IT,3,Tue,1,6,14:00-14:50,Computer Networks,practice,C1.1.226P,1
+IT-2102,IT,3,Tue,1,7,15:00-15:50,Computer Networks,practice,C1.1.226P,1
+IT-2102,IT,3,Wed,2,2,10:00-10:50,Machine Learning Algorithms,practice,C1.1.261,1
+IT-2102,IT,3,Wed,2,3,11:00-11:50,Philosophy,lecture,online,4
+IT-2102,IT,3,Wed,2,4,12:00-12:50,Philosophy,lecture,online,4
+IT-2102,IT,3,Wed,2,5,13:00-13:50,Blockchain Technologies,practice,C1.1.254P,1
+IT-2102,IT,3,Wed,2,6,14:00-14:50,Philosophy,practice,C1.1.226P,1
+IT-2102,IT,3,Wed,2,7,15:00-15:50,Philosophy,practice,C1.1.226P,1
+IT-2102,IT,3,Thu,3,2,10:00-10:50,Machine Learning Algorithms,practice,C1.1.234P,1
+IT-2102,IT,3,Thu,3,3,11:00-11:50,Machine Learning Algorithms,practice,C1.1.234P,1
+IT-2102,IT,3,Thu,3,4,12:00-12:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.326L,1
+IT-2102,IT,3,Thu,3,8,16:00-16:50,Philosophy,lecture,online,4
+IT-2102,IT,3,Fri,4,1,09:00-09:50,Blockchain Technologies,practice,C1.1.226P,1
+IT-2102,IT,3,Fri,4,2,10:00-10:50,Blockchain Technologies,practice,C1.1.226P,1
+IT-2102,IT,3,Fri,4,3,11:00-11:50,Computer Networks,practice,C1.1.256P,1
+IT-2102,IT,3,Fri,4,7,15:00-15:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.225P,1
+IT-2102,IT,3,Fri,4,8,16:00-16:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.225P,1
+IT-2103,IT,3,Mon,0,3,11:00-11:50,Technological Entrepreneurship / Entrepreneurship,lecture,online,4
+IT-2103,IT,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship / Entrepreneurship,lecture,online,4
+IT-2103,IT,3,Mon,0,5,13:00-13:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.224P,1
+IT-2103,IT,3,Mon,0,6,14:00-14:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.224P,1
+IT-2103,IT,3,Mon,0,7,15:00-15:50,Computer Networks,lecture,C1.1.221P,2
+IT-2103,IT,3,Mon,0,8,16:00-16:50,Computer Networks,lecture,C1.1.221P,2
+IT-2103,IT,3,Tue,1,1,09:00-09:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.227P,1
+IT-2103,IT,3,Tue,1,2,10:00-10:50,Machine Learning Algorithms,lecture,C1.1.141,2
+IT-2103,IT,3,Tue,1,3,11:00-11:50,Machine Learning Algorithms,lecture,C1.1.141,2
+IT-2103,IT,3,Tue,1,4,12:00-12:50,Blockchain Technologies,lecture,C1.2.233L,2
+IT-2103,IT,3,Tue,1,5,13:00-13:50,Blockchain Technologies,lecture,C1.2.233L,2
+IT-2103,IT,3,Tue,1,6,14:00-14:50,Computer Networks,practice,C1.1.254P,1
+IT-2103,IT,3,Wed,2,1,09:00-09:50,Data Visualization / Computer Graphics Fundamentals,lecture,C1.1.141,2
+IT-2103,IT,3,Wed,2,2,10:00-10:50,Data Visualization / Computer Graphics Fundamentals,lecture,C1.1.141,2
+IT-2103,IT,3,Wed,2,3,11:00-11:50,Philosophy,lecture,online,4
+IT-2103,IT,3,Wed,2,4,12:00-12:50,Philosophy,lecture,online,4
+IT-2103,IT,3,Wed,2,5,13:00-13:50,Blockchain Technologies,practice,C1.1.255P,1
+IT-2103,IT,3,Wed,2,6,14:00-14:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.254P,1
+IT-2103,IT,3,Wed,2,7,15:00-15:50,Philosophy,practice,C1.1.225P,1
+IT-2103,IT,3,Wed,2,8,16:00-16:50,Philosophy,practice,C1.1.225P,1
+IT-2103,IT,3,Thu,3,3,11:00-11:50,Blockchain Technologies,practice,C1.1.226P,1
+IT-2103,IT,3,Thu,3,4,12:00-12:50,Blockchain Technologies,practice,C1.1.226P,1
+IT-2103,IT,3,Thu,3,5,13:00-13:50,Computer Networks,practice,C1.1.261,1
+IT-2103,IT,3,Thu,3,6,14:00-14:50,Computer Networks,practice,C1.1.261,1
+IT-2103,IT,3,Thu,3,7,15:00-15:50,Machine Learning Algorithms,practice,C1.1.227P,1
+IT-2103,IT,3,Thu,3,8,16:00-16:50,Philosophy,lecture,online,4
+IT-2103,IT,3,Fri,4,2,10:00-10:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.253P,1
+IT-2103,IT,3,Fri,4,3,11:00-11:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.253P,1
+IT-2103,IT,3,Fri,4,7,15:00-15:50,Machine Learning Algorithms,practice,C1.1.254P,1
+IT-2103,IT,3,Fri,4,8,16:00-16:50,Machine Learning Algorithms,practice,C1.1.254P,1
+IT-2104,IT,3,Mon,0,1,09:00-09:50,Computer Networks,practice,C1.1.223P,1
+IT-2104,IT,3,Mon,0,2,10:00-10:50,Computer Networks,practice,C1.1.223P,1
+IT-2104,IT,3,Mon,0,3,11:00-11:50,Technological Entrepreneurship / Entrepreneurship,lecture,online,4
+IT-2104,IT,3,Mon,0,4,12:00-12:50,Technological Entrepreneurship / Entrepreneurship,lecture,online,4
+IT-2104,IT,3,Mon,0,5,13:00-13:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.225P,1
+IT-2104,IT,3,Mon,0,6,14:00-14:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.225P,1
+IT-2104,IT,3,Mon,0,7,15:00-15:50,Computer Networks,lecture,C1.1.221P,2
+IT-2104,IT,3,Mon,0,8,16:00-16:50,Computer Networks,lecture,C1.1.221P,2
+IT-2104,IT,3,Tue,1,1,09:00-09:50,Blockchain Technologies,practice,C1.1.228P,1
+IT-2104,IT,3,Tue,1,2,10:00-10:50,Machine Learning Algorithms,lecture,C1.1.141,2
+IT-2104,IT,3,Tue,1,3,11:00-11:50,Machine Learning Algorithms,lecture,C1.1.141,2
+IT-2104,IT,3,Tue,1,4,12:00-12:50,Blockchain Technologies,lecture,C1.2.233L,2
+IT-2104,IT,3,Tue,1,5,13:00-13:50,Blockchain Technologies,lecture,C1.2.233L,2
+IT-2104,IT,3,Wed,2,1,09:00-09:50,Data Visualization / Computer Graphics Fundamentals,lecture,C1.1.141,2
+IT-2104,IT,3,Wed,2,2,10:00-10:50,Data Visualization / Computer Graphics Fundamentals,lecture,C1.1.141,2
+IT-2104,IT,3,Wed,2,3,11:00-11:50,Philosophy,lecture,online,4
+IT-2104,IT,3,Wed,2,4,12:00-12:50,Philosophy,lecture,online,4
+IT-2104,IT,3,Wed,2,5,13:00-13:50,Technological Entrepreneurship / Entrepreneurship,practice,C1.1.253P,1
+IT-2104,IT,3,Wed,2,6,14:00-14:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.255P,1
+IT-2104,IT,3,Wed,2,7,15:00-15:50,Machine Learning Algorithms,practice,C1.1.235P,1
+IT-2104,IT,3,Thu,3,3,11:00-11:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.235P,1
+IT-2104,IT,3,Thu,3,4,12:00-12:50,Data Visualization / Computer Graphics Fundamentals,practice,C1.1.235P,1
+IT-2104,IT,3,Thu,3,5,13:00-13:50,Machine Learning Algorithms,practice,C1.1.235P,1
+IT-2104,IT,3,Thu,3,6,14:00-14:50,Machine Learning Algorithms,practice,C1.1.235P,1
+IT-2104,IT,3,Thu,3,7,15:00-15:50,Computer Networks,practice,C1.1.235P,1
+IT-2104,IT,3,Thu,3,8,16:00-16:50,Philosophy,lecture,online,4
+IT-2104,IT,3,Fri,4,1,09:00-09:50,Philosophy,practice,C1.1.225P,1
+IT-2104,IT,3,Fri,4,2,10:00-10:50,Philosophy,practice,C1.1.225P,1
+IT-2104,IT,3,Fri,4,7,15:00-15:50,Blockchain Technologies,practice,C1.1.226P,1
+IT-2104,IT,3,Fri,4,8,16:00-16:50,Blockchain Technologies,practice,C1.1.226P,1
+IT-2201,IT,2,Mon,0,1,09:00-09:50,Computer Organisation and Architecture,lecture,online,9
+IT-2201,IT,2,Mon,0,2,10:00-10:50,Computer Organisation and Architecture,lecture,online,9
+IT-2201,IT,2,Mon,0,3,11:00-11:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.222P,1
+IT-2201,IT,2,Mon,0,4,12:00-12:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.1.221P,2
+IT-2201,IT,2,Mon,0,5,13:00-13:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.1.221P,2
+IT-2201,IT,2,Mon,0,6,14:00-14:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2201,IT,2,Mon,0,7,15:00-15:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2201,IT,2,Mon,0,8,16:00-16:50,Assembly programming,lecture,C1.1.327P,2
+IT-2201,IT,2,Tue,1,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.233P,1
+IT-2201,IT,2,Tue,1,7,15:00-15:50,WEB Technologies 1 (Front End),practice,C1.1.223P,1
+IT-2201,IT,2,Tue,1,8,16:00-16:50,WEB Technologies 1 (Front End),practice,C1.1.223P,1
+IT-2201,IT,2,Wed,2,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+IT-2201,IT,2,Wed,2,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+IT-2201,IT,2,Wed,2,7,15:00-15:50,WEB Technologies 1 (Front End),practice,C1.1.228P,1
+IT-2201,IT,2,Thu,3,2,10:00-10:50,Assembly programming,lecture,C1.1.141,2
+IT-2201,IT,2,Thu,3,3,11:00-11:50,Assembly programming,lecture,C1.1.141,2
+IT-2201,IT,2,Thu,3,4,12:00-12:50,Computer Organisation and Architecture,practice,C1.1.261,1
+IT-2201,IT,2,Thu,3,5,13:00-13:50,Physical Education,practice,GYM-2,1
+IT-2201,IT,2,Thu,3,6,14:00-14:50,Physical Education,practice,GYM-2,1
+IT-2201,IT,2,Thu,3,7,15:00-15:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+IT-2201,IT,2,Thu,3,8,16:00-16:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+IT-2201,IT,2,Fri,4,2,10:00-10:50,Assembly programming,practice,C1.1.235P,1
+IT-2201,IT,2,Fri,4,3,11:00-11:50,Assembly programming,practice,C1.1.235P,1
+IT-2201,IT,2,Fri,4,4,12:00-12:50,Computer Organisation and Architecture,practice,C1.1.234P,1
+IT-2201,IT,2,Fri,4,5,13:00-13:50,Computer Organisation and Architecture,practice,C1.1.234P,1
+IT-2201,IT,2,Fri,4,6,14:00-14:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.234P,1
+IT-2201,IT,2,Fri,4,7,15:00-15:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.234P,1
+IT-2202,IT,2,Mon,0,1,09:00-09:50,Computer Organisation and Architecture,lecture,online,9
+IT-2202,IT,2,Mon,0,2,10:00-10:50,Computer Organisation and Architecture,lecture,online,9
+IT-2202,IT,2,Mon,0,3,11:00-11:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.223P,1
+IT-2202,IT,2,Mon,0,4,12:00-12:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.1.221P,2
+IT-2202,IT,2,Mon,0,5,13:00-13:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.1.221P,2
+IT-2202,IT,2,Mon,0,6,14:00-14:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2202,IT,2,Mon,0,7,15:00-15:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2202,IT,2,Mon,0,8,16:00-16:50,Assembly programming,lecture,C1.1.327P,2
+IT-2202,IT,2,Tue,1,2,10:00-10:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.228P,1
+IT-2202,IT,2,Tue,1,3,11:00-11:50,Computer Organisation and Architecture,practice,C1.1.234P,1
+IT-2202,IT,2,Tue,1,4,12:00-12:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.225P,1
+IT-2202,IT,2,Tue,1,5,13:00-13:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.225P,1
+IT-2202,IT,2,Tue,1,6,14:00-14:50,Assembly programming,practice,C1.1.225P,1
+IT-2202,IT,2,Tue,1,7,15:00-15:50,Assembly programming,practice,C1.1.225P,1
+IT-2202,IT,2,Tue,1,8,16:00-16:50,WEB Technologies 1 (Front End),practice,C1.1.228P,1
+IT-2202,IT,2,Wed,2,1,09:00-09:50,WEB Technologies 1 (Front End),practice,C1.1.226P,1
+IT-2202,IT,2,Wed,2,2,10:00-10:50,WEB Technologies 1 (Front End),practice,C1.1.226P,1
+IT-2202,IT,2,Wed,2,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.223P,1
+IT-2202,IT,2,Wed,2,4,12:00-12:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.223P,1
+IT-2202,IT,2,Wed,2,5,13:00-13:50,Computer Organisation and Architecture,practice,C1.1.234P,1
+IT-2202,IT,2,Wed,2,6,14:00-14:50,Computer Organisation and Architecture,practice,C1.1.234P,1
+IT-2202,IT,2,Wed,2,7,15:00-15:50,Physical Education,practice,GYM-1,1
+IT-2202,IT,2,Wed,2,8,16:00-16:50,Physical Education,practice,GYM-1,1
+IT-2202,IT,2,Thu,3,2,10:00-10:50,Assembly programming,lecture,C1.1.141,2
+IT-2202,IT,2,Thu,3,3,11:00-11:50,Assembly programming,lecture,C1.1.141,2
+IT-2202,IT,2,Thu,3,4,12:00-12:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.253P,1
+IT-2202,IT,2,Thu,3,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.253P,1
+IT-2203,IT,2,Mon,0,1,09:00-09:50,Computer Organisation and Architecture,lecture,online,9
+IT-2203,IT,2,Mon,0,2,10:00-10:50,Computer Organisation and Architecture,lecture,online,9
+IT-2203,IT,2,Mon,0,3,11:00-11:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.2.233L,2
+IT-2203,IT,2,Mon,0,4,12:00-12:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.2.233L,2
+IT-2203,IT,2,Mon,0,5,13:00-13:50,WEB Technologies 1 (Front End),practice,C1.1.226P,1
+IT-2203,IT,2,Mon,0,6,14:00-14:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2203,IT,2,Mon,0,7,15:00-15:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2203,IT,2,Tue,1,2,10:00-10:50,WEB Technologies 1 (Front End),practice,C1.1.227P,1
+IT-2203,IT,2,Tue,1,3,11:00-11:50,WEB Technologies 1 (Front End),practice,C1.1.227P,1
+IT-2203,IT,2,Tue,1,4,12:00-12:50,Physical Education,practice,GYM-2,1
+IT-2203,IT,2,Tue,1,5,13:00-13:50,Physical Education,practice,GYM-2,1
+IT-2203,IT,2,Tue,1,6,14:00-14:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.253P,1
+IT-2203,IT,2,Tue,1,7,15:00-15:50,Assembly programming,lecture,C1.2.245L,2
+IT-2203,IT,2,Wed,2,1,09:00-09:50,Assembly programming,practice,C1.1.228P,1
+IT-2203,IT,2,Wed,2,2,10:00-10:50,Assembly programming,practice,C1.1.228P,1
+IT-2203,IT,2,Wed,2,3,11:00-11:50,Assembly programming,lecture,C1.1.141,2
+IT-2203,IT,2,Wed,2,4,12:00-12:50,Assembly programming,lecture,C1.1.141,2
+IT-2203,IT,2,Wed,2,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.223P,1
+IT-2203,IT,2,Wed,2,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.223P,1
+IT-2203,IT,2,Wed,2,7,15:00-15:50,Computer Organisation and Architecture,practice,C1.1.233P,1
+IT-2203,IT,2,Thu,3,1,09:00-09:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.233P,1
+IT-2203,IT,2,Thu,3,2,10:00-10:50,Computer Organisation and Architecture,practice,C1.1.233P,1
+IT-2203,IT,2,Thu,3,3,11:00-11:50,Computer Organisation and Architecture,practice,C1.1.233P,1
+IT-2203,IT,2,Thu,3,7,15:00-15:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.223P,1
+IT-2203,IT,2,Thu,3,8,16:00-16:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.223P,1
+IT-2203,IT,2,Fri,4,1,09:00-09:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+IT-2203,IT,2,Fri,4,2,10:00-10:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+IT-2204,IT,2,Mon,0,1,09:00-09:50,Computer Organisation and Architecture,lecture,online,9
+IT-2204,IT,2,Mon,0,2,10:00-10:50,Computer Organisation and Architecture,lecture,online,9
+IT-2204,IT,2,Mon,0,3,11:00-11:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.2.233L,2
+IT-2204,IT,2,Mon,0,4,12:00-12:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.2.233L,2
+IT-2204,IT,2,Mon,0,5,13:00-13:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.227P,1
+IT-2204,IT,2,Mon,0,6,14:00-14:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2204,IT,2,Mon,0,7,15:00-15:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2204,IT,2,Tue,1,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.234P,1
+IT-2204,IT,2,Tue,1,7,15:00-15:50,Assembly programming,lecture,C1.2.245L,2
+IT-2204,IT,2,Wed,2,1,09:00-09:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.227P,1
+IT-2204,IT,2,Wed,2,2,10:00-10:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.227P,1
+IT-2204,IT,2,Wed,2,3,11:00-11:50,Assembly programming,lecture,C1.1.141,2
+IT-2204,IT,2,Wed,2,4,12:00-12:50,Assembly programming,lecture,C1.1.141,2
+IT-2204,IT,2,Wed,2,5,13:00-13:50,WEB Technologies 1 (Front End),practice,C1.1.233P,1
+IT-2204,IT,2,Wed,2,6,14:00-14:50,WEB Technologies 1 (Front End),practice,C1.1.233P,1
+IT-2204,IT,2,Wed,2,7,15:00-15:50,Computer Organisation and Architecture,practice,C1.1.234P,1
+IT-2204,IT,2,Thu,3,2,10:00-10:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.228P,1
+IT-2204,IT,2,Thu,3,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.228P,1
+IT-2204,IT,2,Thu,3,4,12:00-12:50,Assembly programming,practice,C1.1.255P,1
+IT-2204,IT,2,Thu,3,5,13:00-13:50,Assembly programming,practice,C1.1.255P,1
+IT-2204,IT,2,Fri,4,1,09:00-09:50,Computer Organisation and Architecture,practice,C1.1.223P,1
+IT-2204,IT,2,Fri,4,2,10:00-10:50,Computer Organisation and Architecture,practice,C1.1.223P,1
+IT-2204,IT,2,Fri,4,3,11:00-11:50,Physical Education,practice,GYM-2,1
+IT-2204,IT,2,Fri,4,4,12:00-12:50,Physical Education,practice,GYM-2,1
+IT-2204,IT,2,Fri,4,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+IT-2204,IT,2,Fri,4,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+IT-2204,IT,2,Fri,4,7,15:00-15:50,WEB Technologies 1 (Front End),practice,C1.1.256P,1
+IT-2205,IT,2,Mon,0,1,09:00-09:50,Computer Organisation and Architecture,lecture,online,9
+IT-2205,IT,2,Mon,0,2,10:00-10:50,Computer Organisation and Architecture,lecture,online,9
+IT-2205,IT,2,Mon,0,3,11:00-11:50,Assembly programming,lecture,C1.2.249L,2
+IT-2205,IT,2,Mon,0,4,12:00-12:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+IT-2205,IT,2,Mon,0,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.222P,1
+IT-2205,IT,2,Mon,0,6,14:00-14:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2205,IT,2,Mon,0,7,15:00-15:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2205,IT,2,Tue,1,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.226P,1
+IT-2205,IT,2,Tue,1,4,12:00-12:50,Assembly programming,lecture,C1.1.141,2
+IT-2205,IT,2,Tue,1,5,13:00-13:50,Assembly programming,lecture,C1.1.141,2
+IT-2205,IT,2,Tue,1,6,14:00-14:50,WEB Technologies 1 (Front End),practice,C1.1.235P,1
+IT-2205,IT,2,Tue,1,7,15:00-15:50,Computer Organisation and Architecture,practice,C1.1.224P,1
+IT-2205,IT,2,Tue,1,8,16:00-16:50,Computer Organisation and Architecture,practice,C1.1.224P,1
+IT-2205,IT,2,Wed,2,1,09:00-09:50,Assembly programming,practice,C1.1.233P,1
+IT-2205,IT,2,Wed,2,2,10:00-10:50,Assembly programming,practice,C1.1.233P,1
+IT-2205,IT,2,Wed,2,3,11:00-11:50,WEB Technologies 1 (Front End),practice,C1.1.224P,1
+IT-2205,IT,2,Wed,2,4,12:00-12:50,WEB Technologies 1 (Front End),practice,C1.1.224P,1
+IT-2205,IT,2,Thu,3,4,12:00-12:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.256P,1
+IT-2205,IT,2,Thu,3,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.225P,1
+IT-2205,IT,2,Thu,3,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.225P,1
+IT-2205,IT,2,Thu,3,7,15:00-15:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.1.141,2
+IT-2205,IT,2,Thu,3,8,16:00-16:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.1.141,2
+IT-2205,IT,2,Fri,4,3,11:00-11:50,Physical Education,practice,GYM-3,1
+IT-2205,IT,2,Fri,4,4,12:00-12:50,Physical Education,practice,GYM-3,1
+IT-2205,IT,2,Fri,4,5,13:00-13:50,Computer Organisation and Architecture,practice,C1.1.253P,1
+IT-2205,IT,2,Fri,4,6,14:00-14:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.235P,1
+IT-2205,IT,2,Fri,4,7,15:00-15:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.235P,1
+IT-2206,IT,2,Mon,0,1,09:00-09:50,Computer Organisation and Architecture,lecture,online,9
+IT-2206,IT,2,Mon,0,2,10:00-10:50,Computer Organisation and Architecture,lecture,online,9
+IT-2206,IT,2,Mon,0,3,11:00-11:50,Assembly programming,lecture,C1.2.249L,2
+IT-2206,IT,2,Mon,0,4,12:00-12:50,WEB Technologies 1 (Front End),practice,C1.1.223P,1
+IT-2206,IT,2,Mon,0,5,13:00-13:50,WEB Technologies 1 (Front End),practice,C1.1.223P,1
+IT-2206,IT,2,Mon,0,6,14:00-14:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2206,IT,2,Mon,0,7,15:00-15:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2206,IT,2,Tue,1,4,12:00-12:50,Assembly programming,lecture,C1.1.141,2
+IT-2206,IT,2,Tue,1,5,13:00-13:50,Assembly programming,lecture,C1.1.141,2
+IT-2206,IT,2,Tue,1,6,14:00-14:50,Physical Education,practice,GYM-1,1
+IT-2206,IT,2,Tue,1,7,15:00-15:50,Physical Education,practice,GYM-1,1
+IT-2206,IT,2,Wed,2,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+IT-2206,IT,2,Wed,2,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+IT-2206,IT,2,Thu,3,1,09:00-09:50,Assembly programming,practice,C1.1.227P,1
+IT-2206,IT,2,Thu,3,2,10:00-10:50,Assembly programming,practice,C1.1.227P,1
+IT-2206,IT,2,Thu,3,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.253P,1
+IT-2206,IT,2,Thu,3,4,12:00-12:50,Computer Organisation and Architecture,practice,C1.1.324L,1
+IT-2206,IT,2,Thu,3,5,13:00-13:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.226P,1
+IT-2206,IT,2,Thu,3,6,14:00-14:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.226P,1
+IT-2206,IT,2,Thu,3,7,15:00-15:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.1.141,2
+IT-2206,IT,2,Thu,3,8,16:00-16:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.1.141,2
+IT-2206,IT,2,Fri,4,1,09:00-09:50,WEB Technologies 1 (Front End),practice,C1.1.228P,1
+IT-2206,IT,2,Fri,4,2,10:00-10:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.261,1
+IT-2206,IT,2,Fri,4,3,11:00-11:50,Computer Organisation and Architecture,practice,C1.1.226P,1
+IT-2206,IT,2,Fri,4,4,12:00-12:50,Computer Organisation and Architecture,practice,C1.1.226P,1
+IT-2206,IT,2,Fri,4,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.225P,1
+IT-2206,IT,2,Fri,4,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.225P,1
+IT-2207,IT,2,Mon,0,1,09:00-09:50,Computer Organisation and Architecture,lecture,online,9
+IT-2207,IT,2,Mon,0,2,10:00-10:50,Computer Organisation and Architecture,lecture,online,9
+IT-2207,IT,2,Mon,0,3,11:00-11:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.2.245L,2
+IT-2207,IT,2,Mon,0,4,12:00-12:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.2.245L,2
+IT-2207,IT,2,Mon,0,5,13:00-13:50,Assembly programming,lecture,C1.1.327P,2
+IT-2207,IT,2,Mon,0,6,14:00-14:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2207,IT,2,Mon,0,7,15:00-15:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2207,IT,2,Mon,0,8,16:00-16:50,WEB Technologies 1 (Front End),practice,C1.1.222P,1
+IT-2207,IT,2,Tue,1,1,09:00-09:50,Computer Organisation and Architecture,practice,C1.1.224P,1
+IT-2207,IT,2,Tue,1,2,10:00-10:50,Computer Organisation and Architecture,practice,C1.1.224P,1
+IT-2207,IT,2,Tue,1,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.228P,1
+IT-2207,IT,2,Wed,2,1,09:00-09:50,Assembly programming,practice,C1.1.234P,1
+IT-2207,IT,2,Wed,2,2,10:00-10:50,Assembly programming,practice,C1.1.234P,1
+IT-2207,IT,2,Wed,2,3,11:00-11:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.225P,1
+IT-2207,IT,2,Wed,2,4,12:00-12:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.225P,1
+IT-2207,IT,2,Wed,2,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.225P,1
+IT-2207,IT,2,Wed,2,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.225P,1
+IT-2207,IT,2,Thu,3,2,10:00-10:50,Assembly programming,lecture,C1.1.221P,2
+IT-2207,IT,2,Thu,3,3,11:00-11:50,Assembly programming,lecture,C1.1.221P,2
+IT-2207,IT,2,Thu,3,4,12:00-12:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.254P,1
+IT-2207,IT,2,Thu,3,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.254P,1
+IT-2207,IT,2,Thu,3,6,14:00-14:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.254P,1
+IT-2207,IT,2,Thu,3,7,15:00-15:50,Physical Education,practice,GYM-1,1
+IT-2207,IT,2,Thu,3,8,16:00-16:50,Physical Education,practice,GYM-1,1
+IT-2207,IT,2,Fri,4,3,11:00-11:50,Computer Organisation and Architecture,practice,C1.1.255P,1
+IT-2207,IT,2,Fri,4,4,12:00-12:50,WEB Technologies 1 (Front End),practice,C1.1.233P,1
+IT-2207,IT,2,Fri,4,5,13:00-13:50,WEB Technologies 1 (Front End),practice,C1.1.233P,1
+IT-2208,IT,2,Mon,0,1,09:00-09:50,Computer Organisation and Architecture,lecture,online,9
+IT-2208,IT,2,Mon,0,2,10:00-10:50,Computer Organisation and Architecture,lecture,online,9
+IT-2208,IT,2,Mon,0,3,11:00-11:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.2.245L,2
+IT-2208,IT,2,Mon,0,4,12:00-12:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.2.245L,2
+IT-2208,IT,2,Mon,0,5,13:00-13:50,Assembly programming,lecture,C1.1.327P,2
+IT-2208,IT,2,Mon,0,6,14:00-14:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2208,IT,2,Mon,0,7,15:00-15:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2208,IT,2,Mon,0,8,16:00-16:50,Computer Organisation and Architecture,practice,C1.1.223P,1
+IT-2208,IT,2,Tue,1,1,09:00-09:50,Assembly programming,practice,C1.1.222P,1
+IT-2208,IT,2,Tue,1,2,10:00-10:50,Assembly programming,practice,C1.1.222P,1
+IT-2208,IT,2,Tue,1,6,14:00-14:50,Physical Education,practice,GYM-2,1
+IT-2208,IT,2,Tue,1,7,15:00-15:50,Physical Education,practice,GYM-2,1
+IT-2208,IT,2,Tue,1,8,16:00-16:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.227P,1
+IT-2208,IT,2,Wed,2,1,09:00-09:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.235P,1
+IT-2208,IT,2,Wed,2,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.228P,1
+IT-2208,IT,2,Wed,2,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.228P,1
+IT-2208,IT,2,Thu,3,2,10:00-10:50,Assembly programming,lecture,C1.1.221P,2
+IT-2208,IT,2,Thu,3,3,11:00-11:50,Assembly programming,lecture,C1.1.221P,2
+IT-2208,IT,2,Thu,3,7,15:00-15:50,WEB Technologies 1 (Front End),practice,C1.1.225P,1
+IT-2208,IT,2,Fri,4,1,09:00-09:50,Computer Organisation and Architecture,practice,C1.1.224P,1
+IT-2208,IT,2,Fri,4,2,10:00-10:50,Computer Organisation and Architecture,practice,C1.1.224P,1
+IT-2208,IT,2,Fri,4,3,11:00-11:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.225P,1
+IT-2208,IT,2,Fri,4,4,12:00-12:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.225P,1
+IT-2208,IT,2,Fri,4,5,13:00-13:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.226P,1
+IT-2208,IT,2,Fri,4,6,14:00-14:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.226P,1
+IT-2208,IT,2,Fri,4,7,15:00-15:50,WEB Technologies 1 (Front End),practice,C1.1.224P,1
+IT-2208,IT,2,Fri,4,8,16:00-16:50,WEB Technologies 1 (Front End),practice,C1.1.224P,1
+IT-2209,IT,2,Mon,0,1,09:00-09:50,Computer Organisation and Architecture,lecture,online,9
+IT-2209,IT,2,Mon,0,2,10:00-10:50,Computer Organisation and Architecture,lecture,online,9
+IT-2209,IT,2,Mon,0,3,11:00-11:50,Physical Education,practice,GYM-1,1
+IT-2209,IT,2,Mon,0,4,12:00-12:50,Physical Education,practice,GYM-1,1
+IT-2209,IT,2,Mon,0,5,13:00-13:50,Computer Organisation and Architecture,practice,C1.1.228P,1
+IT-2209,IT,2,Mon,0,6,14:00-14:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2209,IT,2,Mon,0,7,15:00-15:50,WEB Technologies 1 (Front End),lecture,online,9
+IT-2209,IT,2,Tue,1,1,09:00-09:50,Assembly programming,practice,C1.1.223P,1
+IT-2209,IT,2,Tue,1,2,10:00-10:50,Assembly programming,practice,C1.1.223P,1
+IT-2209,IT,2,Tue,1,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.233P,1
+IT-2209,IT,2,Tue,1,4,12:00-12:50,Computer Organisation and Architecture,practice,C1.1.226P,1
+IT-2209,IT,2,Tue,1,5,13:00-13:50,Computer Organisation and Architecture,practice,C1.1.226P,1
+IT-2209,IT,2,Tue,1,6,14:00-14:50,Assembly programming,lecture,C1.1.327P,1
+IT-2209,IT,2,Tue,1,7,15:00-15:50,Assembly programming,lecture,C1.1.327P,1
+IT-2209,IT,2,Wed,2,6,14:00-14:50,Assembly programming,lecture,C1.1.221P,1
+IT-2209,IT,2,Wed,2,7,15:00-15:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.1.221P,1
+IT-2209,IT,2,Wed,2,8,16:00-16:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,lecture,C1.1.221P,1
+IT-2209,IT,2,Thu,3,1,09:00-09:50,WEB Technologies 1 (Front End),practice,C1.1.226P,1
+IT-2209,IT,2,Thu,3,2,10:00-10:50,WEB Technologies 1 (Front End),practice,C1.1.226P,1
+IT-2209,IT,2,Thu,3,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.225P,1
+IT-2209,IT,2,Thu,3,4,12:00-12:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.225P,1
+IT-2209,IT,2,Thu,3,5,13:00-13:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.227P,1
+IT-2209,IT,2,Thu,3,6,14:00-14:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.227P,1
+IT-2209,IT,2,Fri,4,2,10:00-10:50,WEB Technologies 1 (Front End),practice,C1.1.256P,1
+IT-2209,IT,2,Fri,4,3,11:00-11:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+IT-2209,IT,2,Fri,4,4,12:00-12:50,Russian Language 1 / Kazakh Language 1,practice,C1.1.224P,1
+IT-2209,IT,2,Fri,4,5,13:00-13:50,Design and Analysis of Algorithms / Analytic methods in Computer Science,practice,C1.1.235P,1
+IT-2301,IT,1,Mon,0,1,09:00-09:50,Cultural Studies,practice,C1.1.225P,1
+IT-2301,IT,1,Mon,0,2,10:00-10:50,Introduction to Programming 1,lecture,C1.1.221P,2
+IT-2301,IT,1,Mon,0,3,11:00-11:50,Introduction to Programming 1,lecture,C1.1.221P,2
+IT-2301,IT,1,Mon,0,4,12:00-12:50,History of Kazakhstan (State Exam),practice,C1.1.224P,1
+IT-2301,IT,1,Mon,0,5,13:00-13:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2301,IT,1,Mon,0,6,14:00-14:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2301,IT,1,Mon,0,7,15:00-15:50,Cultural Studies,lecture,online,9
+IT-2301,IT,1,Mon,0,8,16:00-16:50,Information and Communication Technologies,lecture,online,9
+IT-2301,IT,1,Tue,1,1,09:00-09:50,Information and Communication Technologies,lecture,online,9
+IT-2301,IT,1,Tue,1,2,10:00-10:50,Information and Communication Technologies,lecture,online,9
+IT-2301,IT,1,Tue,1,7,15:00-15:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2301,IT,1,Tue,1,8,16:00-16:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2301,IT,1,Wed,2,1,09:00-09:50,Introduction to Programming 1,practice,C1.1.225P,1
+IT-2301,IT,1,Wed,2,2,10:00-10:50,Introduction to Programming 1,practice,C1.1.225P,1
+IT-2301,IT,1,Wed,2,7,15:00-15:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2301,IT,1,Wed,2,8,16:00-16:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2301,IT,1,Thu,3,2,10:00-10:50,Introduction to Programming 1,practice,C1.1.235P,1
+IT-2301,IT,1,Thu,3,3,11:00-11:50,Calculus 1,lecture,C1.1.327P,2
+IT-2301,IT,1,Thu,3,4,12:00-12:50,Foreign Language 1,practice,C1.1.233P,1
+IT-2301,IT,1,Thu,3,5,13:00-13:50,Foreign Language 1,practice,C1.1.233P,1
+IT-2301,IT,1,Thu,3,6,14:00-14:50,History of Kazakhstan (State Exam),practice,C1.1.228P,1
+IT-2301,IT,1,Thu,3,7,15:00-15:50,History of Kazakhstan (State Exam),practice,C1.1.228P,1
+IT-2301,IT,1,Fri,4,1,09:00-09:50,Calculus 1,lecture,C1.1.141,2
+IT-2301,IT,1,Fri,4,2,10:00-10:50,Calculus 1,lecture,C1.1.141,2
+IT-2301,IT,1,Fri,4,3,11:00-11:50,Calculus 1,practice,C1.1.223P,1
+IT-2301,IT,1,Fri,4,4,12:00-12:50,Calculus 1,practice,C1.1.223P,1
+IT-2301,IT,1,Fri,4,5,13:00-13:50,Physical Education,practice,GYM-1,1
+IT-2301,IT,1,Fri,4,6,14:00-14:50,Physical Education,practice,GYM-1,1
+IT-2301,IT,1,Fri,4,7,15:00-15:50,Foreign Language 1,practice,C1.1.255P,1
+IT-2302,IT,1,Mon,0,1,09:00-09:50,Cultural Studies,practice,C1.1.226P,1
+IT-2302,IT,1,Mon,0,2,10:00-10:50,Introduction to Programming 1,lecture,C1.1.221P,2
+IT-2302,IT,1,Mon,0,3,11:00-11:50,Introduction to Programming 1,lecture,C1.1.221P,2
+IT-2302,IT,1,Mon,0,4,12:00-12:50,History of Kazakhstan (State Exam),practice,C1.1.225P,1
+IT-2302,IT,1,Mon,0,5,13:00-13:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2302,IT,1,Mon,0,6,14:00-14:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2302,IT,1,Mon,0,7,15:00-15:50,Cultural Studies,lecture,online,9
+IT-2302,IT,1,Mon,0,8,16:00-16:50,Information and Communication Technologies,lecture,online,9
+IT-2302,IT,1,Tue,1,1,09:00-09:50,Information and Communication Technologies,lecture,online,9
+IT-2302,IT,1,Tue,1,2,10:00-10:50,Information and Communication Technologies,lecture,online,9
+IT-2302,IT,1,Tue,1,3,11:00-11:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2302,IT,1,Tue,1,4,12:00-12:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2302,IT,1,Tue,1,5,13:00-13:50,Physical Education,practice,GYM-3,1
+IT-2302,IT,1,Tue,1,6,14:00-14:50,Physical Education,practice,GYM-3,1
+IT-2302,IT,1,Wed,2,1,09:00-09:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2302,IT,1,Wed,2,2,10:00-10:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2302,IT,1,Thu,3,3,11:00-11:50,Calculus 1,lecture,C1.1.327P,2
+IT-2302,IT,1,Thu,3,4,12:00-12:50,History of Kazakhstan (State Exam),practice,C1.1.228P,1
+IT-2302,IT,1,Thu,3,5,13:00-13:50,History of Kazakhstan (State Exam),practice,C1.1.228P,1
+IT-2302,IT,1,Thu,3,6,14:00-14:50,Foreign Language 1,practice,C1.1.234P,1
+IT-2302,IT,1,Thu,3,7,15:00-15:50,Foreign Language 1,practice,C1.1.234P,1
+IT-2302,IT,1,Thu,3,8,16:00-16:50,Introduction to Programming 1,practice,C1.1.224P,1
+IT-2302,IT,1,Fri,4,1,09:00-09:50,Calculus 1,lecture,C1.1.141,2
+IT-2302,IT,1,Fri,4,2,10:00-10:50,Calculus 1,lecture,C1.1.141,2
+IT-2302,IT,1,Fri,4,3,11:00-11:50,Foreign Language 1,practice,C1.1.254P,1
+IT-2302,IT,1,Fri,4,4,12:00-12:50,Introduction to Programming 1,practice,C1.1.228P,1
+IT-2302,IT,1,Fri,4,5,13:00-13:50,Introduction to Programming 1,practice,C1.1.228P,1
+IT-2302,IT,1,Fri,4,6,14:00-14:50,Calculus 1,practice,C1.1.233P,1
+IT-2302,IT,1,Fri,4,7,15:00-15:50,Calculus 1,practice,C1.1.233P,1
+IT-2303,IT,1,Mon,0,2,10:00-10:50,Foreign Language 1,practice,C1.1.226P,1
+IT-2303,IT,1,Mon,0,3,11:00-11:50,Calculus 1,lecture,C1.1.141,2
+IT-2303,IT,1,Mon,0,4,12:00-12:50,Calculus 1,lecture,C1.1.141,2
+IT-2303,IT,1,Mon,0,5,13:00-13:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2303,IT,1,Mon,0,6,14:00-14:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2303,IT,1,Mon,0,7,15:00-15:50,Cultural Studies,lecture,online,9
+IT-2303,IT,1,Mon,0,8,16:00-16:50,Information and Communication Technologies,lecture,online,9
+IT-2303,IT,1,Tue,1,1,09:00-09:50,Information and Communication Technologies,lecture,online,9
+IT-2303,IT,1,Tue,1,2,10:00-10:50,Information and Communication Technologies,lecture,online,9
+IT-2303,IT,1,Tue,1,3,11:00-11:50,History of Kazakhstan (State Exam),practice,C1.1.225P,1
+IT-2303,IT,1,Tue,1,4,12:00-12:50,Physical Education,practice,GYM-1,1
+IT-2303,IT,1,Tue,1,5,13:00-13:50,Physical Education,practice,GYM-1,1
+IT-2303,IT,1,Tue,1,6,14:00-14:50,Introduction to Programming 1,lecture,C1.1.141,2
+IT-2303,IT,1,Tue,1,7,15:00-15:50,Introduction to Programming 1,lecture,C1.1.141,2
+IT-2303,IT,1,Tue,1,8,16:00-16:50,Introduction to Programming 1,practice,C1.1.225P,1
+IT-2303,IT,1,Wed,2,2,10:00-10:50,Foreign Language 1,practice,C1.1.253P,1
+IT-2303,IT,1,Wed,2,3,11:00-11:50,Foreign Language 1,practice,C1.1.253P,1
+IT-2303,IT,1,Wed,2,4,12:00-12:50,History of Kazakhstan (State Exam),practice,C1.1.226P,1
+IT-2303,IT,1,Wed,2,5,13:00-13:50,History of Kazakhstan (State Exam),practice,C1.1.226P,1
+IT-2303,IT,1,Wed,2,6,14:00-14:50,Cultural Studies,practice,C1.1.227P,1
+IT-2303,IT,1,Wed,2,7,15:00-15:50,Calculus 1,lecture,C1.1.141,2
+IT-2303,IT,1,Thu,3,1,09:00-09:50,Calculus 1,practice,C1.1.224P,1
+IT-2303,IT,1,Thu,3,2,10:00-10:50,Calculus 1,practice,C1.1.224P,1
+IT-2303,IT,1,Thu,3,3,11:00-11:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2303,IT,1,Thu,3,4,12:00-12:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2303,IT,1,Thu,3,5,13:00-13:50,Introduction to Programming 1,practice,C1.1.222P,1
+IT-2303,IT,1,Thu,3,6,14:00-14:50,Introduction to Programming 1,practice,C1.1.222P,1
+IT-2303,IT,1,Fri,4,4,12:00-12:50,Foreign Language 1,practice,C1.1.227P,1
+IT-2303,IT,1,Fri,4,5,13:00-13:50,Foreign Language 1,practice,C1.1.227P,1
+IT-2304,IT,1,Mon,0,2,10:00-10:50,Foreign Language 1,practice,C1.1.227P,1
+IT-2304,IT,1,Mon,0,3,11:00-11:50,Calculus 1,lecture,C1.1.141,2
+IT-2304,IT,1,Mon,0,4,12:00-12:50,Calculus 1,lecture,C1.1.141,2
+IT-2304,IT,1,Mon,0,5,13:00-13:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2304,IT,1,Mon,0,6,14:00-14:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2304,IT,1,Mon,0,7,15:00-15:50,Cultural Studies,lecture,online,9
+IT-2304,IT,1,Mon,0,8,16:00-16:50,Information and Communication Technologies,lecture,online,9
+IT-2304,IT,1,Tue,1,1,09:00-09:50,Information and Communication Technologies,lecture,online,9
+IT-2304,IT,1,Tue,1,2,10:00-10:50,Information and Communication Technologies,lecture,online,9
+IT-2304,IT,1,Tue,1,6,14:00-14:50,Introduction to Programming 1,lecture,C1.1.141,2
+IT-2304,IT,1,Tue,1,7,15:00-15:50,Introduction to Programming 1,lecture,C1.1.141,2
+IT-2304,IT,1,Wed,2,1,09:00-09:50,Calculus 1,practice,C1.1.223P,1
+IT-2304,IT,1,Wed,2,2,10:00-10:50,Calculus 1,practice,C1.1.223P,1
+IT-2304,IT,1,Wed,2,6,14:00-14:50,Introduction to Programming 1,practice,C1.1.253P,1
+IT-2304,IT,1,Wed,2,7,15:00-15:50,Calculus 1,lecture,C1.1.141,2
+IT-2304,IT,1,Wed,2,8,16:00-16:50,History of Kazakhstan (State Exam),practice,C1.1.226P,1
+IT-2304,IT,1,Thu,3,1,09:00-09:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2304,IT,1,Thu,3,2,10:00-10:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2304,IT,1,Thu,3,3,11:00-11:50,History of Kazakhstan (State Exam),practice,C1.1.223P,1
+IT-2304,IT,1,Thu,3,4,12:00-12:50,History of Kazakhstan (State Exam),practice,C1.1.223P,1
+IT-2304,IT,1,Thu,3,5,13:00-13:50,Introduction to Programming 1,practice,C1.1.223P,1
+IT-2304,IT,1,Thu,3,6,14:00-14:50,Introduction to Programming 1,practice,C1.1.223P,1
+IT-2304,IT,1,Fri,4,2,10:00-10:50,Foreign Language 1,practice,C1.1.233P,1
+IT-2304,IT,1,Fri,4,3,11:00-11:50,Foreign Language 1,practice,C1.1.233P,1
+IT-2304,IT,1,Fri,4,4,12:00-12:50,Physical Education,practice,GYM-4,1
+IT-2304,IT,1,Fri,4,5,13:00-13:50,Physical Education,practice,GYM-4,1
+IT-2304,IT,1,Fri,4,6,14:00-14:50,Cultural Studies,practice,C1.1.254P,1
+IT-2304,IT,1,Fri,4,7,15:00-15:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2304,IT,1,Fri,4,8,16:00-16:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2305,IT,1,Mon,0,1,09:00-09:50,History of Kazakhstan (State Exam),practice,C1.1.224P,1
+IT-2305,IT,1,Mon,0,5,13:00-13:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2305,IT,1,Mon,0,6,14:00-14:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2305,IT,1,Mon,0,7,15:00-15:50,Cultural Studies,lecture,online,9
+IT-2305,IT,1,Mon,0,8,16:00-16:50,Information and Communication Technologies,lecture,online,9
+IT-2305,IT,1,Tue,1,1,09:00-09:50,Information and Communication Technologies,lecture,online,9
+IT-2305,IT,1,Tue,1,2,10:00-10:50,Information and Communication Technologies,lecture,online,9
+IT-2305,IT,1,Tue,1,3,11:00-11:50,Calculus 1,lecture,C1.1.221P,2
+IT-2305,IT,1,Tue,1,4,12:00-12:50,Calculus 1,lecture,C1.1.221P,2
+IT-2305,IT,1,Tue,1,5,13:00-13:50,Foreign Language 1,practice,C1.1.227P,1
+IT-2305,IT,1,Tue,1,6,14:00-14:50,Cultural Studies,practice,C1.1.227P,1
+IT-2305,IT,1,Tue,1,7,15:00-15:50,Introduction to Programming 1,lecture,C1.1.221P,2
+IT-2305,IT,1,Tue,1,8,16:00-16:50,Introduction to Programming 1,lecture,C1.1.221P,2
+IT-2305,IT,1,Wed,2,2,10:00-10:50,Foreign Language 1,practice,C1.1.254P,1
+IT-2305,IT,1,Wed,2,3,11:00-11:50,Foreign Language 1,practice,C1.1.254P,1
+IT-2305,IT,1,Wed,2,4,12:00-12:50,Calculus 1,practice,C1.1.227P,1
+IT-2305,IT,1,Wed,2,5,13:00-13:50,Calculus 1,practice,C1.1.227P,1
+IT-2305,IT,1,Thu,3,4,12:00-12:50,Physical Education,practice,GYM-1,1
+IT-2305,IT,1,Thu,3,5,13:00-13:50,Physical Education,practice,GYM-1,1
+IT-2305,IT,1,Thu,3,6,14:00-14:50,Introduction to Programming 1,practice,C1.1.253P,1
+IT-2305,IT,1,Thu,3,7,15:00-15:50,Introduction to Programming 1,practice,C1.1.253P,1
+IT-2305,IT,1,Fri,4,1,09:00-09:50,Calculus 1,lecture,C1.1.221P,2
+IT-2305,IT,1,Fri,4,2,10:00-10:50,History of Kazakhstan (State Exam),practice,C1.1.228P,1
+IT-2305,IT,1,Fri,4,3,11:00-11:50,History of Kazakhstan (State Exam),practice,C1.1.228P,1
+IT-2305,IT,1,Fri,4,4,12:00-12:50,Introduction to Programming 1,practice,C1.1.235P,1
+IT-2305,IT,1,Fri,4,5,13:00-13:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2305,IT,1,Fri,4,6,14:00-14:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2305,IT,1,Fri,4,7,15:00-15:50,Foreign Language 1,practice,C1.1.223P,1
+IT-2305,IT,1,Fri,4,8,16:00-16:50,Foreign Language 1,practice,C1.1.223P,1
+IT-2306,IT,1,Mon,0,2,10:00-10:50,Information and Communication Technologies,practice,C1.1.224P,1
+IT-2306,IT,1,Mon,0,3,11:00-11:50,Information and Communication Technologies,practice,C1.1.224P,1
+IT-2306,IT,1,Mon,0,4,12:00-12:50,Cultural Studies,practice,C1.1.226P,1
+IT-2306,IT,1,Mon,0,5,13:00-13:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2306,IT,1,Mon,0,6,14:00-14:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2306,IT,1,Mon,0,7,15:00-15:50,Cultural Studies,lecture,online,9
+IT-2306,IT,1,Mon,0,8,16:00-16:50,Information and Communication Technologies,lecture,online,9
+IT-2306,IT,1,Tue,1,1,09:00-09:50,Information and Communication Technologies,lecture,online,9
+IT-2306,IT,1,Tue,1,2,10:00-10:50,Information and Communication Technologies,lecture,online,9
+IT-2306,IT,1,Tue,1,3,11:00-11:50,Calculus 1,lecture,C1.1.221P,2
+IT-2306,IT,1,Tue,1,4,12:00-12:50,Calculus 1,lecture,C1.1.221P,2
+IT-2306,IT,1,Tue,1,5,13:00-13:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2306,IT,1,Tue,1,6,14:00-14:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2306,IT,1,Tue,1,7,15:00-15:50,Introduction to Programming 1,lecture,C1.1.221P,2
+IT-2306,IT,1,Tue,1,8,16:00-16:50,Introduction to Programming 1,lecture,C1.1.221P,2
+IT-2306,IT,1,Wed,2,2,10:00-10:50,Calculus 1,practice,C1.1.255P,1
+IT-2306,IT,1,Wed,2,3,11:00-11:50,Calculus 1,practice,C1.1.255P,1
+IT-2306,IT,1,Wed,2,7,15:00-15:50,Foreign Language 1,practice,C1.1.227P,1
+IT-2306,IT,1,Thu,3,1,09:00-09:50,Foreign Language 1,practice,C1.1.223P,1
+IT-2306,IT,1,Thu,3,2,10:00-10:50,Foreign Language 1,practice,C1.1.223P,1
+IT-2306,IT,1,Thu,3,3,11:00-11:50,History of Kazakhstan (State Exam),practice,C1.1.224P,1
+IT-2306,IT,1,Thu,3,4,12:00-12:50,History of Kazakhstan (State Exam),practice,C1.1.224P,1
+IT-2306,IT,1,Thu,3,5,13:00-13:50,Introduction to Programming 1,practice,C1.1.224P,1
+IT-2306,IT,1,Thu,3,6,14:00-14:50,Introduction to Programming 1,practice,C1.1.224P,1
+IT-2306,IT,1,Fri,4,1,09:00-09:50,Calculus 1,lecture,C1.1.221P,2
+IT-2306,IT,1,Fri,4,2,10:00-10:50,History of Kazakhstan (State Exam),practice,C1.1.254P,1
+IT-2306,IT,1,Fri,4,3,11:00-11:50,Physical Education,practice,GYM-1,1
+IT-2306,IT,1,Fri,4,4,12:00-12:50,Physical Education,practice,GYM-1,1
+IT-2306,IT,1,Fri,4,8,16:00-16:50,Introduction to Programming 1,practice,C1.1.227P,1
+IT-2307,IT,1,Mon,0,1,09:00-09:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2307,IT,1,Mon,0,2,10:00-10:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2307,IT,1,Mon,0,3,11:00-11:50,Introduction to Programming 1,lecture,C1.1.327P,2
+IT-2307,IT,1,Mon,0,4,12:00-12:50,Introduction to Programming 1,lecture,C1.1.327P,2
+IT-2307,IT,1,Mon,0,5,13:00-13:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2307,IT,1,Mon,0,6,14:00-14:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2307,IT,1,Mon,0,7,15:00-15:50,Cultural Studies,lecture,online,9
+IT-2307,IT,1,Mon,0,8,16:00-16:50,Information and Communication Technologies,lecture,online,9
+IT-2307,IT,1,Tue,1,1,09:00-09:50,Information and Communication Technologies,lecture,online,9
+IT-2307,IT,1,Tue,1,2,10:00-10:50,Information and Communication Technologies,lecture,online,9
+IT-2307,IT,1,Tue,1,6,14:00-14:50,Cultural Studies,practice,C1.1.228P,1
+IT-2307,IT,1,Tue,1,7,15:00-15:50,Calculus 1,lecture,C1.2.233L,2
+IT-2307,IT,1,Tue,1,8,16:00-16:50,Introduction to Programming 1,practice,C1.1.226P,1
+IT-2307,IT,1,Wed,2,2,10:00-10:50,Information and Communication Technologies,practice,C1.1.235P,1
+IT-2307,IT,1,Wed,2,3,11:00-11:50,Information and Communication Technologies,practice,C1.1.235P,1
+IT-2307,IT,1,Wed,2,4,12:00-12:50,Foreign Language 1,practice,C1.1.228P,1
+IT-2307,IT,1,Wed,2,5,13:00-13:50,Calculus 1,lecture,C1.1.141,2
+IT-2307,IT,1,Wed,2,6,14:00-14:50,Calculus 1,lecture,C1.1.141,2
+IT-2307,IT,1,Wed,2,7,15:00-15:50,History of Kazakhstan (State Exam),practice,C1.1.223P,1
+IT-2307,IT,1,Wed,2,8,16:00-16:50,History of Kazakhstan (State Exam),practice,C1.1.223P,1
+IT-2307,IT,1,Thu,3,1,09:00-09:50,Introduction to Programming 1,practice,C1.1.225P,1
+IT-2307,IT,1,Thu,3,2,10:00-10:50,Introduction to Programming 1,practice,C1.1.225P,1
+IT-2307,IT,1,Thu,3,7,15:00-15:50,History of Kazakhstan (State Exam),practice,C1.1.224P,1
+IT-2307,IT,1,Fri,4,2,10:00-10:50,Calculus 1,practice,C1.1.234P,1
+IT-2307,IT,1,Fri,4,3,11:00-11:50,Calculus 1,practice,C1.1.234P,1
+IT-2307,IT,1,Fri,4,4,12:00-12:50,Physical Education,practice,GYM-5,1
+IT-2307,IT,1,Fri,4,5,13:00-13:50,Physical Education,practice,GYM-5,1
+IT-2307,IT,1,Fri,4,6,14:00-14:50,Foreign Language 1,practice,C1.1.227P,1
+IT-2307,IT,1,Fri,4,7,15:00-15:50,Foreign Language 1,practice,C1.1.227P,1
+IT-2308,IT,1,Mon,0,2,10:00-10:50,History of Kazakhstan (State Exam),practice,C1.1.225P,1
+IT-2308,IT,1,Mon,0,3,11:00-11:50,Introduction to Programming 1,lecture,C1.1.327P,2
+IT-2308,IT,1,Mon,0,4,12:00-12:50,Introduction to Programming 1,lecture,C1.1.327P,2
+IT-2308,IT,1,Mon,0,5,13:00-13:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2308,IT,1,Mon,0,6,14:00-14:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2308,IT,1,Mon,0,7,15:00-15:50,Cultural Studies,lecture,online,9
+IT-2308,IT,1,Mon,0,8,16:00-16:50,Information and Communication Technologies,lecture,online,9
+IT-2308,IT,1,Tue,1,1,09:00-09:50,Information and Communication Technologies,lecture,online,9
+IT-2308,IT,1,Tue,1,2,10:00-10:50,Information and Communication Technologies,lecture,online,9
+IT-2308,IT,1,Tue,1,3,11:00-11:50,Calculus 1,practice,C1.1.223P,1
+IT-2308,IT,1,Tue,1,4,12:00-12:50,Calculus 1,practice,C1.1.223P,1
+IT-2308,IT,1,Tue,1,5,13:00-13:50,Foreign Language 1,practice,C1.1.223P,1
+IT-2308,IT,1,Tue,1,6,14:00-14:50,Foreign Language 1,practice,C1.1.223P,1
+IT-2308,IT,1,Tue,1,7,15:00-15:50,Calculus 1,lecture,C1.2.233L,2
+IT-2308,IT,1,Wed,2,2,10:00-10:50,Introduction to Programming 1,practice,C1.1.256P,1
+IT-2308,IT,1,Wed,2,3,11:00-11:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2308,IT,1,Wed,2,4,12:00-12:50,Information and Communication Technologies,practice,C1.1.222P,1
+IT-2308,IT,1,Wed,2,5,13:00-13:50,Calculus 1,lecture,C1.1.141,2
+IT-2308,IT,1,Wed,2,6,14:00-14:50,Calculus 1,lecture,C1.1.141,2
+IT-2308,IT,1,Wed,2,7,15:00-15:50,History of Kazakhstan (State Exam),practice,C1.1.224P,1
+IT-2308,IT,1,Wed,2,8,16:00-16:50,History of Kazakhstan (State Exam),practice,C1.1.224P,1
+IT-2308,IT,1,Thu,3,1,09:00-09:50,Foreign Language 1,practice,C1.1.228P,1
+IT-2308,IT,1,Fri,4,2,10:00-10:50,Cultural Studies,practice,C1.1.255P,1
+IT-2308,IT,1,Fri,4,3,11:00-11:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2308,IT,1,Fri,4,4,12:00-12:50,Foreign Language 1,practice,C1.1.222P,1
+IT-2308,IT,1,Fri,4,5,13:00-13:50,Introduction to Programming 1,practice,C1.1.223P,1
+IT-2308,IT,1,Fri,4,6,14:00-14:50,Introduction to Programming 1,practice,C1.1.223P,1
+IT-2308,IT,1,Fri,4,7,15:00-15:50,Physical Education,practice,GYM-1,1
+IT-2308,IT,1,Fri,4,8,16:00-16:50,Physical Education,practice,GYM-1,1
+IT-2309,IT,1,Mon,0,1,09:00-09:50,Calculus 1,lecture,C1.1.221P,1
+IT-2309,IT,1,Mon,0,5,13:00-13:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2309,IT,1,Mon,0,6,14:00-14:50,History of Kazakhstan (State Exam),lecture,online,9
+IT-2309,IT,1,Mon,0,7,15:00-15:50,Cultural Studies,lecture,online,9
+IT-2309,IT,1,Mon,0,8,16:00-16:50,Information and Communication Technologies,lecture,online,9
+IT-2309,IT,1,Tue,1,1,09:00-09:50,Information and Communication Technologies,lecture,online,9
+IT-2309,IT,1,Tue,1,2,10:00-10:50,Information and Communication Technologies,lecture,online,9
+IT-2309,IT,1,Tue,1,3,11:00-11:50,Introduction to Programming 1,practice,C1.1.224P,1
+IT-2309,IT,1,Tue,1,4,12:00-12:50,Introduction to Programming 1,practice,C1.1.224P,1
+IT-2309,IT,1,Tue,1,5,13:00-13:50,Calculus 1,lecture,C1.1.221P,1
+IT-2309,IT,1,Tue,1,6,14:00-14:50,Calculus 1,lecture,C1.1.221P,1
+IT-2309,IT,1,Tue,1,7,15:00-15:50,Introduction to Programming 1,lecture,C1.2.249L,1
+IT-2309,IT,1,Tue,1,8,16:00-16:50,Introduction to Programming 1,lecture,C1.2.249L,1
+IT-2309,IT,1,Wed,2,1,09:00-09:50,Calculus 1,practice,C1.1.224P,1
+IT-2309,IT,1,Wed,2,2,10:00-10:50,Calculus 1,practice,C1.1.224P,1
+IT-2309,IT,1,Wed,2,3,11:00-11:50,Introduction to Programming 1,practice,C1.1.226P,1
+IT-2309,IT,1,Wed,2,4,12:00-12:50,Foreign Language 1,practice,C1.1.233P,1
+IT-2309,IT,1,Wed,2,8,16:00-16:50,History of Kazakhstan (State Exam),practice,C1.1.227P,1
+IT-2309,IT,1,Thu,3,4,12:00-12:50,Foreign Language 1,practice,C1.1.234P,1
+IT-2309,IT,1,Thu,3,5,13:00-13:50,Foreign Language 1,practice,C1.1.234P,1
+IT-2309,IT,1,Thu,3,6,14:00-14:50,History of Kazakhstan (State Exam),practice,C1.1.233P,1
+IT-2309,IT,1,Thu,3,7,15:00-15:50,History of Kazakhstan (State Exam),practice,C1.1.233P,1
+IT-2309,IT,1,Fri,4,1,09:00-09:50,Cultural Studies,practice,C1.1.227P,1
+IT-2309,IT,1,Fri,4,2,10:00-10:50,Information and Communication Technologies,practice,C1.1.227P,1
+IT-2309,IT,1,Fri,4,3,11:00-11:50,Information and Communication Technologies,practice,C1.1.227P,1
+IT-2309,IT,1,Fri,4,4,12:00-12:50,Physical Education,practice,GYM-6,1
+IT-2309,IT,1,Fri,4,5,13:00-13:50,Physical Education,practice,GYM-6,1
+IT-2309,IT,1,Fri,4,6,14:00-14:50,Foreign Language 1,practice,C1.1.228P,1
+IT-2309,IT,1,Fri,4,7,15:00-15:50,Foreign Language 1,practice,C1.1.228P,1

@@ -1,0 +1,65 @@
+{
+  "status": "ok",
+  "hard_violations": {},
+  "soft": {
+    "gap_hours_total": 61,
+    "gap_hours_per_group": 2.77,
+    "late_hours_18_plus": 0,
+    "saturday_hours": 0,
+    "precedence_violations": 0,
+    "lectures_in_lecture_halls": "38/38"
+  },
+  "failed_chunks": [],
+  "steps": 12,
+  "load": {
+    "total_calls": 14,
+    "agents": {
+      "data": {
+        "calls": 4,
+        "share": 0.286
+      },
+      "validator": {
+        "calls": 4,
+        "share": 0.286
+      },
+      "rooms": {
+        "calls": 3,
+        "share": 0.214
+      },
+      "scheduler": {
+        "calls": 2,
+        "share": 0.143
+      },
+      "genetic": {
+        "calls": 1,
+        "share": 0.071
+      }
+    },
+    "max_share": 0.286
+  },
+  "files": [
+    "C:\\dev\\multi-agent-timetable\\runs\\scenarios-20261113-190537\\S12\\timetable.xlsx",
+    "C:\\dev\\multi-agent-timetable\\runs\\scenarios-20261113-190537\\S12\\timetable.csv",
+    "C:\\dev\\multi-agent-timetable\\runs\\scenarios-20261113-190537\\S12\\timetable.html",
+    "C:\\dev\\multi-agent-timetable\\runs\\scenarios-20261113-190537\\S12\\report.md"
+  ],
+  "llm": "offline-rules",
+  "wall_s": 14.4,
+  "out_dir": "C:\\dev\\multi-agent-timetable\\runs\\scenarios-20261113-190537\\S12",
+  "requirements": [],
+  "settings": {
+    "data_path": "data\\input.xlsx",
+    "term": 1,
+    "programs": [
+      "IT"
+    ],
+    "allow_saturday": false,
+    "solver_time_limit": 10.0,
+    "llm_provider": "offline",
+    "chunk_target_groups": 60,
+    "ga_enabled": true,
+    "ga_seconds": 4.0,
+    "seed": 7,
+    "warm_start": null
+  }
+}

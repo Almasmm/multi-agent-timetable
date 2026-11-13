@@ -192,7 +192,8 @@ class Autopilot:
                 "last_result": self.last_result, "open_requests": open_requests,
                 "job": {k: job[k] for k in ("id", "kind", "reason", "run_id", "status")} if job else None,
                 "current": {"id": cur["id"], "ts": cur["ts"], "score": cur["score"]} if cur else None,
-                "active_run": active.run_id if active else None, "dataset": self.store.profile()["dataset"]}
+                "active_run": active.run_id if active else None, "dataset": self.store.profile()["dataset"],
+                "open_proposals": sum(1 for p in self.store.proposals(50) if p["status"] in ("discussing", "ready", "needs_input"))}
 
     def _log_lines(self, days: int = 2, tail: int = 4000) -> list[dict]:
         files = sorted(self.root.glob("events-*.jsonl"))[-days:]

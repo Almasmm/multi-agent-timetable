@@ -17,13 +17,12 @@ from pathlib import Path
 from typing import Any
 
 from ..app import run as run_pipeline
-from ..config import DATASET_DIRS, DAYS, ROOT, Settings
+from ..config import DATASET_DIRS, DAYS, Settings
 from ..core.errors import DataError
 from ..domain.loader import normalize, read_workbook
 from ..domain.preview import preview_texts
 from ..service.versions import read_rows
 
-UPLOAD_DIR = ROOT / "data" / "uploads"
 SAFE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.\- ]{0,80}$")
 DOWNLOADABLE = {"timetable.xlsx", "timetable.csv", "timetable.html", "report.md", "events.jsonl",
                 "result.json", "state.sqlite"}
@@ -77,12 +76,7 @@ def list_datasets() -> list[dict]:
         for p in sorted(d.glob("*.xlsx")):
             if p.name.startswith("~$"):
                 continue
-            mtime = p.stat().st_mtime
-            cached = _dataset_cache.get(str(p))
-            if cached is None or cached[0] != mtime:
-                cached = (mtime, _dataset_summary(p))
-                _dataset_cache[str(p)] = cached
-            out.append(cached[1])
+            out.append(dataset_info(p))
     return out
 
 
@@ -94,15 +88,14 @@ def resolve_dataset(dataset_id: str) -> Path:
     raise FileNotFoundError(f"dataset '{dataset_id}' not found")
 
 
-def save_upload(filename: str, content: bytes) -> dict:
-    name = Path(filename).name
-    if not name.lower().endswith(".xlsx") or not SAFE_NAME.match(name):
-        raise ValueError("expected an .xlsx file with a simple name")
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    target = UPLOAD_DIR / name
-    target.write_bytes(content)
-    _dataset_cache.pop(str(target), None)
-    return _dataset_summary(target)
+def dataset_info(path: Path) -> dict:
+    """Summary of one workbook (cached by modification time, like the list)."""
+    mtime = path.stat().st_mtime
+    cached = _dataset_cache.get(str(path))
+    if cached is None or cached[0] != mtime:
+        cached = (mtime, _dataset_summary(path))
+        _dataset_cache[str(path)] = cached
+    return cached[1]
 
 
 # ----------------------------------------------------------------------------------------

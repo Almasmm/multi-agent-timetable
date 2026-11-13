@@ -35,7 +35,7 @@ def find_dataset(name: str) -> Path:
         p = d / name
         if Path(name).name == name and p.is_file():
             return p
-    raise FileNotFoundError(f"dataset '{name}' not found in data/, dataset-archive/ or data/uploads/")
+    raise FileNotFoundError(f"dataset '{name}' not found in data/, master-dataset/ or data/uploads/")
 
 
 def describe_spec(spec: dict) -> str:
@@ -160,8 +160,14 @@ class WatcherAgent(ServiceAgent):
             return wait("автоматические задания приостановлены диспетчером")
 
         kind, reason, variant = None, "", 0
+        forced = store.get("force_job") or {}  # asked for in the agent chat ("перегенерируй сейчас")
+        if forced:
+            store.set("force_job", None)
         if cur is None:
             kind, reason = "generate", "опубликованной версии ещё нет"
+        elif forced.get("kind") in ("regenerate", "improve"):
+            kind, reason = forced["kind"], f"по указанию в чате: {forced.get('reason') or 'без комментария'}"
+            variant = 1 if kind == "improve" else 0
         elif meta.get("fingerprint") != fingerprint:
             kind, reason = "regenerate", "в Excel вуза изменились данные"
         elif meta.get("config") != cfg:

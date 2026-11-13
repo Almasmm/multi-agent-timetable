@@ -15,6 +15,11 @@ from ..core.errors import DataError
 from .models import GYM, LAB, LECTURE, PRACTICE, Course, Dataset, Group, Room
 
 SERVICE_SHEETS = {"Groups", "Rooms", "Timeslots"}
+# Sheets of the full university workbook that the solver does not use yet (teachers, their load and availability,
+# subgroups, electives, room closures, calendar, settings): kept in the file, never read as curricula.
+EXTRA_SHEETS = ("Teachers", "TeacherLoad", "TeacherUnavailability", "Subgroups", "Electives", "RoomUnavailability",
+                "Calendar", "Holidays", "Settings")
+INFO_SHEETS = {"README", "Programs", "Check", *EXTRA_SHEETS}  # instruction, reference, notes and the extra sheets
 CURRICULUM_COLS = ["course_name", "trimester", "credits", "lecture_slots", "practice_slots",
                    "lab_slots", "delivery_mode", "lecture_precedes_practice"]
 CYRILLIC_LOOKALIKES = str.maketrans("СсАаВЕеКкМНОоРрТХх", "CcAaBEeKkMHOoPpTXx")
@@ -70,7 +75,7 @@ def normalize(sheets: dict[str, list[list]], weeks: int, gym_pattern: str = "phy
     # --- curricula ---------------------------------------------------------------------
     courses: list[Course] = []
     for sheet, rows in sheets.items():
-        if sheet in SERVICE_SHEETS or not rows:
+        if sheet in SERVICE_SHEETS or sheet in INFO_SHEETS or not rows:
             continue
         idx = _header_index(rows[0])
         if not {"course_name", "trimester"} <= set(idx):

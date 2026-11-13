@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 
 from ..core.agent import BaseAgent
-from ..domain.constraints import ConstraintSet, ConstraintSpec, parse_offline
+from ..domain.constraints import ConstraintSet, ConstraintSpec, apply_modes, parse_offline, split_mode
 
 SYSTEM = """You translate university timetabling requirements written in natural language (Russian or
 English) into a strict JSON constraint list. Kinds:
@@ -67,7 +67,8 @@ class ConstraintAgent(BaseAgent):
         if not texts:
             self.put("constraint_specs", [])
             return {"constraints": 0, "warnings": []}
-        cset = self.call_tool("parse_text", texts=texts)
+        tagged = [split_mode(t) for t in texts]  # "[soft:7] ..." - mode pinned by the dispatcher in the UI
+        cset = apply_modes(self.call_tool("parse_text", texts=[t[0] for t in tagged]), tagged)
         specs, warnings = self.call_tool("ground", cset=cset)
         self.put("constraint_specs", specs)
         self.put("constraint_warnings", warnings)

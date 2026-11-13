@@ -135,15 +135,17 @@ def test_openai_text_and_failure_modes():
         OpenAILLM("gpt-5", 5, _fake_client(_FakeCompletions("{", finish_reason="length"))).text("s", "u", "low")
 
 
-def test_provider_resolution_prefers_openai_then_claude_then_offline(monkeypatch):
+def test_provider_resolution_prefers_claude_then_openai_then_offline(monkeypatch):
     for var in ("OPENAI_API_KEY", "ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_PROFILE"):
         monkeypatch.delenv(var, raising=False)
     monkeypatch.setattr("timetable.core.llm._has_claude_credentials", lambda: False)
     assert resolve_provider("auto")[0] == "offline" and resolve_provider("openai")[0] == "offline"
     assert resolve_provider("offline") == ("offline", "offline mode requested")
+    assert resolve_provider("claude")[0] == "offline"
     monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
     assert resolve_provider("auto") == ("openai", "") and resolve_provider("openai") == ("openai", "")
-    assert resolve_provider("claude") == ("claude", "")
+    monkeypatch.setattr("timetable.core.llm._has_claude_credentials", lambda: True)
+    assert resolve_provider("auto") == ("claude", "") and resolve_provider("claude") == ("claude", "")
 
 
 def _toy_sessions():
